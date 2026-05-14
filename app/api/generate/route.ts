@@ -1,24 +1,50 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { infographicWorkflow } from "../../../src/mastra/workflows/infographic-workflow";
+import { InfographicInputSchema } from "../../../src/mastra/schemas/schema";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Expected a JSON body" },
+        { status: 400 },
+      );
+    }
 
-    const { runId, start } = await infographicWorkflow.createRun();
-    console.log(`Starting Workflow Run ID: ${runId}`);
+    if (!body || typeof body !== "object") {
+      return NextResponse.json(
+        { error: "Expected JSON object body" },
+        { status: 400 },
+      );
+    }
 
-    const runResult = await start(body);
+    const parsed = InfographicInputSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: "Invalid request", details: parsed.error.flatten() },
+        { status: 400 },
+      );
+    }
 
-    const assembleStep = runResult.steps?.["assemble-payload"];
+    // 1. Create the run
+    const run = await infographicWorkflow.createRun();
+    console.log(`🚀 Starting Workflow Run ID: ${run.runId}`);
 
+    // Mastra workflow runs expect { inputData: workflowInput }
+    const runResult = await run.start({ inputData: parsed.data });
+
+    // Prefer workflow aggregate `result`, then last step output
     let finalData = null;
-
-    if (assembleStep?.status === "success") {
-      finalData = assembleStep.output;
-    } else if (runResult.status === "success") {
+    if (runResult.status === "success" && (runResult as any).result != null) {
       finalData = (runResult as any).result;
+    }
+    const assembleStep = runResult.steps?.["assemble-payload"];
+    if (!finalData && assembleStep?.status === "success") {
+      finalData = assembleStep.output;
     }
 
     if (!finalData) {
