@@ -19,7 +19,7 @@ CRITICAL RULES:
 export const contentAgent = new Agent({
   id: "content-architect-agent",
   name: "Content Architect",
-  instructions: CONTENT_SYSTEM_PROMPT,
+  instructions: "You are an expert web researcher. If the user provides a URL, your ONLY job is to use the scrapeWebsiteTool to fetch it. Do not format the output. Just return the raw scraped text.",
   model: "groq/llama-3.3-70b-versatile",
   tools: {
     scrapeWebsiteTool,
@@ -54,5 +54,15 @@ export const criticAgent = new Agent({
   id: "qa-critic-agent",
   name: "Quality Assurance Critic",
   instructions: CRITIC_SYSTEM_PROMPT,
+  model: "groq/llama-3.1-8b-instant",
+});
+
+const FORMATTER_SYSTEM_PROMPT =
+  "You are a strict data formatter. Your only job is to map the provided raw research into the exact requested JSON schema without losing information. Do not invent data.";
+
+export const formatterAgent = new Agent({
+  id: "formatter-agent",
+  name: "Data Formatter",
+  instructions: CONTENT_SYSTEM_PROMPT,
   model: "groq/llama-3.1-8b-instant",
 });
