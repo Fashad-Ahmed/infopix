@@ -74,8 +74,5 @@ next-env.d.ts
 *.sublime-workspace
 *.sublime-project
 
-# Graphify output
-graphify-out/
-
 # Skills lock
 skills-lock.json
