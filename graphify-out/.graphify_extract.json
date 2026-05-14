@@ -1,0 +1,1056 @@
+{
+  "nodes": [
+    {
+      "id": "postcss_config_mjs",
+      "label": "postcss.config.mjs",
+      "file_type": "code",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "infopix_postcss_config_config",
+      "label": "config",
+      "file_type": "code",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "next_env_d_ts",
+      "label": "next-env.d.ts",
+      "file_type": "code",
+      "source_file": "next-env.d.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "eslint_config_mjs",
+      "label": "eslint.config.mjs",
+      "file_type": "code",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L1"
+    },
+    {
+      "id": "infopix_eslint_config_eslintconfig",
+      "label": "eslintConfig",
+      "file_type": "code",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L5"
+    },
+    {
+      "id": "next_config_ts",
+      "label": "next.config.ts",
+      "file_type": "code",
+      "source_file": "next.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "infopix_next_config_nextconfig",
+      "label": "nextConfig",
+      "file_type": "code",
+      "source_file": "next.config.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "app_layout_tsx",
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_layout_geistsans",
+      "label": "geistSans",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L5"
+    },
+    {
+      "id": "app_layout_geistmono",
+      "label": "geistMono",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L10"
+    },
+    {
+      "id": "app_layout_metadata",
+      "label": "metadata",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "app_layout_rootlayout",
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L21"
+    },
+    {
+      "id": "app_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_page_toast",
+      "label": "Toast",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "app_page_home",
+      "label": "Home()",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L13"
+    },
+    {
+      "id": "app_api_generate_route_ts",
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "generate_route_post",
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_mastra_index_ts",
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "mastra_index_mastra",
+      "label": "mastra",
+      "file_type": "code",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "src_mastra_tools_scraper_ts",
+      "label": "scraper.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_scraper_scrapewebsitetool",
+      "label": "scrapeWebsiteTool",
+      "file_type": "code",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "src_mastra_workflows_infographic_workflow_ts",
+      "label": "infographic-workflow.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "workflows_infographic_workflow_extractcontentstep",
+      "label": "extractContentStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "workflows_infographic_workflow_extractstylestep",
+      "label": "extractStyleStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L75"
+    },
+    {
+      "id": "workflows_infographic_workflow_reviewdraftstep",
+      "label": "reviewDraftStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L116"
+    },
+    {
+      "id": "workflows_infographic_workflow_assemblefinalpayloadstep",
+      "label": "assembleFinalPayloadStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L176"
+    },
+    {
+      "id": "workflows_infographic_workflow_infographicworkflow",
+      "label": "infographicWorkflow",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L199"
+    },
+    {
+      "id": "src_mastra_agents_infographic_agent_ts",
+      "label": "infographic-agent.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "agents_infographic_agent_contentagent",
+      "label": "contentAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "agents_infographic_agent_styleagent",
+      "label": "styleAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L37"
+    },
+    {
+      "id": "agents_infographic_agent_criticagent",
+      "label": "criticAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L53"
+    },
+    {
+      "id": "agents_infographic_agent_formatteragent",
+      "label": "formatterAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L63"
+    },
+    {
+      "id": "src_mastra_schemas_schema_ts",
+      "label": "schema.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "schemas_schema_infographicinputschema",
+      "label": "InfographicInputSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "schemas_schema_brandstyleschema",
+      "label": "BrandStyleSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L12"
+    },
+    {
+      "id": "schemas_schema_basesection",
+      "label": "BaseSection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L31"
+    },
+    {
+      "id": "schemas_schema_metricsection",
+      "label": "MetricSection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L36"
+    },
+    {
+      "id": "schemas_schema_comparisonsection",
+      "label": "ComparisonSection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L44"
+    },
+    {
+      "id": "schemas_schema_keytakeawaysection",
+      "label": "KeyTakeawaySection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L58"
+    },
+    {
+      "id": "schemas_schema_infographiccontentschema",
+      "label": "InfographicContentSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L63"
+    },
+    {
+      "id": "schemas_schema_reviewoutputschema",
+      "label": "ReviewOutputSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L88"
+    },
+    {
+      "id": "schemas_schema_finalpayloadschema",
+      "label": "FinalPayloadSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L93"
+    },
+    {
+      "id": "src_components_infographic_tsx",
+      "label": "Infographic.tsx",
+      "file_type": "code",
+      "source_file": "src/components/Infographic.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_infographic_infographic",
+      "label": "Infographic()",
+      "file_type": "code",
+      "source_file": "src/components/Infographic.tsx",
+      "source_location": "L4"
+    }
+  ],
+  "edges": [
+    {
+      "source": "postcss_config_mjs",
+      "target": "infopix_postcss_config_config",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "next_env_d_ts",
+      "target": "users_fashad_fashad_projects_infopix_next_dev_types_routes_d_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "next-env.d.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_mjs",
+      "target": "config",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_mjs",
+      "target": "core_web_vitals",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_mjs",
+      "target": "typescript",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_mjs",
+      "target": "infopix_eslint_config_eslintconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "next_config_ts",
+      "target": "next",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "next.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "next_config_ts",
+      "target": "infopix_next_config_nextconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "next.config.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
+      "target": "next",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
+      "target": "google",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
+      "target": "users_fashad_fashad_projects_infopix_app_globals_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
+      "target": "app_layout_geistsans",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
+      "target": "app_layout_geistmono",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
+      "target": "app_layout_metadata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
+      "target": "app_layout_rootlayout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page_tsx",
+      "target": "src_components_infographic_tsx",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page_tsx",
+      "target": "app_page_toast",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "app_page_tsx",
+      "target": "app_page_home",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "app_api_generate_route_ts",
+      "target": "server",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_api_generate_route_ts",
+      "target": "src_mastra_workflows_infographic_workflow_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_api_generate_route_ts",
+      "target": "workflows_infographic_workflow_infographicworkflow",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_api_generate_route_ts",
+      "target": "generate_route_post",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "mastra",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "loggers",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "libsql",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "duckdb",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "storage",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "observability",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "src_mastra_workflows_infographic_workflow_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "workflows_infographic_workflow_infographicworkflow",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "src_mastra_agents_infographic_agent_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "agents_infographic_agent_contentagent",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "agents_infographic_agent_styleagent",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "agents_infographic_agent_criticagent",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_index_ts",
+      "target": "mastra_index_mastra",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_tools_scraper_ts",
+      "target": "tools",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_tools_scraper_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_tools_scraper_ts",
+      "target": "cheerio",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_tools_scraper_ts",
+      "target": "tools_scraper_scrapewebsitetool",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "src_mastra_agents_infographic_agent_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_contentagent",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_styleagent",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_criticagent",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_formatteragent",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "src_mastra_schemas_schema_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_infographicinputschema",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_infographiccontentschema",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_brandstyleschema",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_reviewoutputschema",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_finalpayloadschema",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_extractcontentstep",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_extractstylestep",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_reviewdraftstep",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_assemblefinalpayloadstep",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L176",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_infographicworkflow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agent",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "src_mastra_tools_scraper_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "tools_scraper_scrapewebsitetool",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_contentagent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_styleagent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_criticagent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_formatteragent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_infographicinputschema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_brandstyleschema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_basesection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_metricsection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_comparisonsection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_keytakeawaysection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_infographiccontentschema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_reviewoutputschema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_finalpayloadschema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_infographic_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Infographic.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_infographic_tsx",
+      "target": "components_infographic_infographic",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Infographic.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
