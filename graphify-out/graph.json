@@ -1,0 +1,1254 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "postcss.config.mjs",
+      "file_type": "code",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1",
+      "id": "postcss_config_mjs",
+      "community": 7,
+      "norm_label": "postcss.config.mjs"
+    },
+    {
+      "label": "config",
+      "file_type": "code",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1",
+      "id": "infopix_postcss_config_config",
+      "community": 7,
+      "norm_label": "config"
+    },
+    {
+      "label": "next-env.d.ts",
+      "file_type": "code",
+      "source_file": "next-env.d.ts",
+      "source_location": "L1",
+      "id": "next_env_d_ts",
+      "community": 9,
+      "norm_label": "next-env.d.ts"
+    },
+    {
+      "label": "eslint.config.mjs",
+      "file_type": "code",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L1",
+      "id": "eslint_config_mjs",
+      "community": 10,
+      "norm_label": "eslint.config.mjs"
+    },
+    {
+      "label": "next.config.ts",
+      "file_type": "code",
+      "source_file": "next.config.ts",
+      "source_location": "L1",
+      "id": "next_config_ts",
+      "community": 11,
+      "norm_label": "next.config.ts"
+    },
+    {
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L1",
+      "id": "app_layout_tsx",
+      "community": 4,
+      "norm_label": "layout.tsx"
+    },
+    {
+      "label": "geistSans",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L5",
+      "id": "app_layout_geistsans",
+      "community": 4,
+      "norm_label": "geistsans"
+    },
+    {
+      "label": "geistMono",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L10",
+      "id": "app_layout_geistmono",
+      "community": 4,
+      "norm_label": "geistmono"
+    },
+    {
+      "label": "metadata",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L15",
+      "id": "app_layout_metadata",
+      "community": 4,
+      "norm_label": "metadata"
+    },
+    {
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L21",
+      "id": "app_layout_rootlayout",
+      "community": 4,
+      "norm_label": "rootlayout()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L1",
+      "id": "app_page_tsx",
+      "community": 5,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "Toast",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L7",
+      "id": "app_page_toast",
+      "community": 5,
+      "norm_label": "toast"
+    },
+    {
+      "label": "Home()",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L13",
+      "id": "app_page_home",
+      "community": 5,
+      "norm_label": "home()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L1",
+      "id": "app_api_generate_route_ts",
+      "community": 8,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L5",
+      "id": "generate_route_post",
+      "community": 8,
+      "norm_label": "post()"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L1",
+      "id": "src_mastra_index_ts",
+      "community": 2,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "mastra",
+      "file_type": "code",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L13",
+      "id": "mastra_index_mastra",
+      "community": 2,
+      "norm_label": "mastra"
+    },
+    {
+      "label": "graphify-context.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/tools/graphify-context.ts",
+      "source_location": "L1",
+      "id": "src_mastra_tools_graphify_context_ts",
+      "community": 6,
+      "norm_label": "graphify-context.ts"
+    },
+    {
+      "label": "GraphNode",
+      "file_type": "code",
+      "source_file": "src/mastra/tools/graphify-context.ts",
+      "source_location": "L6",
+      "id": "tools_graphify_context_graphnode",
+      "community": 6,
+      "norm_label": "graphnode"
+    },
+    {
+      "label": "GraphLink",
+      "file_type": "code",
+      "source_file": "src/mastra/tools/graphify-context.ts",
+      "source_location": "L16",
+      "id": "tools_graphify_context_graphlink",
+      "community": 6,
+      "norm_label": "graphlink"
+    },
+    {
+      "label": "GraphData",
+      "file_type": "code",
+      "source_file": "src/mastra/tools/graphify-context.ts",
+      "source_location": "L27",
+      "id": "tools_graphify_context_graphdata",
+      "community": 6,
+      "norm_label": "graphdata"
+    },
+    {
+      "label": "scraper.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L1",
+      "id": "src_mastra_tools_scraper_ts",
+      "community": 2,
+      "norm_label": "scraper.ts"
+    },
+    {
+      "label": "infographic-workflow.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L1",
+      "id": "src_mastra_workflows_infographic_workflow_ts",
+      "community": 3,
+      "norm_label": "infographic-workflow.ts"
+    },
+    {
+      "label": "extractContentStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L19",
+      "id": "workflows_infographic_workflow_extractcontentstep",
+      "community": 3,
+      "norm_label": "extractcontentstep"
+    },
+    {
+      "label": "extractStyleStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L65",
+      "id": "workflows_infographic_workflow_extractstylestep",
+      "community": 3,
+      "norm_label": "extractstylestep"
+    },
+    {
+      "label": "reviewDraftStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L105",
+      "id": "workflows_infographic_workflow_reviewdraftstep",
+      "community": 3,
+      "norm_label": "reviewdraftstep"
+    },
+    {
+      "label": "assembleFinalPayloadStep",
+      "file_type": "code",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L164",
+      "id": "workflows_infographic_workflow_assemblefinalpayloadstep",
+      "community": 3,
+      "norm_label": "assemblefinalpayloadstep"
+    },
+    {
+      "label": "infographic-agent.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L1",
+      "id": "src_mastra_agents_infographic_agent_ts",
+      "community": 2,
+      "norm_label": "infographic-agent.ts"
+    },
+    {
+      "label": "contentAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L19",
+      "id": "agents_infographic_agent_contentagent",
+      "community": 2,
+      "norm_label": "contentagent"
+    },
+    {
+      "label": "styleAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L38",
+      "id": "agents_infographic_agent_styleagent",
+      "community": 2,
+      "norm_label": "styleagent"
+    },
+    {
+      "label": "criticAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L54",
+      "id": "agents_infographic_agent_criticagent",
+      "community": 2,
+      "norm_label": "criticagent"
+    },
+    {
+      "label": "formatterAgent",
+      "file_type": "code",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L61",
+      "id": "agents_infographic_agent_formatteragent",
+      "community": 3,
+      "norm_label": "formatteragent"
+    },
+    {
+      "label": "schema.ts",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L1",
+      "id": "src_mastra_schemas_schema_ts",
+      "community": 1,
+      "norm_label": "schema.ts"
+    },
+    {
+      "label": "InfographicInputSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L3",
+      "id": "schemas_schema_infographicinputschema",
+      "community": 1,
+      "norm_label": "infographicinputschema"
+    },
+    {
+      "label": "BrandStyleSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L12",
+      "id": "schemas_schema_brandstyleschema",
+      "community": 1,
+      "norm_label": "brandstyleschema"
+    },
+    {
+      "label": "BaseSection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L31",
+      "id": "schemas_schema_basesection",
+      "community": 1,
+      "norm_label": "basesection"
+    },
+    {
+      "label": "MetricSection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L36",
+      "id": "schemas_schema_metricsection",
+      "community": 1,
+      "norm_label": "metricsection"
+    },
+    {
+      "label": "ComparisonSection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L44",
+      "id": "schemas_schema_comparisonsection",
+      "community": 1,
+      "norm_label": "comparisonsection"
+    },
+    {
+      "label": "KeyTakeawaySection",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L58",
+      "id": "schemas_schema_keytakeawaysection",
+      "community": 1,
+      "norm_label": "keytakeawaysection"
+    },
+    {
+      "label": "ReviewOutputSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L88",
+      "id": "schemas_schema_reviewoutputschema",
+      "community": 1,
+      "norm_label": "reviewoutputschema"
+    },
+    {
+      "label": "FinalPayloadSchema",
+      "file_type": "code",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L93",
+      "id": "schemas_schema_finalpayloadschema",
+      "community": 3,
+      "norm_label": "finalpayloadschema"
+    },
+    {
+      "label": "Infographic.tsx",
+      "file_type": "code",
+      "source_file": "src/components/Infographic.tsx",
+      "source_location": "L1",
+      "id": "src_components_infographic_tsx",
+      "community": 5,
+      "norm_label": "infographic.tsx"
+    },
+    {
+      "label": "Infographic()",
+      "file_type": "code",
+      "source_file": "src/components/Infographic.tsx",
+      "source_location": "L4",
+      "id": "components_infographic_infographic",
+      "community": 5,
+      "norm_label": "infographic()"
+    },
+    {
+      "label": "InfoPix Agent",
+      "file_type": "concept",
+      "source_file": "src/mastra/index.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "infopix_agent",
+      "community": 0,
+      "norm_label": "infopix agent"
+    },
+    {
+      "label": "Content Architect Agent",
+      "file_type": "concept",
+      "source_file": "src/mastra/agents/content_architect.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "content_architect_agent",
+      "community": 0,
+      "norm_label": "content architect agent"
+    },
+    {
+      "label": "Brand Visionary Agent",
+      "file_type": "concept",
+      "source_file": "src/mastra/agents/brand_visionary.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "brand_visionary_agent",
+      "community": 0,
+      "norm_label": "brand visionary agent"
+    },
+    {
+      "label": "QA Critic Agent",
+      "file_type": "concept",
+      "source_file": "src/mastra/agents/qa_critic.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "qa_critic_agent",
+      "community": 0,
+      "norm_label": "qa critic agent"
+    },
+    {
+      "label": "Data Formatter Agent",
+      "file_type": "concept",
+      "source_file": "src/mastra/agents/data_formatter.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "data_formatter_agent",
+      "community": 0,
+      "norm_label": "data formatter agent"
+    },
+    {
+      "label": "Scrape Website Tool",
+      "file_type": "concept",
+      "source_file": "src/mastra/tools/scrape-website.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "scrape_website_tool",
+      "community": 2,
+      "norm_label": "scrape website tool"
+    },
+    {
+      "label": "Infographic Content Schema",
+      "file_type": "concept",
+      "source_file": "src/mastra/mcp/infographic-content-schema.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "infographic_content_schema",
+      "community": 0,
+      "norm_label": "infographic content schema"
+    },
+    {
+      "label": "Zod Validator",
+      "file_type": "concept",
+      "source_file": "src/mastra/tools/zod-validator.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "zod_validator",
+      "community": 0,
+      "norm_label": "zod validator"
+    },
+    {
+      "label": "DuckDB Database",
+      "file_type": "concept",
+      "source_file": "src/mastra/mcp/duckdb-database.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "duckdb_database",
+      "community": 0,
+      "norm_label": "duckdb database"
+    },
+    {
+      "label": "Pino Logger",
+      "file_type": "concept",
+      "source_file": "src/mastra/mcp/pino-logger.ts",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "pino_logger",
+      "community": 0,
+      "norm_label": "pino logger"
+    },
+    {
+      "label": "Vercel",
+      "file_type": "image",
+      "source_file": "public/vercel.svg",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "vercel",
+      "community": 12,
+      "norm_label": "vercel"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "postcss_config_mjs",
+      "target": "infopix_postcss_config_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_geistsans",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_geistmono",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_metadata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_rootlayout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "app_page_tsx",
+      "target": "src_components_infographic_tsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "app_page_tsx",
+      "target": "app_page_toast",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "app_page_tsx",
+      "target": "app_page_home",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "app_api_generate_route_ts",
+      "target": "src_mastra_workflows_infographic_workflow_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "app_api_generate_route_ts",
+      "target": "generate_route_post",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "src_mastra_workflows_infographic_workflow_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "src_mastra_agents_infographic_agent_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "agents_infographic_agent_contentagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "agents_infographic_agent_styleagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "agents_infographic_agent_criticagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "src_mastra_tools_scraper_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "scrape_website_tool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "src_mastra_tools_graphify_context_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/index.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_mastra_index_ts",
+      "target": "mastra_index_mastra",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/graphify-context.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_mastra_tools_graphify_context_ts",
+      "target": "tools_graphify_context_graphnode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/graphify-context.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_mastra_tools_graphify_context_ts",
+      "target": "tools_graphify_context_graphlink",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/graphify-context.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "src_mastra_tools_graphify_context_ts",
+      "target": "tools_graphify_context_graphdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/tools/scraper.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_mastra_tools_scraper_ts",
+      "target": "scrape_website_tool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "src_mastra_tools_scraper_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "src_mastra_agents_infographic_agent_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_contentagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_styleagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_criticagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "agents_infographic_agent_formatteragent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "src_mastra_schemas_schema_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_infographicinputschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "infographic_content_schema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_brandstyleschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_reviewoutputschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "schemas_schema_finalpayloadschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_extractcontentstep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_extractstylestep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_reviewdraftstep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/workflows/infographic-workflow.ts",
+      "source_location": "L164",
+      "weight": 1.0,
+      "source": "src_mastra_workflows_infographic_workflow_ts",
+      "target": "workflows_infographic_workflow_assemblefinalpayloadstep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "scrape_website_tool",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_contentagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_styleagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_criticagent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/agents/infographic-agent.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "src_mastra_agents_infographic_agent_ts",
+      "target": "agents_infographic_agent_formatteragent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_infographicinputschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_brandstyleschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_basesection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_metricsection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_comparisonsection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_keytakeawaysection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "infographic_content_schema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_reviewoutputschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/mastra/schemas/schema.ts",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "src_mastra_schemas_schema_ts",
+      "target": "schemas_schema_finalpayloadschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Infographic.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_components_infographic_tsx",
+      "target": "components_infographic_infographic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls|implements|references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/index.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "infopix_agent",
+      "target": "content_architect_agent"
+    },
+    {
+      "relation": "calls|implements|references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/index.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "infopix_agent",
+      "target": "brand_visionary_agent"
+    },
+    {
+      "relation": "calls|implements|references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/index.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "infopix_agent",
+      "target": "qa_critic_agent"
+    },
+    {
+      "relation": "calls|implements|references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/index.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "infopix_agent",
+      "target": "data_formatter_agent"
+    },
+    {
+      "relation": "calls|implements|references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/agents/content_architect.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "content_architect_agent",
+      "target": "scrape_website_tool"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/agents/brand_visionary.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "brand_visionary_agent",
+      "target": "infographic_content_schema"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/agents/qa_critic.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "qa_critic_agent",
+      "target": "infographic_content_schema"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/agents/data_formatter.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "data_formatter_agent",
+      "target": "infographic_content_schema"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/tools/scrape-website.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "scrape_website_tool",
+      "target": "infographic_content_schema"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/mcp/infographic-content-schema.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "infographic_content_schema",
+      "target": "zod_validator"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/mcp/infographic-content-schema.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "infographic_content_schema",
+      "target": "duckdb_database"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/mcp/infographic-content-schema.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "infographic_content_schema",
+      "target": "pino_logger"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/tools/zod-validator.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "zod_validator",
+      "target": "duckdb_database"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/tools/zod-validator.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "zod_validator",
+      "target": "pino_logger"
+    },
+    {
+      "relation": "references|cites|conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/mastra/mcp/duckdb-database.ts",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "duckdb_database",
+      "target": "pino_logger"
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "867013cab75fdff53b2270904c71097cceba4050"
+}

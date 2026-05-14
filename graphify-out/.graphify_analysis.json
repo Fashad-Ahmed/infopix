@@ -1,0 +1,212 @@
+{
+  "communities": {
+    "0": [
+      "brand_visionary_agent",
+      "content_architect_agent",
+      "data_formatter_agent",
+      "duckdb_database",
+      "infographic_content_schema",
+      "infopix_agent",
+      "pino_logger",
+      "qa_critic_agent",
+      "zod_validator"
+    ],
+    "1": [
+      "schemas_schema_basesection",
+      "schemas_schema_brandstyleschema",
+      "schemas_schema_comparisonsection",
+      "schemas_schema_infographicinputschema",
+      "schemas_schema_keytakeawaysection",
+      "schemas_schema_metricsection",
+      "schemas_schema_reviewoutputschema",
+      "src_mastra_schemas_schema_ts"
+    ],
+    "2": [
+      "agents_infographic_agent_contentagent",
+      "agents_infographic_agent_criticagent",
+      "agents_infographic_agent_styleagent",
+      "mastra_index_mastra",
+      "scrape_website_tool",
+      "src_mastra_agents_infographic_agent_ts",
+      "src_mastra_index_ts",
+      "src_mastra_tools_scraper_ts"
+    ],
+    "3": [
+      "agents_infographic_agent_formatteragent",
+      "schemas_schema_finalpayloadschema",
+      "src_mastra_workflows_infographic_workflow_ts",
+      "workflows_infographic_workflow_assemblefinalpayloadstep",
+      "workflows_infographic_workflow_extractcontentstep",
+      "workflows_infographic_workflow_extractstylestep",
+      "workflows_infographic_workflow_reviewdraftstep"
+    ],
+    "4": [
+      "app_layout_geistmono",
+      "app_layout_geistsans",
+      "app_layout_metadata",
+      "app_layout_rootlayout",
+      "app_layout_tsx"
+    ],
+    "5": [
+      "app_page_home",
+      "app_page_toast",
+      "app_page_tsx",
+      "components_infographic_infographic",
+      "src_components_infographic_tsx"
+    ],
+    "6": [
+      "src_mastra_tools_graphify_context_ts",
+      "tools_graphify_context_graphdata",
+      "tools_graphify_context_graphlink",
+      "tools_graphify_context_graphnode"
+    ],
+    "7": [
+      "infopix_postcss_config_config",
+      "postcss_config_mjs"
+    ],
+    "8": [
+      "app_api_generate_route_ts",
+      "generate_route_post"
+    ],
+    "9": [
+      "next_env_d_ts"
+    ],
+    "10": [
+      "eslint_config_mjs"
+    ],
+    "11": [
+      "next_config_ts"
+    ],
+    "12": [
+      "vercel"
+    ]
+  },
+  "cohesion": {
+    "0": 0.36,
+    "1": 0.25,
+    "2": 0.46,
+    "3": 0.29,
+    "4": 0.4,
+    "5": 0.4,
+    "6": 0.5,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0
+  },
+  "gods": [
+    {
+      "id": "infographic_content_schema",
+      "label": "Infographic Content Schema",
+      "degree": 9
+    },
+    {
+      "id": "scrape_website_tool",
+      "label": "Scrape Website Tool",
+      "degree": 5
+    },
+    {
+      "id": "infopix_agent",
+      "label": "InfoPix Agent",
+      "degree": 4
+    },
+    {
+      "id": "agents_infographic_agent_contentagent",
+      "label": "contentAgent",
+      "degree": 3
+    },
+    {
+      "id": "agents_infographic_agent_styleagent",
+      "label": "styleAgent",
+      "degree": 3
+    },
+    {
+      "id": "agents_infographic_agent_criticagent",
+      "label": "criticAgent",
+      "degree": 3
+    },
+    {
+      "id": "zod_validator",
+      "label": "Zod Validator",
+      "degree": 3
+    },
+    {
+      "id": "duckdb_database",
+      "label": "DuckDB Database",
+      "degree": 3
+    },
+    {
+      "id": "pino_logger",
+      "label": "Pino Logger",
+      "degree": 3
+    },
+    {
+      "id": "agents_infographic_agent_formatteragent",
+      "label": "formatterAgent",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Content Architect Agent",
+      "target": "Scrape Website Tool",
+      "source_files": [
+        "src/mastra/agents/content_architect.ts",
+        "src/mastra/tools/scrape-website.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls|implements|references|cites|conceptually_related_to",
+      "why": "bridges separate communities; peripheral node `Content Architect Agent` unexpectedly reaches hub `Scrape Website Tool`"
+    },
+    {
+      "source": "Brand Visionary Agent",
+      "target": "Infographic Content Schema",
+      "source_files": [
+        "src/mastra/agents/brand_visionary.ts",
+        "src/mastra/mcp/infographic-content-schema.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references|cites|conceptually_related_to",
+      "why": "peripheral node `Brand Visionary Agent` unexpectedly reaches hub `Infographic Content Schema`"
+    },
+    {
+      "source": "QA Critic Agent",
+      "target": "Infographic Content Schema",
+      "source_files": [
+        "src/mastra/agents/qa_critic.ts",
+        "src/mastra/mcp/infographic-content-schema.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references|cites|conceptually_related_to",
+      "why": "peripheral node `QA Critic Agent` unexpectedly reaches hub `Infographic Content Schema`"
+    },
+    {
+      "source": "Data Formatter Agent",
+      "target": "Infographic Content Schema",
+      "source_files": [
+        "src/mastra/agents/data_formatter.ts",
+        "src/mastra/mcp/infographic-content-schema.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references|cites|conceptually_related_to",
+      "why": "peripheral node `Data Formatter Agent` unexpectedly reaches hub `Infographic Content Schema`"
+    },
+    {
+      "source": "Scrape Website Tool",
+      "target": "Infographic Content Schema",
+      "source_files": [
+        "src/mastra/tools/scrape-website.ts",
+        "src/mastra/mcp/infographic-content-schema.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references|cites|conceptually_related_to",
+      "why": "bridges separate communities"
+    }
+  ],
+  "tokens": {
+    "input": 4548,
+    "output": 1965
+  }
+}

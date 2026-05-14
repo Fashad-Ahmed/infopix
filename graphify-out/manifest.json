@@ -1,0 +1,90 @@
+{
+  "/Users/fashad/fashad/projects/infopix/postcss.config.mjs": {
+    "mtime": 1778604891.329931,
+    "hash": "239f3ebf717465dc636818a1a619398d"
+  },
+  "/Users/fashad/fashad/projects/infopix/next-env.d.ts": {
+    "mtime": 1778795210.590348,
+    "hash": "2a74d3909800ca5467fa83b0ab4a4890"
+  },
+  "/Users/fashad/fashad/projects/infopix/eslint.config.mjs": {
+    "mtime": 1778604891.319245,
+    "hash": "dfa1f5f6a7037bf39dc510f30b180002"
+  },
+  "/Users/fashad/fashad/projects/infopix/next.config.ts": {
+    "mtime": 1778604891.3257375,
+    "hash": "9b77af189a21a7a64e4bd7a426f64176"
+  },
+  "/Users/fashad/fashad/projects/infopix/app/layout.tsx": {
+    "mtime": 1778791583.119647,
+    "hash": "048c2db1c5843beb1bdedbbfcaca1192"
+  },
+  "/Users/fashad/fashad/projects/infopix/app/page.tsx": {
+    "mtime": 1778795196.7224967,
+    "hash": "9f2a8355295b817f7a3c5cf1da21897d"
+  },
+  "/Users/fashad/fashad/projects/infopix/app/api/generate/route.ts": {
+    "mtime": 1778795198.7892659,
+    "hash": "2391c59fa526003668e655a850a9906b"
+  },
+  "/Users/fashad/fashad/projects/infopix/src/mastra/index.ts": {
+    "mtime": 1778795399.0277207,
+    "hash": "a49f7748fc82a930db0fc527ba0861b8"
+  },
+  "/Users/fashad/fashad/projects/infopix/src/mastra/tools/graphify-context.ts": {
+    "mtime": 1778795381.093794,
+    "hash": "a8b0cfe84a0c18aa5965f559c0930222"
+  },
+  "/Users/fashad/fashad/projects/infopix/src/mastra/tools/scraper.ts": {
+    "mtime": 1778612863.8688426,
+    "hash": "76e3b01bac4e738b6da60b27b1906543"
+  },
+  "/Users/fashad/fashad/projects/infopix/src/mastra/workflows/infographic-workflow.ts": {
+    "mtime": 1778795195.3341517,
+    "hash": "ece89a4e5d6db71bf3ce0e25a6d6a175"
+  },
+  "/Users/fashad/fashad/projects/infopix/src/mastra/agents/infographic-agent.ts": {
+    "mtime": 1778793520.9373028,
+    "hash": "5242810603473fe00414af1cb1de90c7"
+  },
+  "/Users/fashad/fashad/projects/infopix/src/mastra/schemas/schema.ts": {
+    "mtime": 1778785893.3941422,
+    "hash": "dbaa017d3bd445de44b224a0996678ca"
+  },
+  "/Users/fashad/fashad/projects/infopix/src/components/Infographic.tsx": {
+    "mtime": 1778792226.319851,
+    "hash": "01430ca867e99932e99b5bf35c48719a"
+  },
+  "/Users/fashad/fashad/projects/infopix/README.md": {
+    "mtime": 1778614150.2872975,
+    "hash": "998d1f996fa9bf20c3b90471d3c3a6e0"
+  },
+  "/Users/fashad/fashad/projects/infopix/AGENTS.md": {
+    "mtime": 1778605929.0042546,
+    "hash": "80b79e2ff9856036814cbced928dae63"
+  },
+  "/Users/fashad/fashad/projects/infopix/CLAUDE.md": {
+    "mtime": 1778604909.2303216,
+    "hash": "5c27369b226fcf2be8a6cfe52224e767"
+  },
+  "/Users/fashad/fashad/projects/infopix/public/file.svg": {
+    "mtime": 1778604891.3192587,
+    "hash": "d09f95206c3fa0bb9bd9fefabfd0ea71"
+  },
+  "/Users/fashad/fashad/projects/infopix/public/vercel.svg": {
+    "mtime": 1778604891.337192,
+    "hash": "c0af2f507b369b085b35ef4bbe3bcf1e"
+  },
+  "/Users/fashad/fashad/projects/infopix/public/next.svg": {
+    "mtime": 1778604891.3362982,
+    "hash": "8e061864f388b47f33a1c3780831193e"
+  },
+  "/Users/fashad/fashad/projects/infopix/public/globe.svg": {
+    "mtime": 1778604891.3357751,
+    "hash": "2aaafa6a49b6563925fe440891e32717"
+  },
+  "/Users/fashad/fashad/projects/infopix/public/window.svg": {
+    "mtime": 1778604891.3357816,
+    "hash": "a2760511c65806022ad20adf74370ff3"
+  }
+}
