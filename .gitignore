@@ -30,6 +30,10 @@ mastra.db-wal
 .mastra/**/*
 !.mastra/.gitkeep
 
+# Mastra database files
+*.duckdb*
+*.duckdb.wal
+
 # env files (can opt-in for committing if needed)
 .env
 .env.local
@@ -69,3 +73,9 @@ next-env.d.ts
 .idea/
 *.sublime-workspace
 *.sublime-project
+
+# Graphify output
+graphify-out/
+
+# Skills lock
+skills-lock.json
