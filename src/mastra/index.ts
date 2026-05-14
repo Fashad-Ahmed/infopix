@@ -7,10 +7,13 @@ import { Observability, DefaultExporter, CloudExporter, SensitiveDataFilter } fr
 
 import { infographicWorkflow } from './workflows/infographic-workflow';
 import { contentAgent, styleAgent, criticAgent } from './agents/infographic-agent';
+import { scrapeWebsiteTool } from './tools/scraper';
+import { graphifyContextTool } from './tools/graphify-context';
 
 export const mastra = new Mastra({
   workflows: { infographicWorkflow },
   agents: { contentAgent, styleAgent, criticAgent },
+  tools: { scrapeWebsiteTool, graphifyContextTool },
   
   storage: new MastraCompositeStore({
     id: 'composite-storage',

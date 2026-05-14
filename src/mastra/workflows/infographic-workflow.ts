@@ -33,40 +33,45 @@ Input: ${inputData.rawText}`,
     // PHASE 2: FORMATTING
     const formatPrompt = `
 Format this researched data into the final infographic schema.
-
 Density: ${inputData.density}
 Focus: ${inputData.narrativeFocus}
 
-CRITICAL INSTRUCTIONS:
-- Output ONLY valid raw JSON
-- No markdown
-- No \`\`\`json wrappers
-- No explanations
-- Must match the infographic schema exactly
+Section rules (must match schema exactly):
+- type "metric": heading, value (string), insight; optional unit, trend, subheading.
+- type "comparison": heading, items (2-4 objects with label, value number 0-100, isHighlight boolean).
+- type "takeaway": heading, points (2-3 short strings).
 
-Raw Research Data:
-${researchRes.text}
+Include metadata.confidenceScore (0-1) and metadata.reasoning.
+
+Raw Research Data: ${researchRes.text}
 `;
 
-    const formatRes = await formatterAgent.generate(formatPrompt);
+    const formatRes = await formatterAgent.generate(formatPrompt, {
+      structuredOutput: {
+        schema: InfographicContentSchema,
+        // Groq and similar models often need JSON-in-prompt coercion for strict shapes.
+        jsonPromptInjection: true,
+      },
+    });
 
-    // PHASE 3: CLEAN + PARSE
-    try {
-      const cleanJsonString = formatRes.text
-        .replace(/```json/gi, "")
-        .replace(/```/g, "")
-        .trim();
-
-      const parsedData = JSON.parse(cleanJsonString);
-
-      return parsedData;
-    } catch (error) {
-      console.error("Formatter raw output:", formatRes.text);
-
-      throw new Error(
-        `Formatter Agent failed to output valid JSON.\n\nRaw output:\n${formatRes.text}`,
-      );
+    let object = formatRes.object;
+    if (!object && formatRes.text) {
+      try {
+        const cleaned = formatRes.text
+          .replace(/```json/gi, "")
+          .replace(/```/g, "")
+          .trim();
+        object = JSON.parse(cleaned) as typeof object;
+      } catch {
+        /* fall through */
+      }
     }
+    if (!object) {
+      console.error("Formatter structured output missing:", formatRes.text);
+      throw new Error("Formatter agent returned no structured content.");
+    }
+
+    return InfographicContentSchema.parse(object);
   },
 });
 
@@ -106,12 +111,19 @@ const extractStyleStep = createStep({
       },
     );
 
-    return res.object;
+    const fallback: z.infer<typeof BrandStyleSchema> = {
+      primaryColor: "#0f172a",
+      secondaryColor: "#3b82f6",
+      accentColor: "#f59e0b",
+      fontMood: "modern-sans",
+      borderRadius: "0.5rem",
+      layoutDensity: "airy",
+    };
+    return res.object ?? fallback;
   },
 });
 
 // QA Review
-
 
 const reviewDraftStep = createStep({
   id: "review-draft",
@@ -124,9 +136,9 @@ const reviewDraftStep = createStep({
     const inputData = getInitData() as z.infer<typeof InfographicInputSchema>;
     const rawData = inputData.rawText ?? "";
 
-    const draftedJson = getStepResult("extract-content") as
-      | z.infer<typeof InfographicContentSchema>
-      | null;
+    const draftedJson = getStepResult("extract-content") as z.infer<
+      typeof InfographicContentSchema
+    > | null;
 
     const criticPrompt = `
 Review the drafted infographic data against the original raw text.
@@ -172,7 +184,6 @@ Required format:
   },
 });
 
-
 const assembleFinalPayloadStep = createStep({
   id: "assemble-payload",
   inputSchema: z.any(),
@@ -188,11 +199,11 @@ const assembleFinalPayloadStep = createStep({
       typeof ReviewOutputSchema
     >;
 
-    return {
+    return FinalPayloadSchema.parse({
       content: contentData,
       style: styleData,
       qaReport: reviewData,
-    };
+    });
   },
 });
 
