@@ -1,8 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --background: #f4f7fb;
+  --surface: #ffffff;
+  --surface-alt: #f8fafc;
+  --foreground: #0f172a;
+  --muted: #475569;
+  --border: #dbe4ef;
+  --border-strong: #c5d4e8;
+  --primary: #2952ff;
+  --primary-soft: #eff5ff;
+  --on-primary: #ffffff;
+  --accent: #7c3aed;
+  --accent-soft: #f3e8ff;
+  --card-shadow: 0 32px 80px rgba(15, 23, 42, 0.08);
+  --card-hover-shadow: 0 12px 28px rgba(41, 82, 255, 0.12);
+  --ring: rgba(41, 82, 255, 0.22);
+  --hover: rgba(41, 82, 255, 0.08);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --pulse-glow: rgba(41, 82, 255, 0.42);
+  --pulse-glow-mid: rgba(41, 82, 255, 0);
+  --progress-glow: rgba(41, 82, 255, 0.38);
+  --card-hover-tint: rgba(41, 82, 255, 0.06);
+  --btn-loading-bg: rgba(41, 82, 255, 0.65);
+  --btn-shadow: 0 18px 40px rgba(41, 82, 255, 0.2);
+  --btn-loading-shadow: 0 8px 20px rgba(41, 82, 255, 0.28);
+  --toast-glass: rgba(255, 255, 255, 0.72);
 }
 
 @theme inline {
@@ -12,15 +38,222 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html.dark {
+  color-scheme: dark;
+  /* Cool slate base + clearer elevation than flat navy */
+  --background: #030712;
+  --surface: #0c1222;
+  --surface-alt: #121a2e;
+  --foreground: #f1f5f9;
+  --muted: #9ca8bc;
+  --border: rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(186, 198, 218, 0.22);
+  /* Saturated enough for white label text; sky-300 was too pale on white */
+  --primary: #3b9eff;
+  --primary-soft: rgba(59, 158, 255, 0.14);
+  --on-primary: #030712;
+  --accent: #b794f6;
+  --accent-soft: rgba(183, 148, 246, 0.12);
+  --card-shadow: 0 24px 64px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  --card-hover-shadow: 0 16px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(59, 158, 255, 0.12);
+  --ring: rgba(59, 158, 255, 0.35);
+  --hover: rgba(59, 158, 255, 0.12);
+  --success: #4ade80;
+  --warning: #fcd34d;
+  --error: #fb7185;
+  --pulse-glow: rgba(59, 158, 255, 0.5);
+  --pulse-glow-mid: rgba(59, 158, 255, 0);
+  --progress-glow: rgba(59, 158, 255, 0.45);
+  --card-hover-tint: rgba(59, 158, 255, 0.1);
+  --btn-loading-bg: rgba(59, 158, 255, 0.55);
+  --btn-shadow: 0 16px 44px rgba(59, 158, 255, 0.22);
+  --btn-loading-shadow: 0 8px 24px rgba(59, 158, 255, 0.2);
+  --toast-glass: rgba(12, 18, 34, 0.82);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  background-color: var(--background);
+  background-image: none;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+html.dark body {
+  background-image: radial-gradient(
+      ellipse 110% 70% at 50% -15%,
+      rgba(59, 158, 255, 0.07),
+      transparent 52%
+    ),
+    radial-gradient(ellipse 80% 50% at 100% 60%, rgba(183, 148, 246, 0.05), transparent 45%);
+}
+
+::selection {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+input::placeholder {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+input:focus::placeholder {
+  opacity: 0.4;
+}
+
+.surface-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+}
+
+.subtle-panel {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+}
+
+/* Animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--pulse-glow);
+  }
+  50% {
+    box-shadow: 0 0 0 10px var(--pulse-glow-mid);
+  }
+}
+
+@keyframes progress-shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes step-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-step-pulse {
+  animation: step-pulse 1.5s ease-in-out infinite;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+/* Toasts: readable in light and dark */
+.toast-panel {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.toast-panel--success {
+  background: color-mix(in srgb, var(--success) 14%, var(--toast-glass));
+  border-color: color-mix(in srgb, var(--success) 42%, var(--border));
+  color: var(--success);
+}
+.toast-panel--error {
+  background: color-mix(in srgb, var(--error) 14%, var(--toast-glass));
+  border-color: color-mix(in srgb, var(--error) 42%, var(--border));
+  color: var(--error);
+}
+.toast-panel--info {
+  background: color-mix(in srgb, var(--primary) 8%, var(--toast-glass));
+  border-color: var(--border-strong);
+  color: var(--foreground);
+}
+
+/* Input focus styles */
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+input:focus {
+  border-color: var(--primary);
+}
+
+html.dark input:focus {
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+html.dark input::placeholder {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+html.dark ::selection {
+  background: rgba(59, 158, 255, 0.35);
+  color: var(--foreground);
+}
+
+/* Button focus styles */
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
