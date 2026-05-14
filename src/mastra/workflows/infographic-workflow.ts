@@ -4,31 +4,69 @@ import {
   contentAgent,
   styleAgent,
   criticAgent,
+  formatterAgent,
 } from "../agents/infographic-agent";
 import {
   InfographicInputSchema,
   InfographicContentSchema,
   BrandStyleSchema,
+  ReviewOutputSchema,
+  FinalPayloadSchema,
 } from "../schemas/schema";
 
 // Extract the Content
 
 const extractContentStep = createStep({
   id: "extract-content",
-  inputSchema: InfographicInputSchema, // Takes initial workflow input
+  inputSchema: InfographicInputSchema,
   outputSchema: InfographicContentSchema,
+
   execute: async ({ inputData }) => {
-    const prompt = `
-      Raw Text: ${inputData.rawText}
-      Density: ${inputData.density}
-      Focus: ${inputData.narrativeFocus}
-    `;
+    // PHASE 1: RESEARCH
+    const researchRes = await contentAgent.generate(
+      `Gather all necessary data from this input. 
+If it's a URL, use your scrape-website tool to read it.
 
-    const res = await contentAgent.generate(prompt, {
-      structuredOutput: { schema: InfographicContentSchema },
-    });
+Input: ${inputData.rawText}`,
+    );
 
-    return res.object;
+    // PHASE 2: FORMATTING
+    const formatPrompt = `
+Format this researched data into the final infographic schema.
+
+Density: ${inputData.density}
+Focus: ${inputData.narrativeFocus}
+
+CRITICAL INSTRUCTIONS:
+- Output ONLY valid raw JSON
+- No markdown
+- No \`\`\`json wrappers
+- No explanations
+- Must match the infographic schema exactly
+
+Raw Research Data:
+${researchRes.text}
+`;
+
+    const formatRes = await formatterAgent.generate(formatPrompt);
+
+    // PHASE 3: CLEAN + PARSE
+    try {
+      const cleanJsonString = formatRes.text
+        .replace(/```json/gi, "")
+        .replace(/```/g, "")
+        .trim();
+
+      const parsedData = JSON.parse(cleanJsonString);
+
+      return parsedData;
+    } catch (error) {
+      console.error("Formatter raw output:", formatRes.text);
+
+      throw new Error(
+        `Formatter Agent failed to output valid JSON.\n\nRaw output:\n${formatRes.text}`,
+      );
+    }
   },
 });
 
@@ -74,81 +112,86 @@ const extractStyleStep = createStep({
 
 // QA Review
 
+
 const reviewDraftStep = createStep({
   id: "review-draft",
+
   inputSchema: z.any(),
-  outputSchema: z.object({
-    finalContent: InfographicContentSchema,
-    qaApproved: z.boolean(),
-    qaFeedback: z.string().optional(),
-  }),
+
+  outputSchema: ReviewOutputSchema,
+
   execute: async ({ getInitData, getStepResult }) => {
-    // Fetch results from specific previous steps
-    const draft = getStepResult("extract-content") as z.infer<
-      typeof InfographicContentSchema
-    >;
-    const originalText =
-      (getInitData() as z.infer<typeof InfographicInputSchema>)?.rawText ||
-      "No context provided";
+    const inputData = getInitData() as z.infer<typeof InfographicInputSchema>;
+    const rawData = inputData.rawText ?? "";
 
-    const qaPrompt = `
-      Original Text: ${originalText}
-      Drafted JSON: ${JSON.stringify(draft)}
-      
-      Verify that no metrics were hallucinated and the narrative is accurate.
-    `;
+    const draftedJson = getStepResult("extract-content") as
+      | z.infer<typeof InfographicContentSchema>
+      | null;
 
-    const res = await criticAgent.generate(qaPrompt, {
-      structuredOutput: {
-        schema: z.object({
-          isAccurate: z.boolean(),
-          feedback: z
-            .string()
-            .describe(
-              "Leave empty if accurate, otherwise explain what is wrong.",
-            ),
-        }),
-      },
-    });
+    const criticPrompt = `
+Review the drafted infographic data against the original raw text.
 
-    return {
-      finalContent: draft,
-      qaApproved: res.object.isAccurate,
-      qaFeedback: res.object.feedback,
-    };
+Original Text:
+${rawData}
+
+Drafted JSON:
+${JSON.stringify(draftedJson ?? {}, null, 2)}
+
+CRITICAL INSTRUCTIONS:
+- Output ONLY valid raw JSON
+- No markdown
+- No explanations
+
+Required format:
+{
+  "isAccurate": boolean,
+  "feedback": "Leave empty if accurate, otherwise explain what is wrong."
+}
+`;
+
+    const criticRes = await criticAgent.generate(criticPrompt);
+
+    try {
+      const cleanJsonString = criticRes.text
+        .replace(/```json/gi, "")
+        .replace(/```/g, "")
+        .trim();
+
+      const parsedData = JSON.parse(cleanJsonString);
+
+      return ReviewOutputSchema.parse({
+        isAccurate: Boolean(parsedData.isAccurate),
+        feedback: parsedData.feedback ?? "",
+      });
+    } catch (error) {
+      return {
+        isAccurate: false,
+        feedback: "Critic agent failed to return valid JSON.",
+      };
+    }
   },
 });
 
-// Assemble Payload
-
-const FinalPayloadSchema = z.object({
-  content: InfographicContentSchema,
-  style: BrandStyleSchema,
-  qaReport: z.any(),
-});
 
 const assembleFinalPayloadStep = createStep({
   id: "assemble-payload",
   inputSchema: z.any(),
   outputSchema: FinalPayloadSchema,
   execute: async ({ getStepResult }) => {
-    // Pull the final data from the previous steps to assemble the ultimate payload
     const styleData = getStepResult("extract-style") as z.infer<
       typeof BrandStyleSchema
     >;
-    const reviewData = getStepResult("review-draft") as {
-      finalContent: z.infer<typeof InfographicContentSchema>,
-      qaApproved: boolean,
-      qaFeedback?: string,
-    };
+    const contentData = getStepResult("extract-content") as z.infer<
+      typeof InfographicContentSchema
+    >;
+    const reviewData = getStepResult("review-draft") as z.infer<
+      typeof ReviewOutputSchema
+    >;
 
     return {
-      content: reviewData.finalContent,
+      content: contentData,
       style: styleData,
-      qaReport: {
-        approved: reviewData.qaApproved,
-        feedback: reviewData.qaFeedback,
-      },
+      qaReport: reviewData,
     };
   },
 });
