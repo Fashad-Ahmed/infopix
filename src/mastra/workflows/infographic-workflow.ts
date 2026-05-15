@@ -23,12 +23,20 @@ const extractContentStep = createStep({
 
   execute: async ({ inputData }) => {
     // PHASE 1: RESEARCH
-    const researchRes = await contentAgent.generate(
-      `Gather all necessary data from this input. 
-If it's a URL, use your scrape-website tool to read it.
+    const contentPrompt = `
+    You are an expert data extractor. The user will provide a URL or text.
+    If it is a URL, use your scrape-website tool to read it.
+    
+    CRITICAL INSTRUCTIONS:
+    1. Do NOT output raw HTML, CSS, script tags, or long code blocks.
+    2. Extract ONLY the core narrative, key features, statistical metrics, and architectural takeaways.
+    3. Compress and summarize this extracted data into a clean, readable text format of UNDER 1000 words.
+    4. Ensure no critical numbers or brand facts are lost in the compression.
+    
+    Input: ${inputData.rawText}
+  `;
 
-Input: ${inputData.rawText}`,
-    );
+    const researchRes = await contentAgent.generate(contentPrompt);
 
     // PHASE 2: FORMATTING
     const formatPrompt = `

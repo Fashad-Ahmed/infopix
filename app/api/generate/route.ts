@@ -22,7 +22,16 @@ export async function POST(req: Request) {
       );
     }
 
-    const parsed = InfographicInputSchema.safeParse(body);
+    const record = { ...(body as Record<string, unknown>) };
+    if (
+      typeof record.rawText === "string" &&
+      record.rawText.startsWith("http")
+    ) {
+      record.rawText = `https://r.jina.ai/${record.rawText}`;
+      console.log(`🔗 Proxying through Jina AI: ${record.rawText}`);
+    }
+
+    const parsed = InfographicInputSchema.safeParse(record);
     if (!parsed.success) {
       return NextResponse.json(
         { error: "Invalid request", details: parsed.error.flatten() },
