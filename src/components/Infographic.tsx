@@ -1,8 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { buildInfographicTheme } from "../lib/infographic-theme";
+import {
+  exportElementToPng,
+  slugifyFilename,
+} from "../lib/export-infographic-png";
+import {
+  infographicFontStyles,
+  resolveBrandVibe,
+} from "../lib/brand-fonts";
 
 type InfographicProps = {
   data: any;
@@ -16,8 +24,10 @@ function readDocumentDark(): boolean {
 }
 
 export default function Infographic({ data, isDark: isDarkProp }: InfographicProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isDark, setIsDark] = useState(isDarkProp ?? false);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     if (isDarkProp !== undefined) {
@@ -39,6 +49,32 @@ export default function Infographic({ data, isDark: isDarkProp }: InfographicPro
     [data?.style, isDark],
   );
 
+  const fontStyles = useMemo(
+    () => infographicFontStyles(data?.style),
+    [data?.style],
+  );
+
+  const vibe = resolveBrandVibe(data?.style);
+
+  const handleDownloadPng = async () => {
+    if (!cardRef.current) return;
+    setExporting(true);
+    try {
+      const surface = getComputedStyle(document.documentElement)
+        .getPropertyValue("--surface")
+        .trim();
+      await exportElementToPng(
+        cardRef.current,
+        slugifyFilename(data.title ?? "infographic"),
+        { scale: 2, backgroundColor: surface || undefined },
+      );
+    } catch (err) {
+      console.error("PNG export failed:", err);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   if (!data || !data.sections) return null;
 
   const sectionHeadingColor = (active: boolean) => {
@@ -47,17 +83,46 @@ export default function Infographic({ data, isDark: isDarkProp }: InfographicPro
   };
 
   return (
-    <div
-      className="infographic max-w-4xl mx-auto mt-12 p-8 md:p-12 rounded-[2rem]"
-      data-theme={isDark ? "dark" : "light"}
-      style={{
-        borderRadius: theme.radius,
-        backgroundColor: "var(--surface)",
-        border: "1px solid var(--border)",
-        boxShadow: "var(--card-shadow)",
-        animation: "slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-      }}
-    >
+    <div className="max-w-4xl mx-auto mt-12">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 px-1">
+        <span
+          className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border"
+          style={{
+            borderColor: "var(--border)",
+            color: "var(--muted)",
+            backgroundColor: "var(--surface-alt)",
+          }}
+        >
+          {vibe} vibe
+        </span>
+        <button
+          type="button"
+          onClick={handleDownloadPng}
+          disabled={exporting}
+          className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-60"
+          style={{
+            backgroundColor: "var(--primary)",
+            color: "var(--on-primary)",
+            boxShadow: "var(--btn-shadow)",
+          }}
+        >
+          {exporting ? "Exporting…" : "⬇ Download PNG"}
+        </button>
+      </div>
+
+      <div
+        ref={cardRef}
+        className="infographic infographic-export-root p-8 md:p-12 rounded-[2rem]"
+        data-theme={isDark ? "dark" : "light"}
+        style={{
+          ...fontStyles,
+          borderRadius: theme.radius,
+          backgroundColor: "var(--surface)",
+          border: "1px solid var(--border)",
+          boxShadow: "var(--card-shadow)",
+          animation: "slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
       <header
         className="mb-12 border-b-4 pb-8"
         style={{ borderColor: isDark ? "var(--border-strong)" : theme.primary }}
@@ -232,6 +297,7 @@ export default function Infographic({ data, isDark: isDarkProp }: InfographicPro
             )}
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

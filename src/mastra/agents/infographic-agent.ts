@@ -30,9 +30,23 @@ export const contentAgent = new Agent({
 // Responsible for extracting the design system from an uploaded image.
 
 const STYLE_SYSTEM_PROMPT = `
-You are a Lead UI/UX Designer. Analyze the provided image of organizational material (e.g., a slide deck, logo, or report).
-Extract the core design system into the requested JSON schema.
-Ensure your hex codes are accurate and identify the overall 'mood' of the typography.
+You are a Lead UI/UX Designer and brand strategist (Brand Visionary).
+
+Given source material (image and/or infographic copy), extract a cohesive design system into the JSON schema.
+
+REQUIRED:
+- primaryColor, secondaryColor, accentColor: accurate hex codes (#RRGGBB).
+- vibe: ONE of corporate | modern | playful | cyberpunk | editorial | monospaced
+  - corporate: trustworthy, serif-friendly, navy/slate palettes
+  - modern: clean SaaS, balanced sans palette
+  - playful: bright accents, rounded friendly feel
+  - cyberpunk: high contrast, neon accent on dark-friendly hues
+  - editorial: magazine-like, refined contrast
+  - monospaced: developer/docs aesthetic, monospace-friendly colors
+- fontMood: legacy field — set to match vibe (corporate, modern-sans, playful, monospaced).
+- borderRadius, layoutDensity: match the vibe (e.g. playful → larger radius, airy spacing).
+
+Infer vibe from tone of the content or visual brand, not only from colors.
 `;
 
 export const styleAgent = new Agent({

@@ -83,51 +83,81 @@ Raw Research Data: ${researchRes.text}
   },
 });
 
-// Extract the Style
+const DEFAULT_BRAND_STYLE: z.infer<typeof BrandStyleSchema> = {
+  primaryColor: "#0f172a",
+  secondaryColor: "#3b82f6",
+  accentColor: "#f59e0b",
+  vibe: "modern",
+  fontMood: "modern-sans",
+  borderRadius: "0.5rem",
+  layoutDensity: "airy",
+};
+
+// Extract the Style (Brand Visionary — image or inferred from content)
 
 const extractStyleStep = createStep({
   id: "extract-style",
   inputSchema: z.any(), // Accepts the chain flow
   outputSchema: BrandStyleSchema,
-  execute: async ({ getInitData }) => {
-    // Grab the original trigger data from the start of the workflow
+  execute: async ({ getInitData, getStepResult }) => {
     const inputData = getInitData() as z.infer<typeof InfographicInputSchema>;
+    const content = getStepResult("extract-content") as z.infer<
+      typeof InfographicContentSchema
+    > | null;
 
-    if (!inputData.referenceImageBase64) {
-      return {
-        primaryColor: "#0f172a",
-        secondaryColor: "#3b82f6",
-        accentColor: "#f59e0b",
-        fontMood: "modern-sans",
-        borderRadius: "0.5rem",
-        layoutDensity: "airy",
-      } as z.infer<typeof BrandStyleSchema>;
+    const contentBrief = content
+      ? `Title: ${content.title}
+Summary: ${content.summary}
+Section headings: ${content.sections.map((s) => s.heading).join(", ")}
+Confidence: ${content.metadata.confidenceScore}`
+      : "No structured content yet.";
+
+    try {
+      if (inputData.referenceImageBase64) {
+        const res = await styleAgent.generate(
+          [
+            {
+              type: "text",
+              text: `Extract brand colors and vibe from this reference image.\n\nInfographic context:\n${contentBrief}`,
+            },
+            {
+              type: "image",
+              image: new URL(
+                `data:image/jpeg;base64,${inputData.referenceImageBase64}`,
+              ),
+            },
+          ],
+          {
+            structuredOutput: {
+              schema: BrandStyleSchema,
+              jsonPromptInjection: true,
+            },
+          },
+        );
+        if (res.object) return BrandStyleSchema.parse(res.object);
+      } else {
+        const res = await styleAgent.generate(
+          `You are the Brand Visionary. Infer a design system (colors + vibe) that fits this infographic content and source URL/topic.
+
+Source hint: ${inputData.rawText.slice(0, 500)}
+
+${contentBrief}
+
+Pick vibe based on tone: developer docs → monospaced or cyberpunk; enterprise → corporate; consumer product → playful or modern.`,
+          {
+            structuredOutput: {
+              schema: BrandStyleSchema,
+              jsonPromptInjection: true,
+            },
+          },
+        );
+        if (res.object) return BrandStyleSchema.parse(res.object);
+      }
+    } catch (err) {
+      console.warn("Brand Visionary step failed, using defaults:", err);
     }
 
-    const res = await styleAgent.generate(
-      [
-        { type: "text", text: "Extract the brand design system." },
-        {
-          type: "image",
-          image: new URL(
-            `data:image/jpeg;base64,${inputData.referenceImageBase64}`,
-          ),
-        },
-      ],
-      {
-        structuredOutput: { schema: BrandStyleSchema },
-      },
-    );
-
-    const fallback: z.infer<typeof BrandStyleSchema> = {
-      primaryColor: "#0f172a",
-      secondaryColor: "#3b82f6",
-      accentColor: "#f59e0b",
-      fontMood: "modern-sans",
-      borderRadius: "0.5rem",
-      layoutDensity: "airy",
-    };
-    return res.object ?? fallback;
+    return DEFAULT_BRAND_STYLE;
   },
 });
 

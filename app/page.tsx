@@ -3,10 +3,16 @@
 
 import { useEffect, useState, useRef } from "react";
 import Infographic from "../src/components/Infographic";
+import GenerationFallback from "../src/components/GenerationFallback";
 import {
   pickInfographicPayload,
   normalizeInfographicContent,
 } from "../src/lib/infographic-payload";
+
+type GenerationError = {
+  variant: "insufficient_data" | "workflow_failed" | "invalid_response" | "network";
+  message?: string;
+};
 
 type Toast = {
   id: string;
@@ -23,6 +29,9 @@ export default function Home() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [urlFocused, setUrlFocused] = useState(false);
+  const [generationError, setGenerationError] = useState<GenerationError | null>(
+    null,
+  );
   const toastTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
@@ -81,6 +90,7 @@ export default function Home() {
     setLoading(true);
     setLoadingProgress(0);
     setInfographicData(null);
+    setGenerationError(null);
 
     const progressInterval = setInterval(() => {
       setLoadingProgress((prev) => {
@@ -100,21 +110,43 @@ export default function Home() {
         }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Backend Error Details:", errorText);
-        throw new Error(`API Error ${response.status}: ${errorText}`);
+      let rawData: Record<string, unknown>;
+      try {
+        rawData = await response.json();
+      } catch {
+        setGenerationError({
+          variant: "network",
+          message: "The server returned an unreadable response.",
+        });
+        return;
       }
-      
-      const rawData = await response.json();
+
+      if (!response.ok) {
+        const code = rawData?.error as string | undefined;
+        const message =
+          (rawData?.message as string | undefined) ??
+          "Something went wrong while generating your infographic.";
+
+        if (code === "INSUFFICIENT_DATA") {
+          setGenerationError({ variant: "insufficient_data", message });
+          return;
+        }
+        if (code === "INVALID_REQUEST") {
+          addToast(message, "error");
+          return;
+        }
+        setGenerationError({ variant: "workflow_failed", message });
+        return;
+      }
+
+      if (rawData.cached === true) {
+        addToast("Loaded instantly from cache", "info");
+      }
 
       const picked = pickInfographicPayload(rawData);
       if (!picked) {
         console.error("Invalid Data Shape:", rawData);
-        addToast(
-          "Generated data format unexpected. Check console for details.",
-          "error",
-        );
+        setGenerationError({ variant: "invalid_response" });
         return;
       }
 
@@ -132,10 +164,7 @@ export default function Home() {
 
       if (!contentRaw) {
         console.error("Invalid Data Shape:", rawData);
-        addToast(
-          "Generated data format unexpected. Check console for details.",
-          "error",
-        );
+        setGenerationError({ variant: "invalid_response" });
         return;
       }
 
@@ -155,14 +184,17 @@ export default function Home() {
         addToast("Infographic generated successfully!", "success");
       } else {
         console.error("Invalid Data Shape:", rawData);
-        addToast(
-          "Generated data format unexpected. Check console for details.",
-          "error",
-        );
+        setGenerationError({ variant: "invalid_response" });
       }
     } catch (error) {
       console.error("Fetch Error:", error);
-      addToast("Generation failed. Check terminal logs.", "error");
+      setGenerationError({
+        variant: "network",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Could not reach the generation API.",
+      });
     } finally {
       clearInterval(progressInterval);
       setLoading(false);
@@ -448,7 +480,19 @@ export default function Home() {
         </div>
       )}
 
-      {infographicData && !loading && (
+      {generationError && !loading && (
+        <GenerationFallback
+          variant={generationError.variant}
+          message={generationError.message}
+          onRetry={() => {
+            setGenerationError(null);
+            setUrl("");
+            setInfographicData(null);
+          }}
+        />
+      )}
+
+      {infographicData && !loading && !generationError && (
         <div
           className="animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out pb-20"
           style={{
