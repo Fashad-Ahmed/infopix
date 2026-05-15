@@ -19,7 +19,23 @@ export const BrandStyleSchema = z.object({
   accentColor: z
     .string()
     .describe("A contrasting color for highlighting critical insights"),
-  fontMood: z.enum(["corporate", "modern-sans", "playful", "monospaced"]),
+  vibe: z
+    .enum([
+      "corporate",
+      "modern",
+      "playful",
+      "cyberpunk",
+      "editorial",
+      "monospaced",
+    ])
+    .default("modern")
+    .describe(
+      "Overall brand personality that drives typography (e.g. Corporate, Playful, Cyberpunk)",
+    ),
+  fontMood: z
+    .enum(["corporate", "modern-sans", "playful", "monospaced"])
+    .optional()
+    .describe("Legacy alias; prefer vibe when set"),
   borderRadius: z
     .string()
     .describe("Tailwind-style or CSS value (e.g., '0.5rem')"),
