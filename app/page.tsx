@@ -27,20 +27,25 @@ export default function Home() {
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
     const initialTheme =
       storedTheme === "light" || storedTheme === "dark"
         ? storedTheme
         : prefersDark
-        ? "dark"
-        : "light";
+          ? "dark"
+          : "light";
 
     setTheme(initialTheme);
     document.documentElement.classList.toggle("dark", initialTheme === "dark");
     setMounted(true);
   }, []);
 
-  const addToast = (message: string, type: "success" | "error" | "info" = "info") => {
+  const addToast = (
+    message: string,
+    type: "success" | "error" | "info" = "info",
+  ) => {
     const id = Math.random().toString(36).substring(2, 9);
     const toast: Toast = { id, message, type };
     setToasts((prev) => [...prev, toast]);
@@ -95,8 +100,12 @@ export default function Home() {
         }),
       });
 
-      if (!response.ok) throw new Error("API Request Failed");
-
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Backend Error Details:", errorText);
+        throw new Error(`API Error ${response.status}: ${errorText}`);
+      }
+      
       const rawData = await response.json();
 
       const picked = pickInfographicPayload(rawData);
@@ -130,7 +139,9 @@ export default function Home() {
         return;
       }
 
-      const content = normalizeInfographicContent(contentRaw as Record<string, any>);
+      const content = normalizeInfographicContent(
+        contentRaw as Record<string, any>,
+      );
       const sections = content.sections;
 
       if (Array.isArray(sections) && sections.length > 0) {
@@ -160,9 +171,7 @@ export default function Home() {
   };
 
   return (
-    <main
-      className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300"
-    >
+    <main className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       {/* Toast notifications */}
       <div className="fixed top-4 right-4 z-50 space-y-3 pointer-events-none">
         {toasts.map((toast) => (
@@ -214,7 +223,9 @@ export default function Home() {
           <div
             className="inline-flex items-center justify-center rounded-full bg-[var(--primary-soft)] p-3 mb-6 w-16 h-16 transition-transform duration-300"
             style={{
-              animation: loading ? "pulse-glow 2s ease-in-out infinite" : "none",
+              animation: loading
+                ? "pulse-glow 2s ease-in-out infinite"
+                : "none",
             }}
           >
             <svg
@@ -243,9 +254,9 @@ export default function Home() {
             className="text-lg md:text-xl max-w-2xl leading-8 mb-10"
             style={{ color: "var(--muted)" }}
           >
-            Paste a GitHub README or documentation URL and watch as the
-            workflow intelligently scrapes, analyzes, and crafts a visually
-            stunning infographic.
+            Paste a GitHub README or documentation URL and watch as the workflow
+            intelligently scrapes, analyzes, and crafts a visually stunning
+            infographic.
           </p>
 
           <form
@@ -289,9 +300,13 @@ export default function Home() {
                 disabled={loading || !url.trim()}
                 className="rounded-2xl px-8 py-4 text-lg font-semibold transition-all duration-200 whitespace-nowrap hover:scale-105 active:scale-95"
                 style={{
-                  backgroundColor: loading ? "var(--btn-loading-bg)" : "var(--primary)",
+                  backgroundColor: loading
+                    ? "var(--btn-loading-bg)"
+                    : "var(--primary)",
                   color: "var(--on-primary)",
-                  boxShadow: loading ? "var(--btn-loading-shadow)" : "var(--btn-shadow)",
+                  boxShadow: loading
+                    ? "var(--btn-loading-shadow)"
+                    : "var(--btn-shadow)",
                   opacity: !url.trim() && !loading ? 0.7 : 1,
                   cursor: loading || !url.trim() ? "not-allowed" : "pointer",
                 }}
@@ -386,17 +401,25 @@ export default function Home() {
                 key={item.step}
                 className="flex items-start gap-4 p-4 rounded-xl transition-all duration-300"
                 style={{
-                  backgroundColor: item.active ? "var(--primary-soft)" : "var(--surface-alt)",
-                  border: item.active ? "1px solid var(--border-strong)" : "1px solid transparent",
+                  backgroundColor: item.active
+                    ? "var(--primary-soft)"
+                    : "var(--surface-alt)",
+                  border: item.active
+                    ? "1px solid var(--border-strong)"
+                    : "1px solid transparent",
                 }}
               >
                 <div
                   className="flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-all duration-300"
                   style={{
-                    backgroundColor: item.active ? "var(--primary)" : "var(--surface)",
+                    backgroundColor: item.active
+                      ? "var(--primary)"
+                      : "var(--surface)",
                     color: item.active ? "var(--on-primary)" : "var(--muted)",
                     border: item.active ? "none" : "1px solid var(--border)",
-                    animation: item.active ? "step-pulse 1.5s ease-in-out infinite" : "none",
+                    animation: item.active
+                      ? "step-pulse 1.5s ease-in-out infinite"
+                      : "none",
                   }}
                 >
                   {item.step}
@@ -432,10 +455,9 @@ export default function Home() {
             animation: "slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          <Infographic data={infographicData} />
+          <Infographic data={infographicData} isDark={mounted ? theme === "dark" : undefined} />
         </div>
       )}
     </main>
   );
 }
-

@@ -227,6 +227,11 @@ input:focus::placeholder {
   color: var(--foreground);
 }
 
+/* Generated infographics: workflow brand colors are often too dark for dark UI */
+html.dark .infographic h1 {
+  color: var(--foreground);
+}
+
 /* Input focus styles */
 input:focus {
   outline: none;

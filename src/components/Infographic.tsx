@@ -1,21 +1,55 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+"use client";
 
-export default function Infographic({ data }: { data: any }) {
+import React, { useEffect, useMemo, useState } from "react";
+import { buildInfographicTheme } from "../lib/infographic-theme";
+
+type InfographicProps = {
+  data: any;
+  /** When omitted, follows `html.dark` (synced with app theme toggle). */
+  isDark?: boolean;
+};
+
+function readDocumentDark(): boolean {
+  if (typeof document === "undefined") return false;
+  return document.documentElement.classList.contains("dark");
+}
+
+export default function Infographic({ data, isDark: isDarkProp }: InfographicProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isDark, setIsDark] = useState(isDarkProp ?? false);
+
+  useEffect(() => {
+    if (isDarkProp !== undefined) {
+      setIsDark(isDarkProp);
+      return;
+    }
+    const sync = () => setIsDark(readDocumentDark());
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, [isDarkProp]);
+
+  const theme = useMemo(
+    () => buildInfographicTheme(data?.style, isDark),
+    [data?.style, isDark],
+  );
 
   if (!data || !data.sections) return null;
 
-  const theme = {
-    primary: data.style?.primaryColor || "#111827",
-    secondary: data.style?.secondaryColor || "#4B5563",
-    accent: data.style?.accentColor || "#2563eb",
-    radius: data.style?.borderRadius || "1.5rem",
+  const sectionHeadingColor = (active: boolean) => {
+    if (active) return isDark ? "var(--primary)" : theme.primary;
+    return theme.secondary;
   };
 
   return (
     <div
-      className="max-w-4xl mx-auto mt-12 p-8 md:p-12 rounded-[2rem]"
+      className="infographic max-w-4xl mx-auto mt-12 p-8 md:p-12 rounded-[2rem]"
+      data-theme={isDark ? "dark" : "light"}
       style={{
         borderRadius: theme.radius,
         backgroundColor: "var(--surface)",
@@ -26,12 +60,12 @@ export default function Infographic({ data }: { data: any }) {
     >
       <header
         className="mb-12 border-b-4 pb-8"
-        style={{ borderColor: theme.primary }}
+        style={{ borderColor: isDark ? "var(--border-strong)" : theme.primary }}
       >
         <h1
           className="text-4xl md:text-5xl font-black uppercase tracking-tight"
           style={{
-            color: theme.primary,
+            color: isDark ? "var(--foreground)" : theme.primary,
             animation: "slideInUp 0.6s ease-out 0.1s backwards",
           }}
         >
@@ -61,8 +95,8 @@ export default function Infographic({ data }: { data: any }) {
                   : "var(--surface-alt)",
               border:
                 hoveredIndex === idx
-                  ? `2px solid ${theme.primary}55`
-                  : `1px solid ${theme.secondary}33`,
+                  ? `2px solid ${isDark ? "var(--border-strong)" : `${theme.primary}55`}`
+                  : "1px solid var(--border)",
               transform:
                 hoveredIndex === idx ? "translateY(-4px) scale(1.02)" : "none",
               boxShadow:
@@ -74,9 +108,7 @@ export default function Infographic({ data }: { data: any }) {
           >
             <h3
               className="text-sm font-bold uppercase tracking-widest mb-6 transition-colors duration-300"
-              style={{
-                color: hoveredIndex === idx ? theme.primary : theme.secondary,
-              }}
+              style={{ color: sectionHeadingColor(hoveredIndex === idx) }}
             >
               {section.heading}
             </h3>
@@ -85,10 +117,14 @@ export default function Infographic({ data }: { data: any }) {
               <div className="flex flex-col h-full justify-center gap-4">
                 <div className="flex items-baseline gap-3 mb-3">
                   <span
-                    className="text-5xl md:text-6xl font-black tracking-tighter transition-colors duration-300"
+                    className="infographic-metric-value text-5xl md:text-6xl font-black tracking-tighter transition-colors duration-300"
                     style={{
                       color:
-                        hoveredIndex === idx ? theme.accent : theme.primary,
+                        hoveredIndex === idx
+                          ? theme.accent
+                          : isDark
+                            ? theme.metric
+                            : theme.primary,
                     }}
                   >
                     {section.value}
@@ -119,16 +155,14 @@ export default function Infographic({ data }: { data: any }) {
                     className="flex gap-4 items-start transition-all duration-300"
                     style={{
                       transform:
-                        hoveredIndex === idx ? `translateX(4px)` : "none",
+                        hoveredIndex === idx ? "translateX(4px)" : "none",
                     }}
                   >
                     <span
-                      className="w-2.5 h-2.5 mt-2 rounded-full flex-shrink-0 transition-transform duration-300"
+                      className="w-2.5 h-2.5 mt-2 rounded-full shrink-0 transition-transform duration-300"
                       style={{
                         backgroundColor:
                           hoveredIndex === idx ? theme.primary : theme.accent,
-                        transform:
-                          hoveredIndex === idx ? "scale(1.3)" : "scale(1)",
                       }}
                     />
                     <span
@@ -158,7 +192,9 @@ export default function Infographic({ data }: { data: any }) {
                         style={{
                           color: item.isHighlight
                             ? theme.accent
-                            : theme.secondary,
+                            : isDark
+                              ? "var(--muted)"
+                              : theme.secondary,
                         }}
                       >
                         {item.value}
@@ -166,9 +202,7 @@ export default function Infographic({ data }: { data: any }) {
                     </div>
                     <div
                       className="w-full rounded-full h-2.5 overflow-hidden transition-all duration-300"
-                      style={{
-                        backgroundColor: "var(--border)",
-                      }}
+                      style={{ backgroundColor: "var(--border)" }}
                     >
                       <div
                         className="h-full transition-all duration-1000 ease-out"
