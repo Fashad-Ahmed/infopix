@@ -1,5 +1,6 @@
 import { createWorkflow, createStep } from "@mastra/core/workflows";
 import { z } from "zod";
+import * as cheerio from "cheerio";
 import {
   contentAgent,
   styleAgent,
@@ -23,20 +24,88 @@ const extractContentStep = createStep({
 
   execute: async ({ inputData }) => {
     // PHASE 1: RESEARCH
-    const contentPrompt = `
-    You are an expert data extractor. The user will provide a URL or text.
-    If it is a URL, use your scrape-website tool to read it.
-    
-    CRITICAL INSTRUCTIONS:
-    1. Do NOT output raw HTML, CSS, script tags, or long code blocks.
-    2. Extract ONLY the core narrative, key features, statistical metrics, and architectural takeaways.
-    3. Compress and summarize this extracted data into a clean, readable text format of UNDER 1000 words.
-    4. Ensure no critical numbers or brand facts are lost in the compression.
-    
-    Input: ${inputData.rawText}
-  `;
+    // Bypass LLM tool-calling (unreliable on Groq) — fetch URL directly.
+    // If Jina-proxied, unwrap and fetch the original URL to avoid Jina blocking
+    // hosts like raw.githubusercontent.com.
+    let researchedText: string;
+    if (inputData.rawText.startsWith("http")) {
+      const JINA_PREFIX = "https://r.jina.ai/";
+      const targetUrl = inputData.rawText.startsWith(JINA_PREFIX)
+        ? inputData.rawText.slice(JINA_PREFIX.length)
+        : inputData.rawText;
+      const jinaUrl = `${JINA_PREFIX}${targetUrl}`;
 
-    const researchRes = await contentAgent.generate(contentPrompt);
+      const BROWSER_UA =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
+      // 1st attempt: direct fetch (fast, works for plain-text URLs like pastebin)
+      const directRes = await fetch(targetUrl, {
+        headers: { "User-Agent": BROWSER_UA, Accept: "text/html,text/plain,*/*" },
+      }).catch(() => null);
+
+      if (directRes?.ok) {
+        const raw = await directRes.text();
+        const ct = directRes.headers.get("content-type") ?? "";
+        if (ct.includes("text/html")) {
+          const $ = cheerio.load(raw);
+          $("script, style, nav, footer, header").remove();
+          researchedText = $("body").text().replace(/\s+/g, " ").trim().slice(0, 15000);
+        } else {
+          researchedText = raw.slice(0, 15000);
+        }
+      } else {
+        // 2nd attempt: Jina AI reader — handles JS-heavy pages and bypasses some blocks
+        console.log(`[extract-content] Direct fetch failed, trying Jina: ${jinaUrl}`);
+        const jinaRes = await fetch(jinaUrl, {
+          headers: { "User-Agent": BROWSER_UA, Accept: "text/plain,*/*", "X-Return-Format": "text" },
+        });
+        if (!jinaRes.ok) {
+          throw new Error(
+            `Unable to fetch content. Direct: ${directRes?.status ?? "network error"}, Jina: ${jinaRes.status}. Check the URL is publicly accessible.`,
+          );
+        }
+        const jinaText = await jinaRes.text();
+        const trimmed = jinaText.trim();
+        // Detect Jina error responses: short body or known error phrases
+        const ERROR_SIGNALS = [
+          "URL SOURCE NOT FOUND",
+          "404: Not Found",
+          "403: Forbidden",
+          "Error 4",
+          "Not Found",
+          "Access Denied",
+        ];
+        const looksLikeError =
+          trimmed.length < 300 || ERROR_SIGNALS.some((s) => trimmed.includes(s));
+        if (looksLikeError) {
+          throw new Error(
+            `URL is not accessible (${targetUrl}). Check the URL exists and is publicly reachable.`,
+          );
+        }
+        researchedText = jinaText.slice(0, 15000);
+      }
+    } else {
+      researchedText = inputData.rawText;
+    }
+
+    // Summarise with LLM only when raw text is long
+    let summarisedText = researchedText;
+    if (researchedText.length > 3000) {
+      const summarisePrompt = `
+You are an expert data extractor. Summarise the following content.
+
+CRITICAL INSTRUCTIONS:
+1. Do NOT output raw HTML, CSS, script tags, or long code blocks.
+2. Extract ONLY the core narrative, key features, statistical metrics, and architectural takeaways.
+3. Compress into a clean, readable format of UNDER 1000 words.
+4. Do not lose critical numbers or brand facts.
+
+Content:
+${researchedText}
+      `.trim();
+      const summaryRes = await contentAgent.generate(summarisePrompt);
+      summarisedText = summaryRes.text;
+    }
 
     // PHASE 2: FORMATTING
     const formatPrompt = `
@@ -51,7 +120,7 @@ Section rules (must match schema exactly):
 
 Include metadata.confidenceScore (0-1) and metadata.reasoning.
 
-Raw Research Data: ${researchRes.text}
+Raw Research Data: ${summarisedText}
 `;
 
     const formatRes = await formatterAgent.generate(formatPrompt, {
@@ -183,7 +252,7 @@ Required format:
         isAccurate: Boolean(parsedData.isAccurate),
         feedback: parsedData.feedback ?? "",
       });
-    } catch (error) {
+    } catch {
       return {
         isAccurate: false,
         feedback: "Critic agent failed to return valid JSON.",
