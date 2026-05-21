@@ -14,8 +14,8 @@ This is a **Mastra** project written in TypeScript. Mastra is a framework for bu
 ## Commands
 
 ```bash
-npm run dev # Start Mastra Studio at localhost:4111 (long-running, use a separate terminal)
-npm run build # Build a production-ready server
+yarn dev # Start Mastra Studio at localhost:4111 (long-running, use a separate terminal)
+yarn build # Build a production-ready server
 ```
 
 ## Project Structure
@@ -38,7 +38,7 @@ Top-level files define how your Mastra project is configured, built, and connect
 | --------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `src/mastra/index.ts` | Central entry point where you configure and initialize Mastra.                                                    |
 | `.env.example`        | Template for environment variables - copy and rename to `.env` to add your secret [model provider](/models) keys. |
-| `package.json`        | Defines project metadata, dependencies, and available npm scripts.                                                |
+| `package.json`        | Defines project metadata, dependencies, and available yarn scripts.                                               |
 | `tsconfig.json`       | Configures TypeScript options such as path aliases, compiler settings, and build output.                          |
 
 ## Boundaries
@@ -48,13 +48,15 @@ Top-level files define how your Mastra project is configured, built, and connect
 - Load the `mastra` skill before any Mastra-related work
 - Register new agents, tools, workflows, and scorers in `src/mastra/index.ts`
 - Use schemas for tool inputs and outputs
-- Run `npm run build` to verify changes compile
+- Run `yarn build` to verify changes compile
 
 ### Never do
 
 - Never commit `.env` files or secrets
 - Never modify `node_modules` or Mastra's database files directly
 - Never hardcode API keys (always use environment variables)
+- Never use `npm` or `pnpm` — this project is yarn-managed (`yarn add`, `yarn install`, `yarn dev`, `yarn build`, `yarn lint`, `yarn test`)
+- Never add emojis to UI strings, console logs, comments, or markdown docs — use plain text labels or lucide-react icons
 ## Resources
 
 - [Mastra Documentation](https://mastra.ai/llms.txt)
