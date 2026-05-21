@@ -23,9 +23,12 @@ export async function POST(req: Request) {
     }
 
     const record = { ...(body as Record<string, unknown>) };
+    const isUrlMode = record.mode !== "topic";
     if (
+      isUrlMode &&
       typeof record.rawText === "string" &&
-      record.rawText.startsWith("http")
+      record.rawText.startsWith("http") &&
+      !record.rawText.startsWith("https://r.jina.ai/")
     ) {
       record.rawText = `https://r.jina.ai/${record.rawText}`;
       console.log(`🔗 Proxying through Jina AI: ${record.rawText}`);
