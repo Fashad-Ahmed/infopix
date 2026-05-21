@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import Infographic from "../src/components/Infographic";
 import {
   pickInfographicPayload,
@@ -198,6 +199,17 @@ export default function Home() {
 
       <div className="relative max-w-3xl mx-auto mb-16">
         <div className="absolute right-0 top-0 hidden sm:flex items-center gap-3">
+          <Link
+            href="/whatsapp"
+            className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-200 hover:bg-[var(--hover)]"
+            style={{
+              borderColor: "var(--border)",
+              backgroundColor: "var(--surface)",
+              color: "var(--foreground)",
+            }}
+          >
+            💬 WhatsApp
+          </Link>
           <button
             type="button"
             onClick={toggleTheme}
