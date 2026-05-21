@@ -4,6 +4,10 @@ import { infographicWorkflow } from "../../../src/mastra/workflows/infographic-w
 import type { z } from "zod";
 import type { FinalPayloadSchema } from "../../../src/mastra/schemas/schema";
 
+export const maxDuration = 300;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 type FinalPayload = z.infer<typeof FinalPayloadSchema>;
 
 /** Spoki v2 inbound payload (nested under `data`) */

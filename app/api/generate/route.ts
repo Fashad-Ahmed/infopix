@@ -3,6 +3,11 @@ import { NextResponse } from "next/server";
 import { infographicWorkflow } from "../../../src/mastra/workflows/infographic-workflow";
 import { InfographicInputSchema } from "../../../src/mastra/schemas/schema";
 
+// Mastra workflow + image gen can run 30-90s. Hobby caps at 60s; Pro extends to 300s.
+export const maxDuration = 300;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     let body: unknown;
