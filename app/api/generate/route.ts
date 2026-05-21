@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       !record.rawText.startsWith("https://r.jina.ai/")
     ) {
       record.rawText = `https://r.jina.ai/${record.rawText}`;
-      console.log(`🔗 Proxying through Jina AI: ${record.rawText}`);
+      console.log(`[generate] Proxying through Jina AI: ${record.rawText}`);
     }
 
     const parsed = InfographicInputSchema.safeParse(record);
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 
     // 1. Create the run
     const run = await infographicWorkflow.createRun();
-    console.log(`🚀 Starting Workflow Run ID: ${run.runId}`);
+    console.log(`[generate] Starting workflow run ${run.runId}`);
 
     // Mastra workflow runs expect { inputData: workflowInput }
     const runResult = await run.start({ inputData: parsed.data });

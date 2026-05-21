@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Palette, X } from "lucide-react";
 import type { GenerationMode } from "../../types/infographic";
 import { ModeToggle } from "./ModeToggle";
 
@@ -66,7 +67,7 @@ export function GeneratorForm({ loading, onSubmit }: GeneratorFormProps) {
               className="absolute right-4 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 transition-opacity text-[var(--muted)] hover:text-[var(--foreground)]"
               aria-label="Clear input"
             >
-              ✕
+              <X className="w-4 h-4" aria-hidden />
             </button>
           )}
         </div>
@@ -111,7 +112,7 @@ export function GeneratorForm({ loading, onSubmit }: GeneratorFormProps) {
             </span>
           ) : (
             <span className="flex items-center gap-2 justify-center">
-              ✨ Generate
+              Generate
             </span>
           )}
         </button>
@@ -154,11 +155,16 @@ export function GeneratorForm({ loading, onSubmit }: GeneratorFormProps) {
             disabled={loading}
             className="w-4 h-4 accent-[var(--primary)]"
           />
+          <Palette
+            className="w-4 h-4"
+            aria-hidden
+            style={{ color: "var(--muted)" }}
+          />
           <span
             className="text-sm font-medium"
             style={{ color: "var(--foreground)" }}
           >
-            🎨 Generate AI imagery (uses OpenAI; adds ~15–30s)
+            Generate AI imagery (uses OpenAI; adds 15–30s)
           </span>
         </label>
       ) : (

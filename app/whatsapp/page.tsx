@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import {
+  Bot,
+  MessageCircle,
+  Send,
+  Smartphone,
+  Zap,
+} from "lucide-react";
 
 type EnvStatus = {
   SPOKI_API_KEY: boolean;
@@ -214,7 +221,7 @@ export default function WhatsAppPage() {
           className="rounded-full border px-3 py-1.5 text-sm font-semibold transition-all duration-200"
           style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)", color: "var(--foreground)" }}
         >
-          {theme === "dark" ? "🌙" : "☀️"}
+          {theme === "dark" ? "Dark" : "Light"}
         </button>
       </div>
 
@@ -227,10 +234,10 @@ export default function WhatsAppPage() {
         >
           <div className="flex items-start gap-4">
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 text-2xl"
+              className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
               style={{ backgroundColor: "#25d36614", border: "1px solid #25d36630" }}
             >
-              💬
+              <MessageCircle className="w-6 h-6" style={{ color: "#25d366" }} aria-hidden />
             </div>
             <div>
               <h1 className="text-3xl font-black tracking-tight" style={{ color: "var(--foreground)" }}>
@@ -453,13 +460,13 @@ export default function WhatsAppPage() {
           </h2>
           <div className="space-y-4">
             {[
-              { icon: "📲", title: "User sends URL", desc: "A WhatsApp user sends a URL or text to your Spoki bot number." },
-              { icon: "⚡", title: "Instant ACK", desc: "Spoki forwards the message to this webhook. We return 200 OK in < 1s to avoid Spoki timeout." },
-              { icon: "🤖", title: "Mastra workflow runs", desc: "In the background, three Groq LLM agents scrape, structure, and QA-validate the content (~15s)." },
-              { icon: "💬", title: "Reply sent", desc: "The formatted infographic summary is sent back to the user via the Spoki outbound API." },
+              { Icon: Smartphone, title: "User sends URL", desc: "A WhatsApp user sends a URL or text to your Spoki bot number." },
+              { Icon: Zap, title: "Instant ACK", desc: "Spoki forwards the message to this webhook. We return 200 OK in < 1s to avoid Spoki timeout." },
+              { Icon: Bot, title: "Mastra workflow runs", desc: "In the background, three Groq LLM agents scrape, structure, and QA-validate the content (~15s)." },
+              { Icon: Send, title: "Reply sent", desc: "The formatted infographic summary is sent back to the user via the Spoki outbound API." },
             ].map((item, i) => (
               <div key={i} className="flex gap-4 items-start p-4 rounded-xl" style={{ backgroundColor: "var(--surface-alt)", border: "1px solid var(--border)" }}>
-                <span className="text-2xl shrink-0">{item.icon}</span>
+                <item.Icon className="w-6 h-6 shrink-0 mt-0.5" style={{ color: "var(--primary)" }} aria-hidden />
                 <div>
                   <p className="font-bold text-sm" style={{ color: "var(--foreground)" }}>{item.title}</p>
                   <p className="text-sm mt-0.5" style={{ color: "var(--muted)" }}>{item.desc}</p>

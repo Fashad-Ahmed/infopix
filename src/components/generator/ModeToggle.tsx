@@ -1,8 +1,13 @@
+import { Lightbulb, Link as LinkIcon } from "lucide-react";
 import type { GenerationMode } from "../../types/infographic";
 
-const MODES: { value: GenerationMode; label: string }[] = [
-  { value: "url", label: "🔗 URL" },
-  { value: "topic", label: "💡 Topic" },
+const MODES: {
+  value: GenerationMode;
+  label: string;
+  Icon: typeof LinkIcon;
+}[] = [
+  { value: "url", label: "URL", Icon: LinkIcon },
+  { value: "topic", label: "Topic", Icon: Lightbulb },
 ];
 
 type ModeToggleProps = {
@@ -19,19 +24,20 @@ export function ModeToggle({ mode, onChange }: ModeToggleProps) {
         borderColor: "var(--border)",
       }}
     >
-      {MODES.map(({ value, label }) => {
+      {MODES.map(({ value, label, Icon }) => {
         const active = mode === value;
         return (
           <button
             key={value}
             type="button"
             onClick={() => onChange(value)}
-            className="px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200"
+            className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200"
             style={{
               backgroundColor: active ? "var(--primary)" : "transparent",
               color: active ? "var(--on-primary)" : "var(--muted)",
             }}
           >
+            <Icon className="w-4 h-4" aria-hidden />
             {label}
           </button>
         );

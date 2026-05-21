@@ -1,3 +1,4 @@
+import { FileText, Image as ImageIcon } from "lucide-react";
 import type { DownloadKind } from "../../lib/download";
 
 type DownloadToolbarProps = {
@@ -5,15 +6,19 @@ type DownloadToolbarProps = {
   pending: DownloadKind | null;
 };
 
-const BUTTONS: { kind: DownloadKind; label: string }[] = [
-  { kind: "png", label: "🖼️ PNG" },
-  { kind: "pdf", label: "📄 PDF" },
+const BUTTONS: {
+  kind: DownloadKind;
+  label: string;
+  Icon: typeof FileText;
+}[] = [
+  { kind: "png", label: "PNG", Icon: ImageIcon },
+  { kind: "pdf", label: "PDF", Icon: FileText },
 ];
 
 export function DownloadToolbar({ onDownload, pending }: DownloadToolbarProps) {
   return (
     <div className="max-w-4xl mx-auto px-2 flex justify-end gap-3 mt-6">
-      {BUTTONS.map(({ kind, label }) => (
+      {BUTTONS.map(({ kind, label, Icon }) => (
         <button
           key={kind}
           type="button"
@@ -26,6 +31,7 @@ export function DownloadToolbar({ onDownload, pending }: DownloadToolbarProps) {
             color: "var(--foreground)",
           }}
         >
+          <Icon className="w-4 h-4" aria-hidden />
           {pending === kind ? "Rendering…" : label}
         </button>
       ))}
