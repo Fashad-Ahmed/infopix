@@ -1,0 +1,155 @@
+"use client";
+
+import { useCallback, useRef, useState } from "react";
+import { postGenerate } from "../lib/api-client";
+import {
+  normalizeInfographicContent,
+  pickInfographicPayload,
+} from "../lib/infographic-payload";
+import type {
+  GenerationMode,
+  InfographicViewModel,
+} from "../types/infographic";
+
+const PROGRESS_TICK_MS = 400;
+const PROGRESS_CAP = 90;
+
+type GenerateParams = {
+  rawText: string;
+  mode: GenerationMode;
+  stylePrompt?: string;
+  generateImages: boolean;
+};
+
+type Status = "idle" | "loading" | "success" | "error";
+
+type GeneratorState = {
+  status: Status;
+  progress: number;
+  data: InfographicViewModel | null;
+  error: string | null;
+};
+
+const INITIAL: GeneratorState = {
+  status: "idle",
+  progress: 0,
+  data: null,
+  error: null,
+};
+
+export function useInfographicGenerator() {
+  const [state, setState] = useState<GeneratorState>(INITIAL);
+  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  const clearProgress = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = undefined;
+    }
+  }, []);
+
+  const generate = useCallback(
+    async (params: GenerateParams): Promise<InfographicViewModel | null> => {
+      setState({ status: "loading", progress: 0, data: null, error: null });
+
+      intervalRef.current = setInterval(() => {
+        setState((prev) =>
+          prev.status === "loading"
+            ? {
+                ...prev,
+                progress: Math.min(
+                  PROGRESS_CAP,
+                  prev.progress + Math.random() * 30,
+                ),
+              }
+            : prev,
+        );
+      }, PROGRESS_TICK_MS);
+
+      try {
+        const raw = await postGenerate({
+          rawText: params.rawText,
+          mode: params.mode,
+          stylePrompt: params.stylePrompt,
+          generateImages:
+            params.mode === "topic" ? true : params.generateImages,
+        });
+
+        const view = toViewModel(raw);
+        if (!view) {
+          throw new Error("Generated data format unexpected.");
+        }
+
+        setState({
+          status: "success",
+          progress: 100,
+          data: view,
+          error: null,
+        });
+        return view;
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Generation failed.";
+        setState({
+          status: "error",
+          progress: 0,
+          data: null,
+          error: message,
+        });
+        return null;
+      } finally {
+        clearProgress();
+      }
+    },
+    [clearProgress],
+  );
+
+  const reset = useCallback(() => {
+    clearProgress();
+    setState(INITIAL);
+  }, [clearProgress]);
+
+  return {
+    ...state,
+    isLoading: state.status === "loading",
+    generate,
+    reset,
+  };
+}
+
+function toViewModel(raw: unknown): InfographicViewModel | null {
+  if (!raw || typeof raw !== "object") return null;
+  const picked = pickInfographicPayload(raw as Record<string, unknown>);
+  if (!picked) return null;
+
+  const style = picked.style ?? picked.content?.style;
+  const contentRaw =
+    picked.content ??
+    (Array.isArray(picked.sections)
+      ? {
+          title: picked.title,
+          summary: picked.summary,
+          sections: picked.sections,
+          metadata: picked.metadata,
+          heroImageUrl: picked.heroImageUrl,
+        }
+      : null);
+
+  if (!contentRaw) return null;
+
+  const content = normalizeInfographicContent(
+    contentRaw as Record<string, unknown>,
+  );
+
+  if (!Array.isArray(content.sections) || content.sections.length === 0) {
+    return null;
+  }
+
+  return {
+    title: content.title,
+    summary: content.summary,
+    sections: content.sections,
+    heroImageUrl: content.heroImageUrl,
+    style,
+  };
+}
