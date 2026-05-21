@@ -6,14 +6,29 @@ import { MastraCompositeStore } from '@mastra/core/storage';
 import { Observability, DefaultExporter, CloudExporter, SensitiveDataFilter } from '@mastra/observability';
 
 import { infographicWorkflow } from './workflows/infographic-workflow';
-import { contentAgent, styleAgent, criticAgent } from './agents/infographic-agent';
+import {
+  contentAgent,
+  styleAgent,
+  styleFromTextAgent,
+  criticAgent,
+  formatterAgent,
+  topicContentAgent,
+} from './agents/infographic-agent';
 import { scrapeWebsiteTool } from './tools/scraper';
 import { graphifyContextTool } from './tools/graphify-context';
+import { imageGeneratorTool } from './tools/image-generator';
 
 export const mastra = new Mastra({
   workflows: { infographicWorkflow },
-  agents: { contentAgent, styleAgent, criticAgent },
-  tools: { scrapeWebsiteTool, graphifyContextTool },
+  agents: {
+    contentAgent,
+    styleAgent,
+    styleFromTextAgent,
+    criticAgent,
+    formatterAgent,
+    topicContentAgent,
+  },
+  tools: { scrapeWebsiteTool, graphifyContextTool, imageGeneratorTool },
   
   storage: new MastraCompositeStore({
     id: 'composite-storage',
