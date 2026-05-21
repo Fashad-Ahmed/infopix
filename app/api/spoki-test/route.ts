@@ -5,6 +5,10 @@ import { buildWhatsAppMessage } from "../spoki-webhook/route";
 import type { z } from "zod";
 import type { FinalPayloadSchema } from "../../../src/mastra/schemas/schema";
 
+export const maxDuration = 300;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 type FinalPayload = z.infer<typeof FinalPayloadSchema>;
 
 /**

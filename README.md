@@ -149,6 +149,53 @@ Returns `FinalPayloadSchema`:
 }
 ```
 
+## Deploy to Vercel
+
+The whole stack (Next.js + Mastra workflow) ships as a single Vercel project. Mastra runs in-process inside API routes.
+
+### 1. Provision Turso (remote LibSQL)
+
+Vercel serverless filesystems are ephemeral, so the local `file:./mastra.db` won't persist. Use Turso instead.
+
+```bash
+brew install tursodatabase/tap/turso
+turso auth signup
+turso db create infopix
+turso db show infopix --url           # libsql://...
+turso db tokens create infopix        # auth token
+```
+
+### 2. Set environment variables on Vercel
+
+Project Settings → Environment Variables:
+
+| Variable             | Required | Notes                                       |
+| -------------------- | -------- | ------------------------------------------- |
+| `GROQ_API_KEY`       | yes      | Llama 3.x agents.                           |
+| `OPENAI_API_KEY`     | optional | Image generation.                           |
+| `OPENAI_IMAGE_MODEL` | optional | Defaults `gpt-image-1`.                     |
+| `TURSO_DATABASE_URL` | yes      | `libsql://...` from `turso db show`.        |
+| `TURSO_AUTH_TOKEN`   | yes      | From `turso db tokens create`.              |
+| `SPOKI_*`            | optional | Only if using WhatsApp integration.         |
+
+### 3. Deploy
+
+```bash
+yarn global add vercel
+vercel link
+vercel --prod
+```
+
+Or push to GitHub and import the repo in the Vercel dashboard for auto-deploys.
+
+### Deployment notes
+
+- **Function timeout**: `app/api/generate/route.ts`, `spoki-webhook`, `spoki-test` declare `maxDuration = 300`. Vercel Hobby caps at 60s; Pro is required for full 300s.
+- **Runtime**: All API routes pinned to `runtime = "nodejs"` (Mastra needs Node APIs; Edge runtime is incompatible).
+- **DuckDB**: Native module, disabled in production via `NODE_ENV === "production"` check in `src/mastra/index.ts`. Local dev still gets full Mastra Studio observability.
+- **Region**: `vercel.json` pins to `fra1`. Change to one near your LLM provider (`iad1` for US-east, `sfo1` for US-west).
+- **Mastra Studio**: Dev-only. Inspect production traces by querying Turso directly or running `yarn mastra dev` locally pointed at the same DB.
+
 ## Observability
 
 Run `yarn dev` and open Mastra Studio at `http://localhost:4111` for per-run traces: token usage, tool execution latency, agent reasoning, and step outputs. Storage: `mastra.db` (LibSQL) + DuckDB for observability domain.
