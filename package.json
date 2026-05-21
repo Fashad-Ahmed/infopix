@@ -20,6 +20,8 @@
     "@mastra/observability": "^1.11.1",
     "ai": "^6.0.178",
     "cheerio": "^1.2.0",
+    "html-to-image": "^1.11.13",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.14.0",
     "mastra": "^1.8.1",
     "next": "16.2.6",
