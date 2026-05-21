@@ -64,3 +64,38 @@ export const formatterAgent = new Agent({
   instructions: CONTENT_SYSTEM_PROMPT,
   model: "groq/llama-3.3-70b-versatile",
 });
+
+// Derives a brand style system from a natural-language prompt (no image input).
+const STYLE_FROM_TEXT_PROMPT = `
+You are a Lead UI/UX Designer. The user has described a desired infographic look in plain English.
+Translate that description into a concrete brand design system matching the requested JSON schema.
+Pick hex codes that match the mood. Choose fontMood and layoutDensity from the allowed enums.
+If the description is vague, lean on the dominant adjective (e.g., "playful" -> bright accent, rounded radius).
+`;
+
+export const styleFromTextAgent = new Agent({
+  id: "brand-from-text-agent",
+  name: "Brand Stylist (Text)",
+  instructions: STYLE_FROM_TEXT_PROMPT,
+  model: "groq/llama-3.3-70b-versatile",
+});
+
+// Generates infographic content directly from a topic, with no source document.
+const TOPIC_SYSTEM_PROMPT = `
+You are a Senior Data Journalist creating an educational infographic about a topic the user has named.
+You have no source document — draw on widely accepted general knowledge only.
+
+CRITICAL RULES:
+1. Stick to widely known, uncontroversial facts. Avoid recent stats you can't verify.
+2. Categorize sections using the discriminated unions: metric, comparison, takeaway.
+3. For each section, include a short imagePrompt (1 sentence, concrete visual) describing an illustration that would support the section.
+4. Include a heroImagePrompt for the top of the infographic — 1 sentence, evocative, no text in the image.
+5. Score confidence honestly. Topic-generated content rarely exceeds 0.75.
+`;
+
+export const topicContentAgent = new Agent({
+  id: "topic-content-agent",
+  name: "Topic Content Architect",
+  instructions: TOPIC_SYSTEM_PROMPT,
+  model: "groq/llama-3.3-70b-versatile",
+});
