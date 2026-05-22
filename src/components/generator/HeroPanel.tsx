@@ -49,7 +49,7 @@ export function HeroPanel({ loading, children }: HeroPanelProps) {
         style={{ color: "var(--muted)" }}
       >
         Paste a URL or name a topic. The workflow intelligently extracts,
-        structures, and crafts a visually stunning infographic — with optional
+        structures, and crafts a visually stunning infographic with optional
         AI imagery and custom styling.
       </p>
 
