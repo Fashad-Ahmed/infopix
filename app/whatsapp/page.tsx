@@ -1,5 +1,6 @@
 "use client";
 
+import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
@@ -140,6 +141,7 @@ function WhatsAppBubble({ message }: { message: string }) {
 }
 
 export default function WhatsAppPage() {
+  notFound();
   const [envStatus, setEnvStatus] = useState<EnvStatus | null>(null);
   const [origin, setOrigin] = useState("");
   const [theme, setTheme] = useState<"light" | "dark">("light");
