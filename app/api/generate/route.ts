@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import "../../../src/mastra/env";
 import { NextResponse } from "next/server";
 import { infographicWorkflow } from "../../../src/mastra/workflows/infographic-workflow";
 import { InfographicInputSchema } from "../../../src/mastra/schemas/schema";
+import { parseLocaleCookie } from "../../../src/lib/locale-prompt";
 
 // Mastra workflow + image gen can run 30-90s. Hobby caps at 60s; Pro extends to 300s.
 export const maxDuration = 300;
@@ -28,6 +30,10 @@ export async function POST(req: Request) {
     }
 
     const record = { ...(body as Record<string, unknown>) };
+    // Inject locale from cookie so the workflow generates content in the user's language
+    if (record.locale === undefined) {
+      record.locale = parseLocaleCookie(req.headers.get("cookie"));
+    }
     const isUrlMode = record.mode !== "topic";
     if (
       isUrlMode &&
