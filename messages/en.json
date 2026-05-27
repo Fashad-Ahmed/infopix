@@ -1,0 +1,149 @@
+{
+  "hero": {
+    "title": "InfoPix Engine",
+    "subtitle": "Paste a URL or name a topic. The workflow intelligently extracts, structures, and crafts a visually stunning infographic with optional AI imagery and custom styling."
+  },
+  "form": {
+    "mode": {
+      "url": "URL",
+      "topic": "Topic"
+    },
+    "placeholder": {
+      "url": "https://raw.githubusercontent.com/...",
+      "topic": "e.g. The history of the Roman aqueduct"
+    },
+    "stylePrompt": {
+      "label": "Style prompt (optional)",
+      "placeholder": "e.g. minimalist, dark navy + neon accent, modern sans"
+    },
+    "generateImages": "Generate AI imagery (uses OpenAI; adds 15–30s)",
+    "topicImageNote": "Topic mode automatically generates AI imagery for the hero and each section.",
+    "generate": "Generate",
+    "processing": "Processing...",
+    "clearInput": "Clear input"
+  },
+  "loading": {
+    "studio": {
+      "step1Label": "Content Extraction",
+      "step1Desc": "Scraping and parsing source content",
+      "step2Label": "Style Generation",
+      "step2Desc": "Building brand design system",
+      "step3Label": "Quality Review",
+      "step3Desc": "Critic agent validating accuracy",
+      "step4Label": "Image Generation",
+      "step4Desc": "Creating AI illustrations",
+      "step5Label": "Layout Assembly",
+      "step5Desc": "Assigning sections to template slots"
+    },
+    "url": {
+      "step1Label": "Content Extraction",
+      "step1Desc": "Scraping and parsing URL content",
+      "step2Label": "Structure Formatting",
+      "step2Desc": "Organizing into JSON schema",
+      "step3Label": "Quality Verification",
+      "step3Desc": "Critic Agent validating accuracy",
+      "step4Label": "Image Generation",
+      "step4Desc": "Creating supporting AI imagery"
+    },
+    "topic": {
+      "step1Label": "Topic Research",
+      "step1Desc": "Drafting structured content from topic",
+      "step2Label": "Structure Formatting",
+      "step2Desc": "Organizing into JSON schema",
+      "step3Label": "Quality Verification",
+      "step3Desc": "Critic Agent validating accuracy",
+      "step4Label": "Image Generation",
+      "step4Desc": "Creating supporting AI imagery"
+    }
+  },
+  "download": {
+    "png": "PNG",
+    "pdf": "PDF"
+  },
+  "theme": {
+    "toggle": "Toggle color mode"
+  },
+  "nav": {
+    "studio": "Studio"
+  },
+  "toast": {
+    "enterUrl": "Please enter a valid URL",
+    "enterTopic": "Please enter a topic",
+    "generated": "Infographic generated successfully!",
+    "downloadSuccess": "{format} downloaded",
+    "downloadFailed": "Download failed"
+  },
+  "studio": {
+    "back": "InfoPix",
+    "title": "InfoPix Studio",
+    "subtitle": "Publication-grade infographics with template layouts and AI-generated content. Choose your canvas, palette, and font.",
+    "badge": "Studio",
+    "emptyTitle": "Your studio infographic will appear here.",
+    "emptyHint": "Gemini plans the spatial layout. Canvas renderer coming next.",
+    "layoutPlan": "Layout plan",
+    "layoutRegions": "{count} regions",
+    "contentPreview": "Content preview",
+    "toast": {
+      "generated": "Studio infographic generated",
+      "enterUrl": "Please enter a valid URL",
+      "enterTopic": "Please enter a topic"
+    },
+    "form": {
+      "input": "Input",
+      "url": "URL",
+      "topic": "Topic",
+      "placeholder": {
+        "url": "https://example.com/article",
+        "topic": "History of the internet"
+      },
+      "canvasSize": "Canvas size",
+      "font": "Font",
+      "titleAccent": "Title accent",
+      "illustrationStyle": "Illustration style",
+      "depth": "Depth",
+      "styleDescription": "Style description",
+      "styleOptional": "(optional)",
+      "stylePlaceholder": "Dark, minimal, teal accent...",
+      "showFooter": "Show source footer",
+      "generate": "Generate studio infographic",
+      "generating": "Generating studio layout...",
+      "templates": {
+        "editorial-portrait": "A4 Portrait",
+        "editorial-landscape": "A4 Landscape",
+        "social-square": "Square",
+        "social-wide": "Wide",
+        "poster": "Poster"
+      },
+      "templateHints": {
+        "editorial-portrait": "794 × 1123px — reports, PDFs",
+        "editorial-landscape": "1123 × 794px — presentations",
+        "social-square": "1080 × 1080px — Instagram, LinkedIn",
+        "social-wide": "1200 × 628px — Twitter, link previews",
+        "poster": "800 × 2400px — long-form vertical"
+      },
+      "fonts": {
+        "condensed-sans": "Condensed Sans",
+        "modern-sans": "Modern Sans",
+        "slab": "Slab Serif",
+        "display-serif": "Display Serif"
+      },
+      "accents": {
+        "rule": "Rule",
+        "ribbon": "Ribbon",
+        "stamp": "Stamp",
+        "none": "None"
+      },
+      "illustrations": {
+        "flat": "Flat",
+        "editorial": "Editorial",
+        "minimal": "Minimal",
+        "none": "None (no images)"
+      },
+      "depths": {
+        "executive-summary": "Summary",
+        "standard": "Standard",
+        "deep-dive": "Deep dive"
+      }
+    }
+  }
+}

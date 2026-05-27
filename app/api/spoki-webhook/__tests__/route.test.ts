@@ -86,7 +86,7 @@ describe("POST /api/spoki-webhook", () => {
     capturedAfterPromise = null;
     mockStart.mockReset();
     mockCreateRun.mockClear();
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true }));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, text: async () => "" }));
     vi.stubEnv("SPOKI_API_KEY", "test-key-abc");
     vi.stubEnv("SPOKI_AUTOMATION_URL", "https://api.spoki.com/wh/ap/test-automation-id");
     vi.stubEnv("SPOKI_AUTOMATION_SECRET", "test-automation-secret");

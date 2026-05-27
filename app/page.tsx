@@ -12,12 +12,14 @@ import { HeaderBar } from "../src/components/generator/HeaderBar";
 import { HeroPanel } from "../src/components/generator/HeroPanel";
 import { LoadingProgress } from "../src/components/generator/LoadingProgress";
 import { ToastStack } from "../src/components/generator/ToastStack";
+import { useTranslations } from "next-intl";
 import { useInfographicDownload } from "../src/hooks/useInfographicDownload";
 import { useInfographicGenerator } from "../src/hooks/useInfographicGenerator";
 import { useTheme } from "../src/hooks/useTheme";
 import { useToasts } from "../src/hooks/useToasts";
 
 export default function Home() {
+  const t = useTranslations("toast");
   const { theme, toggle: toggleTheme, mounted } = useTheme();
   const { toasts, add: addToast, remove: removeToast } = useToasts();
   const generator = useInfographicGenerator();
@@ -33,9 +35,7 @@ export default function Home() {
     async (values: GeneratorFormValues) => {
       if (!values.rawText.trim()) {
         addToast(
-          values.mode === "url"
-            ? "Please enter a valid URL"
-            : "Please enter a topic",
+          values.mode === "url" ? t("enterUrl") : t("enterTopic"),
           "error",
         );
         return;
@@ -50,7 +50,7 @@ export default function Home() {
       });
 
       if (result) {
-        addToast("Infographic generated successfully!", "success");
+        addToast(t("generated"), "success");
       } else if (generator.error) {
         addToast(generator.error, "error");
       }
@@ -62,9 +62,9 @@ export default function Home() {
     async (kind: "png" | "pdf") => {
       const result = await downloader.download(kind);
       if (result.ok) {
-        addToast(`${kind.toUpperCase()} downloaded`, "success");
+        addToast(t("downloadSuccess", { format: kind.toUpperCase() }), "success");
       } else {
-        addToast(result.error ?? "Download failed", "error");
+        addToast(result.error ?? t("downloadFailed"), "error");
       }
     },
     [addToast, downloader],

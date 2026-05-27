@@ -1,14 +1,8 @@
-import { Lightbulb, Link as LinkIcon } from "lucide-react";
-import type { GenerationMode } from "../../types/infographic";
+"use client";
 
-const MODES: {
-  value: GenerationMode;
-  label: string;
-  Icon: typeof LinkIcon;
-}[] = [
-  { value: "url", label: "URL", Icon: LinkIcon },
-  { value: "topic", label: "Topic", Icon: Lightbulb },
-];
+import { Lightbulb, Link as LinkIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import type { GenerationMode } from "../../types/infographic";
 
 type ModeToggleProps = {
   mode: GenerationMode;
@@ -16,6 +10,13 @@ type ModeToggleProps = {
 };
 
 export function ModeToggle({ mode, onChange }: ModeToggleProps) {
+  const t = useTranslations("form.mode");
+
+  const modes: { value: GenerationMode; label: string; Icon: typeof LinkIcon }[] = [
+    { value: "url", label: t("url"), Icon: LinkIcon },
+    { value: "topic", label: t("topic"), Icon: Lightbulb },
+  ];
+
   return (
     <div
       className="inline-flex p-1 rounded-full border mb-6"
@@ -24,7 +25,7 @@ export function ModeToggle({ mode, onChange }: ModeToggleProps) {
         borderColor: "var(--border)",
       }}
     >
-      {MODES.map(({ value, label, Icon }) => {
+      {modes.map(({ value, label, Icon }) => {
         const active = mode === value;
         return (
           <button

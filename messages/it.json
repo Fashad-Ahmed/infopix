@@ -1,0 +1,149 @@
+{
+  "hero": {
+    "title": "InfoPix Engine",
+    "subtitle": "Incolla un URL o scrivi un argomento. Il sistema estrae, struttura e genera automaticamente un'infografica visivamente curata, con immagini AI opzionali e stile personalizzabile."
+  },
+  "form": {
+    "mode": {
+      "url": "URL",
+      "topic": "Argomento"
+    },
+    "placeholder": {
+      "url": "https://raw.githubusercontent.com/...",
+      "topic": "es. La storia dell'acquedotto romano"
+    },
+    "stylePrompt": {
+      "label": "Stile grafico (opzionale)",
+      "placeholder": "es. minimalista, blu scuro + accento neon, sans moderno"
+    },
+    "generateImages": "Genera immagini AI (usa OpenAI; aggiunge 15–30s)",
+    "topicImageNote": "La modalità argomento genera automaticamente immagini AI per l'intestazione e ogni sezione.",
+    "generate": "Genera",
+    "processing": "Elaborazione...",
+    "clearInput": "Cancella"
+  },
+  "loading": {
+    "studio": {
+      "step1Label": "Estrazione contenuti",
+      "step1Desc": "Analisi e lettura della sorgente",
+      "step2Label": "Generazione stile",
+      "step2Desc": "Costruzione del sistema di brand design",
+      "step3Label": "Revisione qualità",
+      "step3Desc": "Agente critico in fase di validazione",
+      "step4Label": "Generazione immagini",
+      "step4Desc": "Creazione illustrazioni AI",
+      "step5Label": "Assemblaggio layout",
+      "step5Desc": "Assegnazione sezioni ai slot del template"
+    },
+    "url": {
+      "step1Label": "Estrazione contenuti",
+      "step1Desc": "Analisi e lettura dell'URL",
+      "step2Label": "Formattazione struttura",
+      "step2Desc": "Organizzazione in schema JSON",
+      "step3Label": "Verifica qualità",
+      "step3Desc": "Agente critico in fase di validazione",
+      "step4Label": "Generazione immagini",
+      "step4Desc": "Creazione immagini AI di supporto"
+    },
+    "topic": {
+      "step1Label": "Ricerca sull'argomento",
+      "step1Desc": "Elaborazione contenuto strutturato dall'argomento",
+      "step2Label": "Formattazione struttura",
+      "step2Desc": "Organizzazione in schema JSON",
+      "step3Label": "Verifica qualità",
+      "step3Desc": "Agente critico in fase di validazione",
+      "step4Label": "Generazione immagini",
+      "step4Desc": "Creazione immagini AI di supporto"
+    }
+  },
+  "download": {
+    "png": "PNG",
+    "pdf": "PDF"
+  },
+  "theme": {
+    "toggle": "Cambia tema"
+  },
+  "nav": {
+    "studio": "Studio"
+  },
+  "toast": {
+    "enterUrl": "Inserisci un URL valido",
+    "enterTopic": "Inserisci un argomento",
+    "generated": "Infografica generata con successo!",
+    "downloadSuccess": "{format} scaricato",
+    "downloadFailed": "Download fallito"
+  },
+  "studio": {
+    "back": "InfoPix",
+    "title": "InfoPix Studio",
+    "subtitle": "Infografiche di qualità editoriale con layout a template. Scegli il formato, la palette e il font.",
+    "badge": "Studio",
+    "emptyTitle": "La tua infografica studio apparirà qui.",
+    "emptyHint": "Gemini pianifica il layout spaziale. Il renderer canvas è in arrivo.",
+    "layoutPlan": "Piano di layout",
+    "layoutRegions": "{count} regioni",
+    "contentPreview": "Anteprima contenuto",
+    "toast": {
+      "generated": "Infografica studio generata",
+      "enterUrl": "Inserisci un URL valido",
+      "enterTopic": "Inserisci un argomento"
+    },
+    "form": {
+      "input": "Input",
+      "url": "URL",
+      "topic": "Argomento",
+      "placeholder": {
+        "url": "https://esempio.it/articolo",
+        "topic": "Storia di internet"
+      },
+      "canvasSize": "Formato",
+      "font": "Font",
+      "titleAccent": "Accento titolo",
+      "illustrationStyle": "Stile illustrazioni",
+      "depth": "Profondità",
+      "styleDescription": "Stile grafico",
+      "styleOptional": "(opzionale)",
+      "stylePlaceholder": "Scuro, minimale, accento teal...",
+      "showFooter": "Mostra fonte in calce",
+      "generate": "Genera infografica studio",
+      "generating": "Generazione layout studio...",
+      "templates": {
+        "editorial-portrait": "A4 Verticale",
+        "editorial-landscape": "A4 Orizzontale",
+        "social-square": "Quadrato",
+        "social-wide": "Panoramico",
+        "poster": "Poster"
+      },
+      "templateHints": {
+        "editorial-portrait": "794 × 1123px — report, PDF",
+        "editorial-landscape": "1123 × 794px — presentazioni",
+        "social-square": "1080 × 1080px — Instagram, LinkedIn",
+        "social-wide": "1200 × 628px — Twitter, anteprime link",
+        "poster": "800 × 2400px — verticale lungo"
+      },
+      "fonts": {
+        "condensed-sans": "Sans Condensato",
+        "modern-sans": "Sans Moderno",
+        "slab": "Graziato Slab",
+        "display-serif": "Graziato Display"
+      },
+      "accents": {
+        "rule": "Linea",
+        "ribbon": "Nastro",
+        "stamp": "Timbro",
+        "none": "Nessuno"
+      },
+      "illustrations": {
+        "flat": "Piatto",
+        "editorial": "Editoriale",
+        "minimal": "Minimale",
+        "none": "Nessuno (senza immagini)"
+      },
+      "depths": {
+        "executive-summary": "Riassunto",
+        "standard": "Standard",
+        "deep-dive": "Approfondimento"
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 type HeroPanelProps = {
   loading: boolean;
@@ -8,6 +9,8 @@ type HeroPanelProps = {
 };
 
 export function HeroPanel({ loading, children }: HeroPanelProps) {
+  const t = useTranslations("hero");
+
   return (
     <div
       className="overflow-hidden rounded-4xl border px-8 py-12 shadow-[var(--card-shadow)] transition-all duration-300 hover:shadow-lg"
@@ -42,15 +45,13 @@ export function HeroPanel({ loading, children }: HeroPanelProps) {
         className="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-4"
         style={{ color: "var(--foreground)" }}
       >
-        InfoPix Engine
+        {t("title")}
       </h1>
       <p
         className="text-lg md:text-xl max-w-2xl leading-8 mb-8"
         style={{ color: "var(--muted)" }}
       >
-        Paste a URL or name a topic. The workflow intelligently extracts,
-        structures, and crafts a visually stunning infographic with optional
-        AI imagery and custom styling.
+        {t("subtitle")}
       </p>
 
       {children}

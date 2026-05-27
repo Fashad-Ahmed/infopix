@@ -10,6 +10,7 @@ import {
 } from "@mastra/observability";
 
 import { infographicWorkflow } from "./workflows/infographic-workflow";
+import { studioWorkflow } from "./workflows/studio-workflow";
 import {
   contentAgent,
   styleAgent,
@@ -17,10 +18,13 @@ import {
   criticAgent,
   formatterAgent,
   topicContentAgent,
+  studioResearchAgent,
 } from "./agents/infographic-agent";
 import { scrapeWebsiteTool } from "./tools/scraper";
 import { graphifyContextTool } from "./tools/graphify-context";
 import { imageGeneratorTool } from "./tools/image-generator";
+
+import "./env";
 
 const isProd = process.env.NODE_ENV === "production";
 const tursoUrl = process.env.TURSO_DATABASE_URL;
@@ -47,7 +51,7 @@ const observabilityDomain = isProd
     })();
 
 export const mastra = new Mastra({
-  workflows: { infographicWorkflow },
+  workflows: { infographicWorkflow, studioWorkflow },
   agents: {
     contentAgent,
     styleAgent,
@@ -55,6 +59,7 @@ export const mastra = new Mastra({
     criticAgent,
     formatterAgent,
     topicContentAgent,
+    studioResearchAgent,
   },
   tools: { scrapeWebsiteTool, graphifyContextTool, imageGeneratorTool },
 
