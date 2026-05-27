@@ -1,20 +1,7 @@
 import { Agent } from "@mastra/core/agent";
 import { scrapeWebsiteTool } from "../tools/scraper";
 
-// Responsible for extracting facts and deciding the best visual format.
-
-const CONTENT_SYSTEM_PROMPT = `
-You are a Senior Data Journalist. Your job is to transform raw text into high-signal structured data for an infographic.
-
-CRITICAL RULES:
-1. THINK STEP-BY-STEP: Read the text, identify the narrative focus, and extract the most important points.
-2. CATEGORIZE SMARTLY: You must categorize each section using the provided discriminated unions:
-   - Use 'metric' for single, impactful numbers.
-   - Use 'comparison' when contrasting 2-4 items.
-   - Use 'takeaway' for text-based conclusions.
-3. NO HALLUCINATION: Every fact, number, or claim MUST be explicitly present in the source text. Do not invent data.
-4. CONFIDENCE SCORING: Accurately score your extraction confidence (0.0 to 1.0). If the text is vague, score lower.
-`;
+// Responsible for scraping and summarizing URL content.
 
 export const contentAgent = new Agent({
   id: "content-architect-agent",
@@ -39,7 +26,7 @@ export const styleAgent = new Agent({
   id: "brand-visionary-agent",
   name: "Brand Visionary",
   instructions: STYLE_SYSTEM_PROMPT,
-  model: "groq/llama-3.2-11b-vision-preview",
+  model: "google/gemini-2.5-flash",
 });
 
 // Responsible for reviewing the Content Architect's output.
@@ -58,11 +45,23 @@ export const criticAgent = new Agent({
   model: "groq/llama-3.3-70b-versatile",
 });
 
+// URL-mode formatter: structures raw scraped text into infographic JSON.
+// Using GPT-4o for superior JSON schema adherence.
+const FORMATTER_SYSTEM_PROMPT = `
+You are a Senior Data Journalist. Transform raw source text into high-signal structured JSON for an infographic.
+
+RULES:
+1. Extract ONLY facts present in the source. No hallucination.
+2. Prefer specific numbers over vague statements.
+3. Use all 5 section types: metric, comparison, chart, takeaway, callout.
+4. Output valid JSON matching the schema exactly. No markdown, no commentary.
+`;
+
 export const formatterAgent = new Agent({
   id: "formatter-agent",
   name: "Data Formatter",
-  instructions: CONTENT_SYSTEM_PROMPT,
-  model: "groq/llama-3.3-70b-versatile",
+  instructions: FORMATTER_SYSTEM_PROMPT,
+  model: "openai/gpt-4o",
 });
 
 // Derives a brand style system from a natural-language prompt (no image input).
@@ -80,22 +79,55 @@ export const styleFromTextAgent = new Agent({
   model: "groq/llama-3.3-70b-versatile",
 });
 
-// Generates infographic content directly from a topic, with no source document.
+// Generates infographic content from a topic for the regular (non-studio) infographic.
+// Using Gemini Flash for better world knowledge than LLaMA.
 const TOPIC_SYSTEM_PROMPT = `
-You are a Senior Data Journalist creating an educational infographic about a topic the user has named.
-You have no source document — draw on widely accepted general knowledge only.
+You are a Senior Data Journalist creating an educational infographic about a topic.
+Draw on your broad training knowledge — use specific statistics, dates, and named facts.
 
-CRITICAL RULES:
-1. Stick to widely known, uncontroversial facts. Avoid recent stats you can't verify.
-2. Categorize sections using the discriminated unions: metric, comparison, takeaway.
-3. For each section, include a short imagePrompt (1 sentence, concrete visual) describing an illustration that would support the section.
-4. Include a heroImagePrompt for the top of the infographic — 1 sentence, evocative, no text in the image.
-5. Score confidence honestly. Topic-generated content rarely exceeds 0.75.
+RULES:
+1. Use specific numbers with context (year, source type, comparison baseline).
+2. Use all 5 section types: metric, comparison, chart, takeaway, callout.
+3. For each section, include a short imagePrompt (1 sentence, concrete visual, no text in image).
+4. Include a heroImagePrompt for the top — 1 sentence, evocative, no text in image.
+5. Output valid JSON matching the schema exactly. No markdown.
 `;
 
 export const topicContentAgent = new Agent({
   id: "topic-content-agent",
   name: "Topic Content Architect",
   instructions: TOPIC_SYSTEM_PROMPT,
-  model: "groq/llama-3.3-70b-versatile",
+  model: "google/gemini-2.5-flash",
+});
+
+// Studio deep research agent: uses Gemini 2.5 Pro for maximum content richness.
+// Used exclusively by the studio workflow for data-dense, publication-grade output.
+const STUDIO_RESEARCH_SYSTEM_PROMPT = `
+You are a world-class data journalist and information designer at a publication like The Economist or Bloomberg.
+Your job is to produce the richest, most data-dense infographic content possible.
+
+MANDATE:
+- Think like a Bloomberg terminal — every section must be packed with real, specific, verifiable data
+- Cite years, percentages, dollar amounts, named entities
+- Draw on your comprehensive training knowledge for well-known topics
+- Never be vague: "grew significantly" is REJECTED; "$33.7B revenue, up 6.7% YoY (2023)" is ACCEPTED
+
+SECTION TYPES — use all 5:
+- "metric": one impactful number. Fields: heading, value (MAX 12 chars), unit, trend, subheading (timeframe), insight (2 sentences: the stat + why it matters)
+- "comparison": ranked landscape. Fields: heading, scaleDescription (e.g. "Global market share %"), items (5-6: label, value 0-100, valueLabel e.g. "38%", isHighlight, description), insight
+- "chart": categorical breakdown. Fields: heading, chartType (pie/donut/bar), data (6-8: label, value, valueLabel), unit, insight
+- "takeaway": conclusions. Fields: heading, points (6-8 specific data-backed strings under 120 chars each), insight
+- "callout": single stunning milestone. Fields: heading, quote (complete sentence — the striking fact), stat (key figure e.g. "$33.7B"), attribution (source context)
+
+MANDATORY per section: imagePrompt (one vivid sentence, editorial illustration, no text in image)
+ALSO include: heroImagePrompt for the banner
+
+Return valid JSON only. No markdown, no code fences, no commentary.
+`;
+
+export const studioResearchAgent = new Agent({
+  id: "studio-research-agent",
+  name: "Studio Research Agent",
+  instructions: STUDIO_RESEARCH_SYSTEM_PROMPT,
+  model: "google/gemini-2.5-pro",
 });
