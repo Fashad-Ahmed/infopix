@@ -2,6 +2,7 @@ import type {
   Density,
   GenerationMode,
   NarrativeFocus,
+  StudioInput,
 } from "../types/infographic";
 
 export type GenerateRequest = {
@@ -29,11 +30,24 @@ export async function postGenerate(
   const response = await fetch("/api/generate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      density: "standard",
-      narrativeFocus: "data-heavy",
-      ...body,
-    }),
+    body: JSON.stringify({ density: "standard", narrativeFocus: "data-heavy", ...body }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new GenerateError(response.status, text);
+  }
+
+  return response.json();
+}
+
+export type StudioGenerateRequest = Omit<StudioInput, "generateImages" | "locale">;
+
+export async function postStudioGenerate(body: StudioGenerateRequest): Promise<unknown> {
+  const response = await fetch("/api/studio-generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
