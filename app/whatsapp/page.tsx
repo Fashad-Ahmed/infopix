@@ -294,7 +294,7 @@ export default function WhatsAppPage() {
               <span className="text-xl">📱</span>
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--muted)" }}>WhatsApp Bot Number</p>
-                <p className="font-mono font-bold mt-0.5" style={{ color: "var(--foreground)" }}>{envStatus.SPOKI_BOT_PHONE}</p>
+                <p className="font-mono font-bold mt-0.5" style={{ color: "var(--foreground)" }}>{envStatus?.SPOKI_BOT_PHONE}</p>
               </div>
             </div>
           )}
@@ -418,7 +418,7 @@ export default function WhatsAppPage() {
 
           {testResult && (
             <div className="mt-8 space-y-4" style={{ animation: "slideInUp 0.4s ease-out" }}>
-              {testResult.error ? (
+              {testResult?.error ? (
                 <div
                   className="rounded-xl p-4 text-sm"
                   style={{
@@ -427,7 +427,7 @@ export default function WhatsAppPage() {
                     color: "var(--error)",
                   }}
                 >
-                  <strong>Error:</strong> {testResult.error}
+                  <strong>Error:</strong> {testResult?.error}
                 </div>
               ) : (
                 <>
@@ -439,13 +439,13 @@ export default function WhatsAppPage() {
                     className="rounded-2xl p-6"
                     style={{ backgroundColor: "#e5ddd5", backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}
                   >
-                    <WhatsAppBubble message={testResult.whatsappMessage} />
+                    <WhatsAppBubble message={testResult?.whatsappMessage ?? ""} />
                   </div>
 
                   <p className="text-xs font-bold uppercase tracking-widest mt-4" style={{ color: "var(--muted)" }}>
                     Raw Message String
                   </p>
-                  <CodeBlock>{testResult.whatsappMessage}</CodeBlock>
+                  <CodeBlock>{testResult?.whatsappMessage ?? ""}</CodeBlock>
                 </>
               )}
             </div>
