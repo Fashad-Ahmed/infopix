@@ -19,6 +19,17 @@ import { getLanguageDirective } from "../../lib/locale-prompt";
 
 type SectionType = "metric" | "chart" | "comparison" | "takeaway" | "callout" | "pictograph";
 
+// Semantic icon tokens the agent may assign. Kept in sync with
+// src/components/studio/iconMap.tsx (resolver tolerates unknown tokens).
+const ICON_TOKEN_HINT =
+  "money, revenue, profit, loss, cost, price, investment, growth, increase, decline, decrease, " +
+  "people, person, population, users, customers, audience, time, year, date, speed, global, country, " +
+  "location, region, company, industry, factory, market, work, technology, computer, mobile, internet, " +
+  "data, code, network, cloud, security, chart, pie, trend, percent, warning, success, energy, target, " +
+  "award, idea, launch, fire, star, quote, sparkle, trophy, layers, box, package, scale, activity, hash, " +
+  "shopping, coffee, car, transport, flight, health, heart, education, environment, nature, water, sun, " +
+  "temperature, recycle, battery, fuel, home";
+
 // Studio-specific content extraction using Gemini 2.5 Pro for maximum richness.
 const extractStudioContentStep = createStep({
   id: "extract-content",
@@ -87,6 +98,10 @@ INSTRUCTIONS:
 - takeaway: 6-8 specific data-backed bullet points (not generic summaries)
 - callout: single most striking milestone — big stat + full-sentence quote + attribution
 - Every section MUST have an imagePrompt (vivid editorial illustration, no text in image)
+- Every section MUST have an "icon" token chosen from: ${ICON_TOKEN_HINT}. Pick the token that best matches the section's meaning.
+- pictograph: set "iconToken" to the glyph representing the unit (e.g. "coffee" for cups, "car" for vehicles, "person"/"people" for population). Optionally set per-row "icon".
+- comparison: optionally set a per-item "icon" token on each item for an icon-led ranked list.
+- chart: prefer "radial" for ranked progress (3-6 items, value 0-100) and "area" for time-series trends; use bar/donut/bubble otherwise.
 - Include heroImagePrompt for the banner
 - metric value field: NEVER use underscores or trailing chars. Use only the actual figure e.g. "$5", "42", "$50B+"
 
@@ -113,7 +128,11 @@ REQUIREMENTS:
 - takeaway: 6-8 specific, non-obvious, data-backed insights (not generic)
 - callout: single most stunning fact — compelling quote sentence + key stat + source attribution
 - Use ALL 7 section types across sections: metric, comparison, chart(bar/donut), chart(bubble), pictograph, takeaway, callout
+- chart: also use "radial" (ranked progress rings, 3-6 items value 0-100) and "area" (time-series trend) where the data fits
 - Every section MUST have imagePrompt (vivid editorial illustration, no text in image)
+- Every section MUST have an "icon" token chosen from: ${ICON_TOKEN_HINT}. Pick the token that best matches the section's meaning.
+- pictograph: set "iconToken" to the glyph representing the unit (e.g. "coffee" for cups, "car" for vehicles, "person"/"people" for population). Optionally set per-row "icon".
+- comparison: optionally set a per-item "icon" token on each item for an icon-led ranked list.
 - Include heroImagePrompt for the banner
 - metric value field: NEVER use underscores or trailing characters. Use only the actual figure e.g. "$5", "42", "$50B+", "260M"
 
