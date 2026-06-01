@@ -48,15 +48,15 @@ function resolveSlotColors(
       return { bg, text: luminance(bg) > 0.45 ? "#111111" : "#ffffff", accent: style.primaryColor };
     }
     case "footer": {
-      const bg = style.primaryColor;
-      return { bg, text: luminance(bg) > 0.45 ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.55)", accent: style.accentColor };
+      const bg = style.secondaryColor;
+      return { bg, text: luminance(bg) > 0.45 ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.45)", accent: style.accentColor };
     }
     case "surface-alt":
     case "surface":
     default: {
       // Cards need visual weight to stand apart from canvas background.
       // Light canvas → near-solid white card. Dark canvas → subtle white lift.
-      const subtleBg = canvasBgDark ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.88)";
+      const subtleBg = canvasBgDark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.88)";
       return {
         bg: subtleBg,
         text: canvasBgDark ? style.primaryColor : style.primaryColor,
