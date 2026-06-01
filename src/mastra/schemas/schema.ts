@@ -42,6 +42,13 @@ export const BrandStyleSchema = z.object({
 const BaseSection = z.object({
   heading: z.string().transform(s => s.slice(0, 80)),
   subheading: z.string().transform(s => s.slice(0, 160)).optional(),
+  icon: z
+    .string()
+    .transform(s => s.slice(0, 24))
+    .optional()
+    .describe(
+      "Semantic icon token for this section (e.g. 'money', 'growth', 'people', 'global'). Picked from the provided ICON_TOKENS list. Rendered as a vector icon.",
+    ),
   imagePrompt: z
     .string()
     .transform(s => s.slice(0, 400))
@@ -88,6 +95,11 @@ const ComparisonSection = BaseSection.extend({
             "Human-readable value displayed beside the bar — e.g. '60%', '2.3M users', '4.5x faster', '$1.2B'. Falls back to the numeric value if omitted.",
           ),
         isHighlight: z.boolean(),
+        icon: z
+          .string()
+          .transform(s => s.slice(0, 24))
+          .optional()
+          .describe("Optional semantic icon token for this row (from ICON_TOKENS)"),
         description: z
           .string()
           .transform(s => s.slice(0, 200))
@@ -107,9 +119,9 @@ const ComparisonSection = BaseSection.extend({
 const ChartSection = BaseSection.extend({
   type: z.literal("chart"),
   chartType: z
-    .enum(["pie", "donut", "bar", "bubble"])
+    .enum(["pie", "donut", "bar", "bubble", "radial", "area"])
     .describe(
-      "pie/donut for proportional breakdown; bar for ranked values; bubble for proportional size comparison (e.g. top flavors, top categories by magnitude)",
+      "pie/donut for proportional breakdown; bar for ranked values; bubble for proportional size comparison; radial for ranked progress rings (3-6 items, value 0-100); area for a time-series trend (ordered points)",
     ),
   data: z
     .array(
@@ -168,6 +180,13 @@ export const PictographSection = BaseSection.extend({
     .min(2)
     .max(6),
   iconLabel: z.string().transform(s => s.slice(0, 80)).optional().describe("What each icon represents e.g. 'cups per week', 'people out of 10'"),
+  iconToken: z
+    .string()
+    .transform(s => s.slice(0, 24))
+    .optional()
+    .describe(
+      "Which glyph to repeat for the icon array (from ICON_TOKENS). e.g. 'coffee' for cups, 'person' for people, 'car' for vehicles. Defaults to a person.",
+    ),
   insight: z.string().transform(s => s.slice(0, 400)).optional(),
 });
 
@@ -248,6 +267,9 @@ export type TemplateDef = {
   gridTemplateColumns: string;
   gridTemplateRows: string;
   slots: Record<string, TemplateSlotDef>;
+  /** When true, rows size to content and the canvas height is measured at
+   *  render time (used for long-form poster layouts to avoid empty space). */
+  adaptiveHeight?: boolean;
 };
 
 export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
@@ -255,7 +277,7 @@ export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
     canvasWidth: 794, canvasHeight: 1123,
     gridTemplateAreas: `"banner    banner" "stat-a    stat-b" "chart     comparison" "takeaway  takeaway" "footer    footer"`,
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "140px 190px 310px 1fr 60px",
+    gridTemplateRows: "140px 200px 1fr 290px 50px",
     slots: {
       banner:     { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
       "stat-a":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],                 colorRole: "accent" },
@@ -267,10 +289,10 @@ export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
     },
   },
   "editorial-landscape": {
-    canvasWidth: 1123, canvasHeight: 794,
+    canvasWidth: 1123, canvasHeight: 920,
     gridTemplateAreas: `"banner   banner     banner" "stat-a   stat-b     stat-c" "chart    chart      comparison" "takeaway takeaway   takeaway" "footer   footer     footer"`,
     gridTemplateColumns: "1fr 1fr 1fr",
-    gridTemplateRows: "130px 160px 1fr 140px 40px",
+    gridTemplateRows: "140px 200px 1fr 190px 46px",
     slots: {
       banner:     { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
       "stat-a":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],                 colorRole: "accent" },
@@ -298,22 +320,25 @@ export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
   },
   "social-wide": {
     canvasWidth: 1200, canvasHeight: 628,
-    gridTemplateAreas: `"banner   banner" "chart    stat-a" "takeaway takeaway" "footer   footer"`,
-    gridTemplateColumns: "3fr 2fr",
-    gridTemplateRows: "160px 1fr 80px 36px",
+    gridTemplateAreas: `"banner   banner   banner" "chart    stat-a   stat-b" "takeaway takeaway takeaway" "footer   footer   footer"`,
+    gridTemplateColumns: "1.5fr 1fr 1fr",
+    gridTemplateRows: "132px 1fr 118px 34px",
     slots: {
       banner:   { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
       chart:    { regionType: "chart",      acceptedTypes: ["chart", "comparison"],               colorRole: "surface" },
-      "stat-a": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],                 colorRole: "accent" },
-      takeaway: { regionType: "takeaway",   acceptedTypes: ["takeaway", "callout", "pictograph"],               colorRole: "surface-alt" },
+      "stat-a": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "accent" },
+      "stat-b": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "primary" },
+      takeaway: { regionType: "takeaway",   acceptedTypes: ["takeaway", "callout", "pictograph"], colorRole: "surface-alt" },
       footer:   { regionType: "footer",     acceptedTypes: [],                                    colorRole: "footer" },
     },
   },
   "poster": {
-    canvasWidth: 800, canvasHeight: 2400,
+    canvasWidth: 800, canvasHeight: 1600,
+    adaptiveHeight: true,
     gridTemplateAreas: `"banner" "stat-a" "callout" "stat-b" "chart" "comparison" "takeaway" "footer"`,
     gridTemplateColumns: "1fr",
-    gridTemplateRows: "280px 200px 180px 200px 360px 360px 1fr 80px",
+    // Rows size to their content; canvas height is measured at render time.
+    gridTemplateRows: "260px minmax(150px,auto) minmax(150px,auto) minmax(150px,auto) minmax(300px,auto) minmax(300px,auto) minmax(220px,auto) 64px",
     slots: {
       banner:     { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
       "stat-a":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],                 colorRole: "accent" },
@@ -359,7 +384,7 @@ export const StudioInputSchema = InfographicInputSchema.extend({
 // Keep for backward compat (tests reference this)
 export const CANVAS_SIZES = {
   "editorial-portrait": { width: 794, height: 1123 },
-  "editorial-landscape": { width: 1123, height: 794 },
+  "editorial-landscape": { width: 1123, height: 920 },
   "social-square": { width: 1080, height: 1080 },
   "social-wide": { width: 1200, height: 628 },
   "poster": { width: 800, height: 2400 },
