@@ -33,6 +33,7 @@ export default function StudioPage() {
     node: infographicRef.current,
     title: generator.data?.title,
     theme,
+    backgroundColor: generator.data?.style?.secondaryColor ?? "#f8f5ef",
   });
 
   const handleGenerate = useCallback(
@@ -121,8 +122,8 @@ export default function StudioPage() {
 
         {/* Left: form */}
         <div
-          className="rounded-3xl p-8 sticky top-8"
-          style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)" }}
+          className="rounded-3xl p-6 sticky top-8 overflow-y-auto"
+          style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", maxHeight: "calc(100vh - 5rem)" }}
         >
           <StudioForm loading={generator.isLoading} onSubmit={handleGenerate} />
         </div>
@@ -153,7 +154,7 @@ export default function StudioPage() {
               <StudioCanvas
                 ref={infographicRef}
                 data={generator.data}
-                displayWidth={640}
+                displayWidth={760}
               />
             </div>
           )}

@@ -8,9 +8,12 @@ type Params = {
   node: HTMLElement | null;
   title?: string;
   theme: Theme;
+  /** Explicit capture background — use the infographic's own canvas color so the
+   *  exported file matches the on-screen preview (not the page theme). */
+  backgroundColor?: string;
 };
 
-export function useInfographicDownload({ node, title, theme }: Params) {
+export function useInfographicDownload({ node, title, theme, backgroundColor }: Params) {
   const [pending, setPending] = useState<DownloadKind | null>(null);
 
   const download = useCallback(
@@ -21,7 +24,7 @@ export function useInfographicDownload({ node, title, theme }: Params) {
         await downloadInfographic({
           node,
           title,
-          backgroundColor: theme === "dark" ? "#0c1222" : "#ffffff",
+          backgroundColor: backgroundColor ?? (theme === "dark" ? "#0c1222" : "#ffffff"),
           kind,
         });
         return { ok: true as const };
@@ -32,7 +35,7 @@ export function useInfographicDownload({ node, title, theme }: Params) {
         setPending(null);
       }
     },
-    [node, title, theme],
+    [node, title, theme, backgroundColor],
   );
 
   return { pending, download };

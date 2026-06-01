@@ -1,6 +1,7 @@
 "use client";
 
 import type { MetricSection } from "../../../types/infographic";
+import { resolveIcon } from "../iconMap";
 
 type Props = {
   section: MetricSection;
@@ -72,14 +73,18 @@ export function StatRegion({ section, primaryColor, accentColor, bgColor, width,
   const rawValue = cleanValue(String(section.value));
   const isPercent = rawValue.endsWith("%");
   const numericPct = isPercent ? parseFloat(rawValue) : NaN;
+  const Icon = resolveIcon(section.icon, section.heading, section.subheading, rawValue);
 
   if (isPercent && !isNaN(numericPct)) {
     return (
       <div style={rootStyle}>
+        {Icon && (
+          <Icon size={18} color={isSolid ? textColor : accentColor} strokeWidth={2.2} style={{ opacity: 0.9, flexShrink: 0 }} aria-hidden />
+        )}
         <CircularStat
           value={rawValue} pct={numericPct}
           textColor={textColor} accentColor={isSolid ? textColor : accentColor}
-          size={90}
+          size={84}
         />
         <p style={{ color: textColor, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", margin: 0, opacity: 0.8, textAlign: "center", overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, maxWidth: "100%" }}>
           {section.subheading ?? section.heading}
@@ -97,9 +102,14 @@ export function StatRegion({ section, primaryColor, accentColor, bgColor, width,
 
   return (
     <div style={{ ...rootStyle, alignItems: "flex-start", ...leftBorderStyle }}>
-      <p style={{ color: textColor, fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", margin: 0, opacity: 0.7, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", maxWidth: "100%", flexShrink: 0 }}>
-        {section.heading}
-      </p>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, maxWidth: "100%", flexShrink: 0 }}>
+        {Icon && (
+          <Icon size={15} color={isSolid ? textColor : accentColor} strokeWidth={2.4} style={{ opacity: 0.85, flexShrink: 0 }} aria-hidden />
+        )}
+        <p style={{ color: textColor, fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", margin: 0, opacity: 0.7, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", minWidth: 0 }}>
+          {section.heading}
+        </p>
+      </div>
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 3, overflow: "hidden", minWidth: 0, maxWidth: "100%", flexShrink: 0 }}>
         {/* cqw works because slotStyle has containerType: inline-size */}
@@ -124,8 +134,8 @@ export function StatRegion({ section, primaryColor, accentColor, bgColor, width,
         </p>
       )}
 
-      {section.insight && (
-        <p style={{ color: textColor, fontSize: 9, lineHeight: 1.4, margin: 0, opacity: 0.55, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 3 }}>
+      {!section.subheading && section.insight && (
+        <p style={{ color: textColor, fontSize: 9, lineHeight: 1.4, margin: 0, opacity: 0.55, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2 }}>
           {section.insight}
         </p>
       )}

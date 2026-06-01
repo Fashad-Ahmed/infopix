@@ -1,6 +1,8 @@
 "use client";
 
+import { User } from "lucide-react";
 import type { PictographSection } from "../../../types/infographic";
+import { resolveIcon, resolveIconOr } from "../iconMap";
 
 type Props = {
   section: PictographSection;
@@ -12,22 +14,10 @@ type Props = {
   fill?: boolean;
 };
 
-function PersonIcon({ size, filled, fillColor, emptyColor }: {
-  size: number;
-  filled: boolean;
-  fillColor: string;
-  emptyColor: string;
-}) {
-  const color = filled ? fillColor : emptyColor;
-  return (
-    <svg width={size} height={size} viewBox="0 0 20 20" fill={color}>
-      <circle cx="10" cy="6" r="4" />
-      <path d="M3 19c0-3.866 3.134-7 7-7s7 3.134 7 7" />
-    </svg>
-  );
-}
-
 export function PictographRegion({ section, primaryColor, accentColor, bgColor, width, height, fill }: Props) {
+  const HeadingIcon = resolveIcon(section.icon, section.heading);
+  // The glyph repeated across each row (cups, cars, people…).
+  const Glyph = resolveIconOr(User, section.iconToken, section.iconLabel, section.heading);
   const rootStyle: React.CSSProperties = fill
     ? { width: "100%", height: "100%", backgroundColor: bgColor, display: "flex", flexDirection: "column", overflow: "hidden" }
     : { width, height, backgroundColor: bgColor, display: "flex", flexDirection: "column", overflow: "hidden" };
@@ -42,8 +32,9 @@ export function PictographRegion({ section, primaryColor, accentColor, bgColor, 
         </div>
       )}
       <div style={{ flex: 1, minHeight: 0, padding: "10px 16px 12px", boxSizing: "border-box", display: "flex", flexDirection: "column" }}>
-        <p style={{ color: primaryColor, fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 3px 0", opacity: 0.8, flexShrink: 0, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
-          {section.heading}
+        <p style={{ color: primaryColor, fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 3px 0", opacity: 0.85, flexShrink: 0, display: "flex", alignItems: "center", gap: 6 }}>
+          {HeadingIcon && <HeadingIcon size={14} color={accentColor} strokeWidth={2.4} style={{ flexShrink: 0 }} aria-hidden />}
+          <span style={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", minWidth: 0 }}>{section.heading}</span>
         </p>
         {section.iconLabel && (
           <p style={{ color: primaryColor, fontSize: 9, opacity: 0.5, margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: "0.06em", flexShrink: 0, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
@@ -51,7 +42,7 @@ export function PictographRegion({ section, primaryColor, accentColor, bgColor, 
           </p>
         )}
 
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-evenly" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 6, minHeight: 0, overflow: "hidden" }}>
           {section.rows.map((row, i) => {
             const iconSize = 14;
             const icons = Array.from({ length: row.total }, (_, idx) => idx < Math.floor(row.count));
@@ -72,12 +63,13 @@ export function PictographRegion({ section, primaryColor, accentColor, bgColor, 
                   {icons.map((filled, idx) => {
                     const isPartial = idx === partialIdx && partialFill > 0;
                     return (
-                      <PersonIcon
+                      <Glyph
                         key={idx}
                         size={iconSize}
-                        filled={filled || isPartial}
-                        fillColor={filled ? accentColor : isPartial ? `${accentColor}80` : accentColor}
-                        emptyColor={`${primaryColor}25`}
+                        color={accentColor}
+                        strokeWidth={2.2}
+                        style={{ opacity: filled ? 1 : isPartial ? 0.5 : 0.22, flexShrink: 0 }}
+                        aria-hidden
                       />
                     );
                   })}

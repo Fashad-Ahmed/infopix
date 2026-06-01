@@ -133,7 +133,7 @@ export function StudioForm({ loading, onSubmit }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* Mode */}
       <div>
         <p className="text-xs font-bold uppercase tracking-widest mb-2" style={labelStyle}>{t("input")}</p>

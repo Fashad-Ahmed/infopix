@@ -115,11 +115,13 @@ MANDATE:
 SECTION TYPES — use all 5:
 - "metric": one impactful number. Fields: heading, value (MAX 12 chars), unit, trend, subheading (timeframe), insight (2 sentences: the stat + why it matters)
 - "comparison": ranked landscape. Fields: heading, scaleDescription (e.g. "Global market share %"), items (5-6: label, value 0-100, valueLabel e.g. "38%", isHighlight, description), insight
-- "chart": categorical breakdown. Fields: heading, chartType (pie/donut/bar), data (6-8: label, value, valueLabel), unit, insight
+- "chart": categorical breakdown. Fields: heading, chartType (pie/donut/bar/bubble/radial/area), data (6-8: label, value, valueLabel), unit, insight. Use "radial" for ranked progress rings (3-6 items, value 0-100), "area" for time-series trends.
 - "takeaway": conclusions. Fields: heading, points (6-8 specific data-backed strings under 120 chars each), insight
 - "callout": single stunning milestone. Fields: heading, quote (complete sentence — the striking fact), stat (key figure e.g. "$33.7B"), attribution (source context)
+- "pictograph": icon-array comparison. Fields: heading, rows (label, count, total, valueLabel), iconLabel, iconToken (glyph to repeat e.g. "coffee"/"car"/"person"), insight
 
 MANDATORY per section: imagePrompt (one vivid sentence, editorial illustration, no text in image)
+MANDATORY per section: icon (a short semantic token like "money", "growth", "people", "global", "technology" that matches the section meaning — the renderer turns it into a vector icon)
 ALSO include: heroImagePrompt for the banner
 
 Return valid JSON only. No markdown, no code fences, no commentary.
