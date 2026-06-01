@@ -33,6 +33,7 @@ export default function StudioPage() {
     node: infographicRef.current,
     title: generator.data?.title,
     theme,
+    backgroundColor: generator.data?.style?.secondaryColor ?? "#f8f5ef",
   });
 
   const handleGenerate = useCallback(
@@ -153,7 +154,7 @@ export default function StudioPage() {
               <StudioCanvas
                 ref={infographicRef}
                 data={generator.data}
-                displayWidth={640}
+                displayWidth={760}
               />
             </div>
           )}
