@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import type { StudioViewModel } from "../../hooks/useStudioGenerator";
 import type { SlotColorRole } from "../../mastra/schemas/schema";
 import { TEMPLATE_DEFINITIONS } from "../../mastra/schemas/schema";
@@ -84,23 +84,48 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
   const templateId = slotAssignment.template;
   const def = TEMPLATE_DEFINITIONS[templateId] ?? TEMPLATE_DEFINITIONS["editorial-portrait"];
   const { canvasWidth, canvasHeight, gridTemplateAreas, gridTemplateColumns, gridTemplateRows, slots } = def;
+  const adaptive = def.adaptiveHeight === true;
 
   const scale       = displayWidth / canvasWidth;
-  const displayHeight = Math.round(canvasHeight * scale);
+
+  // Adaptive templates (poster) size to content: measure the grid's natural
+  // height so the wrapper/export crop exactly to content
+  const innerRef = useRef<HTMLDivElement | null>(null);
+  const [measuredHeight, setMeasuredHeight] = useState(canvasHeight);
+  useLayoutEffect(() => {
+    if (!adaptive || !innerRef.current) return;
+    const el = innerRef.current;
+    const update = () => setMeasuredHeight(el.scrollHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [adaptive, data]);
+
+  const effectiveHeight = adaptive ? measuredHeight : canvasHeight;
+  const displayHeight = Math.round(effectiveHeight * scale);
   const fontFamily  = FONT_STACKS[studioConfig.primaryFont] ?? FONT_STACKS["modern-sans"];
   const canvasBg    = style.secondaryColor;
   const canvasBgDark = luminance(canvasBg) < 0.45;
+  // Hairline panel separation, like the paneled look of editorial infographics.
+  const dividerColor = canvasBgDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.08)";
 
   return (
     <div
       style={{ width: displayWidth, height: displayHeight, overflow: "hidden", position: "relative" }}
       className="rounded-2xl shadow-xl"
     >
+      {/* Mount-once reveal — settles well before any PNG/PDF export capture. */}
+      <style>{`@keyframes studioSlotReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}`}</style>
       <div
-        ref={ref}
+        ref={(node) => {
+          innerRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }}
         style={{
           width: canvasWidth,
-          height: canvasHeight,
+          height: adaptive ? "auto" : canvasHeight,
           display: "grid",
           gridTemplateAreas,
           gridTemplateColumns,
@@ -109,15 +134,17 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
           transform: `scale(${scale})`,
           fontFamily,
           backgroundColor: canvasBg,
+          overflow: "hidden",
         }}
       >
-        {Object.entries(slots).map(([slotName, slotDef]) => {
+        {Object.entries(slots).map(([slotName, slotDef], slotIndex) => {
           const sectionIndex = slotAssignment.slots[slotName] ?? null;
           const section = sectionIndex !== null ? (sections[sectionIndex] ?? null) : null;
           const colors = resolveSlotColors(slotDef.colorRole, style, canvasBgDark);
 
           const isTextured = slotDef.colorRole === "surface" || slotDef.colorRole === "surface-alt";
           const dotColor = canvasBgDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.045)";
+          const isFooter = slotDef.regionType === "footer";
           const slotStyle: React.CSSProperties = {
             gridArea: slotName,
             backgroundColor: colors.bg,
@@ -129,6 +156,8 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
             position: "relative",
             minWidth: 0,
             minHeight: 0,
+            boxShadow: isFooter ? undefined : `inset 0 0 0 1px ${dividerColor}`,
+            animation: `studioSlotReveal 0.5s ease-out ${slotIndex * 0.06}s both`,
             containerType: "inline-size" as React.CSSProperties["containerType"],
           };
 
