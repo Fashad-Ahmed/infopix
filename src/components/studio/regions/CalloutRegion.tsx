@@ -1,6 +1,7 @@
 "use client";
 
 import type { CalloutSection } from "../../../types/infographic";
+import { resolveIcon } from "../iconMap";
 
 type Props = {
   section: CalloutSection;
@@ -25,10 +26,11 @@ export function CalloutRegion({ section, primaryColor, accentColor, bgColor, wid
   const textColor = luminance(bgColor) > 0.45 ? "#111111" : "#ffffff";
   const subColor  = `${textColor}bb`;
   const dimColor  = `${textColor}77`;
+  const Icon = resolveIcon(section.icon, section.heading, section.quote, section.stat);
 
   const rootStyle: React.CSSProperties = fill
-    ? { width: "100%", height: "100%", backgroundColor: bgColor, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 24px", boxSizing: "border-box", textAlign: "center", overflow: "hidden", gap: 8, position: "relative" }
-    : { width, height,               backgroundColor: bgColor, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 24px", boxSizing: "border-box", textAlign: "center", overflow: "hidden", gap: 8, position: "relative" };
+    ? { width: "100%", height: "100%", backgroundColor: bgColor, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px 16px", boxSizing: "border-box", textAlign: "center", overflow: "hidden", gap: 4, position: "relative" }
+    : { width, height,               backgroundColor: bgColor, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px 16px", boxSizing: "border-box", textAlign: "center", overflow: "hidden", gap: 4, position: "relative" };
 
   return (
     <div style={rootStyle}>
@@ -41,20 +43,25 @@ export function CalloutRegion({ section, primaryColor, accentColor, bgColor, wid
         </div>
       )}
       {/* Large decorative quotation mark */}
-      <div style={{ position: "absolute", top: 6, left: 14, fontSize: 72, fontWeight: 900, color: textColor, opacity: 0.08, lineHeight: 1, userSelect: "none", pointerEvents: "none", zIndex: 1 }}>
+      <div style={{ position: "absolute", top: 2, left: 12, fontSize: 56, fontWeight: 900, color: textColor, opacity: 0.08, lineHeight: 1, userSelect: "none", pointerEvents: "none", zIndex: 1 }}>
         &ldquo;
       </div>
 
-      {section.heading && (
-        <p style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accentColor, margin: 0, opacity: 0.9, position: "relative", zIndex: 1 }}>
-          {section.heading}
-        </p>
+      {(Icon || section.heading) && (
+        <div style={{ display: "flex", alignItems: "center", gap: 6, position: "relative", zIndex: 1, maxWidth: "100%", flexShrink: 0 }}>
+          {Icon && <Icon size={15} color={accentColor} strokeWidth={2.6} style={{ flexShrink: 0 }} aria-hidden />}
+          {section.heading && (
+            <p style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: accentColor, margin: 0, opacity: 0.9, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", minWidth: 0 }}>
+              {section.heading}
+            </p>
+          )}
+        </div>
       )}
 
       {/* Big stat */}
       {section.stat && (
         <div style={{
-          fontSize: "clamp(28px, 7cqw, 64px)",
+          fontSize: "clamp(22px, 5.5cqw, 44px)",
           fontWeight: 900,
           color: textColor,
           lineHeight: 1,
@@ -65,6 +72,7 @@ export function CalloutRegion({ section, primaryColor, accentColor, bgColor, wid
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
           maxWidth: "100%",
+          flexShrink: 0,
         }}>
           {section.stat}
         </div>
@@ -72,18 +80,19 @@ export function CalloutRegion({ section, primaryColor, accentColor, bgColor, wid
 
       {/* Quote text */}
       <p style={{
-        fontSize: "clamp(10px, 1.4cqw, 13px)",
+        fontSize: "clamp(9px, 1.2cqw, 12px)",
         color: subColor,
-        lineHeight: 1.55,
+        lineHeight: 1.4,
         fontStyle: "italic",
-        maxWidth: "92%",
+        maxWidth: "94%",
         overflow: "hidden",
         display: "-webkit-box",
         WebkitBoxOrient: "vertical",
-        WebkitLineClamp: 4,
+        WebkitLineClamp: 3,
         margin: 0,
         position: "relative",
         zIndex: 1,
+        minHeight: 0,
       }}>
         {section.quote}
       </p>
@@ -91,7 +100,7 @@ export function CalloutRegion({ section, primaryColor, accentColor, bgColor, wid
       {/* Attribution */}
       {section.attribution && (
         <p style={{
-          fontSize: 10,
+          fontSize: 9,
           color: dimColor,
           fontWeight: 600,
           letterSpacing: "0.06em",
@@ -103,6 +112,7 @@ export function CalloutRegion({ section, primaryColor, accentColor, bgColor, wid
           whiteSpace: "nowrap",
           textOverflow: "ellipsis",
           maxWidth: "100%",
+          flexShrink: 0,
         }}>
           {section.attribution}
         </p>

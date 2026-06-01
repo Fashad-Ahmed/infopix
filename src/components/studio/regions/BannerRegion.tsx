@@ -63,9 +63,9 @@ export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primar
 
         <h1 style={{
           color: textColor,
-          fontSize: "clamp(12px, 2.6cqw, 36px)",
+          fontSize: "clamp(12px, 2.6cqw, 34px)",
           fontWeight: 900,
-          lineHeight: 1.05,
+          lineHeight: 1.08,
           letterSpacing: "-0.03em",
           margin: 0,
           textTransform: "uppercase",
@@ -73,34 +73,35 @@ export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primar
           overflow: "hidden",
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
-          WebkitLineClamp: 3,
-          flexShrink: 1,
+          WebkitLineClamp: 2,
+          flexShrink: 0,
           minHeight: 0,
         }}>
           {title}
         </h1>
 
-        {accentStyle === "stamp" && (
-          <div style={{
-            display: "inline-flex", alignSelf: "flex-start",
-            border: `3px solid ${accentColor}`, color: accentColor,
-            fontSize: 9, fontWeight: 800, letterSpacing: "0.18em",
-            padding: "2px 8px", marginTop: 8, textTransform: "uppercase",
-            transform: "rotate(-1.5deg)", flexShrink: 1,
-          }}>
-            STUDIO
-          </div>
-        )}
-
         <p style={{
           color: subColor, fontSize: "clamp(9px, 1.2cqw, 13px)", lineHeight: 1.4, margin: "6px 0 0",
           maxWidth: "92%", overflow: "hidden",
-          display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 1,
+          display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2,
           flexShrink: 1, minHeight: 0,
         }}>
           {summary}
         </p>
       </div>
+
+      {/* Stamp moved out of flow so it never pushes the title off-canvas */}
+      {accentStyle === "stamp" && (
+        <div style={{
+          position: "absolute", bottom: 10, right: 16, zIndex: 2,
+          border: `2px solid ${accentColor}`, color: accentColor,
+          fontSize: 8, fontWeight: 800, letterSpacing: "0.18em",
+          padding: "2px 7px", textTransform: "uppercase",
+          transform: "rotate(-1.5deg)", pointerEvents: "none",
+        }}>
+          STUDIO
+        </div>
+      )}
 
       {/* Bottom accent stripe */}
       {(accentStyle === "ribbon" || accentStyle === "rule") && (
