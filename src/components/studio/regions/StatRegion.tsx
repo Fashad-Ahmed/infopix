@@ -124,8 +124,8 @@ export function StatRegion({ section, primaryColor, accentColor, bgColor, width,
         </p>
       )}
 
-      {section.insight && (
-        <p style={{ color: textColor, fontSize: 9, lineHeight: 1.4, margin: 0, opacity: 0.55, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 3 }}>
+      {!section.subheading && section.insight && (
+        <p style={{ color: textColor, fontSize: 9, lineHeight: 1.4, margin: 0, opacity: 0.55, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2 }}>
           {section.insight}
         </p>
       )}

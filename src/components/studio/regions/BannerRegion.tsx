@@ -63,9 +63,9 @@ export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primar
 
         <h1 style={{
           color: textColor,
-          fontSize: "clamp(16px, 3.8cqw, 48px)",
+          fontSize: "clamp(12px, 2.6cqw, 36px)",
           fontWeight: 900,
-          lineHeight: 1.0,
+          lineHeight: 1.05,
           letterSpacing: "-0.03em",
           margin: 0,
           textTransform: "uppercase",
@@ -73,7 +73,7 @@ export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primar
           overflow: "hidden",
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
-          WebkitLineClamp: 2,
+          WebkitLineClamp: 3,
           flexShrink: 1,
           minHeight: 0,
         }}>
@@ -92,12 +92,10 @@ export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primar
           </div>
         )}
 
-        <div style={{ width: "100%", height: 1, backgroundColor: `${textColor}20`, margin: "8px 0", flexShrink: 1 }} />
-
         <p style={{
-          color: subColor, fontSize: "clamp(10px, 1.3cqw, 14px)", lineHeight: 1.4, margin: 0,
-          maxWidth: "88%", overflow: "hidden",
-          display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2,
+          color: subColor, fontSize: "clamp(9px, 1.2cqw, 13px)", lineHeight: 1.4, margin: "6px 0 0",
+          maxWidth: "92%", overflow: "hidden",
+          display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 1,
           flexShrink: 1, minHeight: 0,
         }}>
           {summary}

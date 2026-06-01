@@ -31,15 +31,15 @@ export function TakeawayRegion({ section, primaryColor, accentColor, bgColor, wi
         {section.heading}
       </p>
 
-      <div style={{ flex: 1, minHeight: 0, overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "space-evenly", gap: 4 }}>
+      <div style={{ flex: 1, minHeight: 0, overflow: "hidden", display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 6, alignContent: "flex-start" }}>
         {section.points.map((point, i) => (
-          <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, minHeight: 0 }}>
+          <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, flex: "1 0 180px", minWidth: 0 }}>
             <span style={{
-              minWidth: 22, height: 22,
+              minWidth: 20, height: 20,
               borderRadius: "50%",
               backgroundColor: accentColor,
               color: "#fff",
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: 900,
               display: "flex", alignItems: "center", justifyContent: "center",
               flexShrink: 0,
@@ -47,7 +47,7 @@ export function TakeawayRegion({ section, primaryColor, accentColor, bgColor, wi
             }}>
               {i + 1}
             </span>
-            <p style={{ color: primaryColor, fontSize: 11, lineHeight: 1.45, margin: 0, fontWeight: 500, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 3 }}>
+            <p style={{ color: primaryColor, fontSize: 10, lineHeight: 1.4, margin: 0, fontWeight: 500, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, minWidth: 0 }}>
               {point}
             </p>
           </div>

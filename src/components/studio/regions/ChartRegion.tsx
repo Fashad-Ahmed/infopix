@@ -122,14 +122,14 @@ function DonutChart({
   const innerRatio = isDonut ? 0.55 : 0;
 
   return (
-    <div style={{ width: "100%", flex: 1, position: "relative", minHeight: 180 }}>
+    <div style={{ width: "100%", flex: 1, position: "relative", minHeight: 120 }}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={data} dataKey="value" nameKey="name"
             cx="38%" cy="50%"
-            innerRadius={`${Math.round(innerRatio * 45)}%`}
-            outerRadius="45%"
+            innerRadius={`${Math.round(innerRatio * 72)}%`}
+            outerRadius="72%"
             paddingAngle={isDonut ? 3 : 0}
             startAngle={90} endAngle={-270}
           >
@@ -177,7 +177,7 @@ export function ChartRegion({ section, primaryColor, secondaryColor, accentColor
   return (
     <div style={rootStyle}>
       {section.imageUrl && (
-        <div style={{ flex: "0 0 30%", position: "relative", overflow: "hidden", minHeight: 50 }}>
+        <div style={{ flex: "0 0 auto", height: 70, position: "relative", overflow: "hidden" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={section.imageUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, transparent 30%, ${bgColor} 100%)` }} />

@@ -57,7 +57,7 @@ export function ComparisonRegion({ section, primaryColor, accentColor, bgColor, 
               }} />
             </div>
             {item.description && (
-              <p style={{ color: primaryColor, fontSize: 9, opacity: 0.45, margin: "2px 0 0", lineHeight: 1.3 }}>
+              <p style={{ color: primaryColor, fontSize: 9, opacity: 0.45, margin: "2px 0 0", lineHeight: 1.3, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 1 }}>
                 {item.description}
               </p>
             )}
@@ -66,7 +66,7 @@ export function ComparisonRegion({ section, primaryColor, accentColor, bgColor, 
       </div>
 
       {section.insight && (
-        <p style={{ color: primaryColor, fontSize: 9, opacity: 0.5, fontStyle: "italic", lineHeight: 1.35, marginTop: 4, flexShrink: 0 }}>
+        <p style={{ color: primaryColor, fontSize: 9, opacity: 0.5, fontStyle: "italic", lineHeight: 1.35, marginTop: 4, flexShrink: 0, overflow: "hidden", display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2 }}>
           {section.insight}
         </p>
       )}
