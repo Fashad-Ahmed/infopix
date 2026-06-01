@@ -32,7 +32,7 @@ export function DownloadToolbar({ onDownload, pending }: DownloadToolbarProps) {
           }}
         >
           <Icon className="w-4 h-4" aria-hidden />
-          {pending === kind ? "Rendering…" : label}
+          {pending === kind ? "Downloading" : label}
         </button>
       ))}
     </div>
