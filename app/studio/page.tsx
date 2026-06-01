@@ -121,8 +121,8 @@ export default function StudioPage() {
 
         {/* Left: form */}
         <div
-          className="rounded-3xl p-8 sticky top-8"
-          style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)" }}
+          className="rounded-3xl p-6 sticky top-8 overflow-y-auto"
+          style={{ backgroundColor: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--card-shadow)", maxHeight: "calc(100vh - 5rem)" }}
         >
           <StudioForm loading={generator.isLoading} onSubmit={handleGenerate} />
         </div>

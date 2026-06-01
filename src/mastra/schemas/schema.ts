@@ -40,11 +40,10 @@ export const BrandStyleSchema = z.object({
 });
 
 const BaseSection = z.object({
-  heading: z.string().max(80).transform(s => s.slice(0, 80)),
-  subheading: z.string().max(160).transform(s => s.slice(0, 160)).optional(),
+  heading: z.string().transform(s => s.slice(0, 80)),
+  subheading: z.string().transform(s => s.slice(0, 160)).optional(),
   imagePrompt: z
     .string()
-    .max(400)
     .transform(s => s.slice(0, 400))
     .optional()
     .describe("Short visual prompt for AI image generation"),
@@ -60,14 +59,14 @@ const MetricSection = BaseSection.extend({
     ),
   unit: z.string().optional(),
   trend: z.enum(["up", "down", "neutral"]).optional(),
-  insight: z.string().describe("Briefly explain why this number matters"),
+  insight: z.string().transform(s => s.slice(0, 300)).describe("Briefly explain why this number matters"),
 });
 
 const ComparisonSection = BaseSection.extend({
   type: z.literal("comparison"),
   scaleDescription: z
     .string()
-    .max(120)
+    .transform(s => s.slice(0, 120))
     .optional()
     .describe(
       "What the bar represents — e.g. 'Relative speed, higher = faster' or 'Market share %' or 'Score out of 100'",
@@ -83,7 +82,6 @@ const ComparisonSection = BaseSection.extend({
           ),
         valueLabel: z
           .string()
-          .max(30)
           .transform(s => s.slice(0, 30))
           .optional()
           .describe(
@@ -92,7 +90,6 @@ const ComparisonSection = BaseSection.extend({
         isHighlight: z.boolean(),
         description: z
           .string()
-          .max(200)
           .transform(s => s.slice(0, 200))
           .optional()
           .describe("One short clause explaining this data point"),
@@ -102,7 +99,7 @@ const ComparisonSection = BaseSection.extend({
     .max(8),
   insight: z
     .string()
-    .max(400)
+    .transform(s => s.slice(0, 400))
     .optional()
     .describe("One sentence summarising what this comparison reveals"),
 });
@@ -117,11 +114,10 @@ const ChartSection = BaseSection.extend({
   data: z
     .array(
       z.object({
-        label: z.string().max(40).transform(s => s.slice(0, 40)),
+        label: z.string().transform(s => s.slice(0, 40)),
         value: z.number().describe("Numeric value"),
         valueLabel: z
           .string()
-          .max(30)
           .transform(s => s.slice(0, 30))
           .optional()
           .describe("Human-readable value (e.g. '42%', '$1.2B')"),
@@ -131,32 +127,31 @@ const ChartSection = BaseSection.extend({
     .max(10),
   unit: z
     .string()
-    .max(40)
     .transform(s => s.slice(0, 40))
     .optional()
     .describe("Unit shown beside numbers in legend/tooltip (e.g. '%', 'M users')"),
   insight: z
     .string()
-    .max(400)
+    .transform(s => s.slice(0, 400))
     .optional()
     .describe("One sentence summarising what the chart reveals"),
 });
 
 const KeyTakeawaySection = BaseSection.extend({
   type: z.literal("takeaway"),
-  points: z.array(z.string()).min(2).max(8),
+  points: z.array(z.string().transform(s => s.slice(0, 200))).min(2).max(8),
   insight: z
     .string()
-    .max(400)
+    .transform(s => s.slice(0, 400))
     .optional()
     .describe("One sentence summarising why these takeaways matter"),
 });
 
 export const CalloutSection = BaseSection.extend({
   type: z.literal("callout"),
-  quote: z.string().max(300).describe("The striking fact as a complete sentence"),
-  stat: z.string().max(30).optional().describe("Key number or figure e.g. '$33.7B', '260M+'"),
-  attribution: z.string().max(120).optional().describe("Source context e.g. 'Netflix Q4 2023 earnings'"),
+  quote: z.string().transform(s => s.slice(0, 300)).describe("The striking fact as a complete sentence"),
+  stat: z.string().transform(s => s.slice(0, 30)).optional().describe("Key number or figure e.g. '$33.7B', '260M+'"),
+  attribution: z.string().transform(s => s.slice(0, 120)).optional().describe("Source context e.g. 'Netflix Q4 2023 earnings'"),
 });
 
 export const PictographSection = BaseSection.extend({
@@ -164,28 +159,27 @@ export const PictographSection = BaseSection.extend({
   rows: z
     .array(
       z.object({
-        label: z.string().max(40).describe("Row label e.g. 'USA', 'Europe', 'Africa'"),
+        label: z.string().transform(s => s.slice(0, 40)).describe("Row label e.g. 'USA', 'Europe', 'Africa'"),
         count: z.number().describe("Number of icons to highlight (can be decimal e.g. 5.4 for 54%)"),
         total: z.number().int().min(2).max(20).describe("Total icons shown in the row"),
-        valueLabel: z.string().max(20).optional().describe("Human-readable value e.g. '24/week', '54%'"),
+        valueLabel: z.string().transform(s => s.slice(0, 20)).optional().describe("Human-readable value e.g. '24/week', '54%'"),
       }),
     )
     .min(2)
     .max(6),
-  iconLabel: z.string().max(80).transform(s => s.slice(0, 80)).optional().describe("What each icon represents e.g. 'cups per week', 'people out of 10'"),
-  insight: z.string().max(400).optional(),
+  iconLabel: z.string().transform(s => s.slice(0, 80)).optional().describe("What each icon represents e.g. 'cups per week', 'people out of 10'"),
+  insight: z.string().transform(s => s.slice(0, 400)).optional(),
 });
 
 export const InfographicContentSchema = z.object({
-  title: z.string().min(1).max(120).transform(s => s.slice(0, 120)),
+  title: z.string().min(1).transform(s => s.slice(0, 120)),
   summary: z
     .string()
-    .max(400)
     .transform(s => s.slice(0, 400))
     .describe("The 'Too Long; Didn't Read' summary for the header"),
   heroImagePrompt: z
     .string()
-    .max(400)
+    .transform(s => s.slice(0, 400))
     .optional()
     .describe("Visual prompt for a hero image at top of infographic"),
   heroImageUrl: z.string().optional(),
@@ -274,9 +268,9 @@ export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
   },
   "editorial-landscape": {
     canvasWidth: 1123, canvasHeight: 794,
-    gridTemplateAreas: `"banner   banner     banner" "stat-a   stat-b     stat-c" "chart    chart      comparison" "takeaway takeaway   footer"`,
+    gridTemplateAreas: `"banner   banner     banner" "stat-a   stat-b     stat-c" "chart    chart      comparison" "takeaway takeaway   takeaway" "footer   footer     footer"`,
     gridTemplateColumns: "1fr 1fr 1fr",
-    gridTemplateRows: "130px 160px 1fr 60px",
+    gridTemplateRows: "130px 160px 1fr 140px 40px",
     slots: {
       banner:     { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
       "stat-a":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],                 colorRole: "accent" },
@@ -304,9 +298,9 @@ export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
   },
   "social-wide": {
     canvasWidth: 1200, canvasHeight: 628,
-    gridTemplateAreas: `"banner   banner" "chart    stat-a" "takeaway footer"`,
+    gridTemplateAreas: `"banner   banner" "chart    stat-a" "takeaway takeaway" "footer   footer"`,
     gridTemplateColumns: "3fr 2fr",
-    gridTemplateRows: "160px 1fr 80px",
+    gridTemplateRows: "160px 1fr 80px 36px",
     slots: {
       banner:   { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
       chart:    { regionType: "chart",      acceptedTypes: ["chart", "comparison"],               colorRole: "surface" },
