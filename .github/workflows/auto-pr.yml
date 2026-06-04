@@ -36,12 +36,9 @@ jobs:
         if: steps.check.outputs.count == '0'
         id: commits
         run: |
-          BRANCH="${{ github.ref_name }}"
           BASE="main"
-
           LOG=$(git log origin/$BASE..HEAD --oneline 2>/dev/null || git log --oneline -10)
           FILES=$(git diff --name-only origin/$BASE..HEAD 2>/dev/null | head -30 || echo "(unable to diff)")
-
           {
             echo "log<<EOF"
             echo "$LOG"
@@ -55,33 +52,44 @@ jobs:
         if: steps.check.outputs.count == '0'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.ref_name }}
+          ACTOR: ${{ github.actor }}
+          PUSHED: ${{ github.event.head_commit.timestamp }}
+          COMMIT_LOG: ${{ steps.commits.outputs.log }}
+          CHANGED_FILES: ${{ steps.commits.outputs.files }}
         run: |
-          BRANCH="${{ github.ref_name }}"
-          ACTOR="${{ github.actor }}"
+          TITLE=$(echo "$BRANCH" | sed 's/[-_]/ /g' | sed 's/\b\(.\)/\u\1/g')
 
-          TITLE=$(echo "$BRANCH" | sed 's/[-_]/ /g' | sed 's/\b./\u&/g')
-          TITLE="${TITLE} (#$(date +%s | tail -c 5))"
+          cat > /tmp/pr-body.md << 'BODY_EOF'
+          ## Summary
+
+          Branch: `BRANCH_PLACEHOLDER`
+          Author: ACTOR_PLACEHOLDER
+          Pushed: PUSHED_PLACEHOLDER
+
+          ## Commits
+          ```
+          COMMIT_LOG_PLACEHOLDER
+          ```
+
+          ## Changed Files
+          ```
+          CHANGED_FILES_PLACEHOLDER
+          ```
+
+          ---
+          _Auto-generated PR. Update title and description before merging._
+          BODY_EOF
+
+          sed -i "s|BRANCH_PLACEHOLDER|$BRANCH|g" /tmp/pr-body.md
+          sed -i "s|ACTOR_PLACEHOLDER|$ACTOR|g" /tmp/pr-body.md
+          sed -i "s|PUSHED_PLACEHOLDER|$PUSHED|g" /tmp/pr-body.md
+          sed -i "s|COMMIT_LOG_PLACEHOLDER|$COMMIT_LOG|g" /tmp/pr-body.md
+          sed -i "s|CHANGED_FILES_PLACEHOLDER|$CHANGED_FILES|g" /tmp/pr-body.md
 
           gh pr create \
             --repo "${{ github.repository }}" \
             --base main \
             --head "$BRANCH" \
             --title "$TITLE" \
-            --body "## Summary
-
-Branch: \`$BRANCH\`
-Author: @$ACTOR
-Pushed: ${{ github.event.head_commit.timestamp }}
-
-## Commits
-\`\`\`
-${{ steps.commits.outputs.log }}
-\`\`\`
-
-## Changed Files
-\`\`\`
-${{ steps.commits.outputs.files }}
-\`\`\`
-
----
-_Auto-generated PR. Update title and description before merging._"
+            --body-file /tmp/pr-body.md
