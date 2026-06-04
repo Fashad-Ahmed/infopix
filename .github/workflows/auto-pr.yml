@@ -1,0 +1,98 @@
+name: Auto Create PR
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Check if PR already exists
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COUNT=$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --head "${{ github.ref_name }}" \
+            --state open \
+            --json number \
+            --jq 'length')
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        if: steps.check.outputs.count == '0'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect commit details
+        if: steps.check.outputs.count == '0'
+        id: commits
+        run: |
+          BASE="main"
+          LOG=$(git log origin/$BASE..HEAD --oneline 2>/dev/null || git log --oneline -10)
+          FILES=$(git diff --name-only origin/$BASE..HEAD 2>/dev/null | head -30 || echo "(unable to diff)")
+          {
+            echo "log<<EOF"
+            echo "$LOG"
+            echo "EOF"
+            echo "files<<EOF"
+            echo "$FILES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create PR
+        if: steps.check.outputs.count == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ github.ref_name }}
+          ACTOR: ${{ github.actor }}
+          PUSHED: ${{ github.event.head_commit.timestamp }}
+          COMMIT_LOG: ${{ steps.commits.outputs.log }}
+          CHANGED_FILES: ${{ steps.commits.outputs.files }}
+        run: |
+          TITLE=$(echo "$BRANCH" | sed 's/[-_]/ /g' | sed 's/\b\(.\)/\u\1/g')
+
+          python3 - << 'PYEOF'
+          import os
+
+          branch       = os.environ.get("BRANCH", "")
+          actor        = os.environ.get("ACTOR", "")
+          pushed       = os.environ.get("PUSHED", "")
+          commit_log   = os.environ.get("COMMIT_LOG", "")
+          changed_files = os.environ.get("CHANGED_FILES", "")
+
+          body = (
+              "## Summary\n\n"
+              f"Branch: `{branch}`\n"
+              f"Author: {actor}\n"
+              f"Pushed: {pushed}\n\n"
+              "## Commits\n"
+              "```\n"
+              f"{commit_log}\n"
+              "```\n\n"
+              "## Changed Files\n"
+              "```\n"
+              f"{changed_files}\n"
+              "```\n\n"
+              "---\n"
+              "_Auto-generated PR. Update title and description before merging._"
+          )
+
+          with open("/tmp/pr-body.md", "w") as f:
+              f.write(body)
+          PYEOF
+
+          gh pr create \
+            --repo "${{ github.repository }}" \
+            --base main \
+            --head "$BRANCH" \
+            --title "$TITLE" \
+            --body-file /tmp/pr-body.md

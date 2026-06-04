@@ -149,9 +149,9 @@ export function buildInfographicTheme(
   } | undefined,
   isDark: boolean,
 ): InfographicTheme {
-  const primary = style?.primaryColor || "#111827";
-  const secondary = style?.secondaryColor || "#4B5563";
-  const accent = style?.accentColor || "#2563eb";
+  const primary = style?.primaryColor || "#121042";
+  const secondary = style?.secondaryColor || "#333333";
+  const accent = style?.accentColor || "#fdbc2b";
   const radius = style?.borderRadius || "1.5rem";
 
   if (!isDark) {

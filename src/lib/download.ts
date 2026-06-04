@@ -24,6 +24,7 @@ async function captureNode(
     height,
     canvasWidth: width,
     canvasHeight: height,
+    skipFonts: true,
     style: {
       transform: "none",
       margin: "0",
