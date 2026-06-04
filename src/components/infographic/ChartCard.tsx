@@ -14,7 +14,7 @@ import type { ChartSection } from "../../types/infographic";
 import type { InfographicTheme } from "../../lib/infographic-theme";
 import { InsightCaption } from "./InsightCaption";
 
-const FALLBACK_PALETTE = ["#10b981", "#8b5cf6", "#f59e0b"];
+const FALLBACK_PALETTE = ["#fdbc2b", "#fb3364", "#42a4cd", "#70b52b"];
 
 function buildPalette(theme: InfographicTheme): string[] {
   return [theme.primary, theme.accent, theme.secondary, ...FALLBACK_PALETTE];

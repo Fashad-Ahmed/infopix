@@ -262,3 +262,21 @@ button:focus-visible {
   box-shadow: 0 0 0 3px var(--ring);
 }
 
+/* Infographic: apply design system typography.
+ * Darker Grotesque for headlines (display family per brand spec).
+ * BDO Grotesk is licensed; fall back to Inter / system-ui for body. */
+.infographic h1,
+.infographic h2,
+.infographic h3,
+.infographic h4,
+.infographic h5,
+.infographic h6 {
+  font-family: var(--font-display), "Darker Grotesque", system-ui, sans-serif;
+}
+.infographic p,
+.infographic span,
+.infographic li,
+.infographic caption {
+  font-family: "BDO Grotesk", "Inter", system-ui, sans-serif;
+}
+

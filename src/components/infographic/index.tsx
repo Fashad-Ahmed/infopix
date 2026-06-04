@@ -66,7 +66,6 @@ const Infographic = forwardRef<HTMLDivElement, InfographicProps>(
           borderRadius: theme.radius,
           backgroundColor: "var(--surface)",
           border: "1px solid var(--border)",
-          boxShadow: "var(--card-shadow)",
           animation: "slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
@@ -92,7 +91,7 @@ const Infographic = forwardRef<HTMLDivElement, InfographicProps>(
           }}
         >
           <h1
-            className="text-4xl md:text-5xl font-black uppercase tracking-tight"
+            className="text-4xl md:text-5xl font-bold uppercase tracking-tight"
             style={{
               color: isDark ? "var(--foreground)" : theme.primary,
               animation: "slideInUp 0.6s ease-out 0.1s backwards",
@@ -123,9 +122,7 @@ const Infographic = forwardRef<HTMLDivElement, InfographicProps>(
                   backgroundColor: isHovered
                     ? "var(--card-hover-tint)"
                     : "var(--surface-alt)",
-                  border: isHovered
-                    ? `2px solid ${isDark ? "var(--border-strong)" : `${theme.primary}55`}`
-                    : "1px solid var(--border)",
+                  border: "1px solid var(--border)",
                   transform: isHovered ? "translateY(-4px) scale(1.02)" : "none",
                   boxShadow: isHovered ? "var(--card-hover-shadow)" : "none",
                   animation: `slideInUp 0.5s ease-out ${0.1 + idx * 0.1}s backwards`,
@@ -140,7 +137,7 @@ const Infographic = forwardRef<HTMLDivElement, InfographicProps>(
                 />
 
                 <h3
-                  className="text-sm font-bold uppercase tracking-widest mb-6 transition-colors duration-300"
+                  className="text-xs font-medium uppercase tracking-wide mb-6 transition-colors duration-300"
                   style={{ color: sectionHeadingColor(isHovered) }}
                 >
                   {section.heading}
