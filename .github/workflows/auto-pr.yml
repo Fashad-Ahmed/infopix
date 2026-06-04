@@ -60,32 +60,35 @@ jobs:
         run: |
           TITLE=$(echo "$BRANCH" | sed 's/[-_]/ /g' | sed 's/\b\(.\)/\u\1/g')
 
-          cat > /tmp/pr-body.md << 'BODY_EOF'
-          ## Summary
+          python3 - << 'PYEOF'
+          import os
 
-          Branch: `BRANCH_PLACEHOLDER`
-          Author: ACTOR_PLACEHOLDER
-          Pushed: PUSHED_PLACEHOLDER
+          branch       = os.environ.get("BRANCH", "")
+          actor        = os.environ.get("ACTOR", "")
+          pushed       = os.environ.get("PUSHED", "")
+          commit_log   = os.environ.get("COMMIT_LOG", "")
+          changed_files = os.environ.get("CHANGED_FILES", "")
 
-          ## Commits
-          ```
-          COMMIT_LOG_PLACEHOLDER
-          ```
+          body = (
+              "## Summary\n\n"
+              f"Branch: `{branch}`\n"
+              f"Author: {actor}\n"
+              f"Pushed: {pushed}\n\n"
+              "## Commits\n"
+              "```\n"
+              f"{commit_log}\n"
+              "```\n\n"
+              "## Changed Files\n"
+              "```\n"
+              f"{changed_files}\n"
+              "```\n\n"
+              "---\n"
+              "_Auto-generated PR. Update title and description before merging._"
+          )
 
-          ## Changed Files
-          ```
-          CHANGED_FILES_PLACEHOLDER
-          ```
-
-          ---
-          _Auto-generated PR. Update title and description before merging._
-          BODY_EOF
-
-          sed -i "s|BRANCH_PLACEHOLDER|$BRANCH|g" /tmp/pr-body.md
-          sed -i "s|ACTOR_PLACEHOLDER|$ACTOR|g" /tmp/pr-body.md
-          sed -i "s|PUSHED_PLACEHOLDER|$PUSHED|g" /tmp/pr-body.md
-          sed -i "s|COMMIT_LOG_PLACEHOLDER|$COMMIT_LOG|g" /tmp/pr-body.md
-          sed -i "s|CHANGED_FILES_PLACEHOLDER|$CHANGED_FILES|g" /tmp/pr-body.md
+          with open("/tmp/pr-body.md", "w") as f:
+              f.write(body)
+          PYEOF
 
           gh pr create \
             --repo "${{ github.repository }}" \
