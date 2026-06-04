@@ -1,0 +1,87 @@
+name: Auto Create PR
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Check if PR already exists
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COUNT=$(gh pr list \
+            --repo "${{ github.repository }}" \
+            --head "${{ github.ref_name }}" \
+            --state open \
+            --json number \
+            --jq 'length')
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        if: steps.check.outputs.count == '0'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect commit details
+        if: steps.check.outputs.count == '0'
+        id: commits
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          BASE="main"
+
+          LOG=$(git log origin/$BASE..HEAD --oneline 2>/dev/null || git log --oneline -10)
+          FILES=$(git diff --name-only origin/$BASE..HEAD 2>/dev/null | head -30 || echo "(unable to diff)")
+
+          {
+            echo "log<<EOF"
+            echo "$LOG"
+            echo "EOF"
+            echo "files<<EOF"
+            echo "$FILES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create PR
+        if: steps.check.outputs.count == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          ACTOR="${{ github.actor }}"
+
+          TITLE=$(echo "$BRANCH" | sed 's/[-_]/ /g' | sed 's/\b./\u&/g')
+          TITLE="${TITLE} (#$(date +%s | tail -c 5))"
+
+          gh pr create \
+            --repo "${{ github.repository }}" \
+            --base main \
+            --head "$BRANCH" \
+            --title "$TITLE" \
+            --body "## Summary
+
+Branch: \`$BRANCH\`
+Author: @$ACTOR
+Pushed: ${{ github.event.head_commit.timestamp }}
+
+## Commits
+\`\`\`
+${{ steps.commits.outputs.log }}
+\`\`\`
+
+## Changed Files
+\`\`\`
+${{ steps.commits.outputs.files }}
+\`\`\`
+
+---
+_Auto-generated PR. Update title and description before merging._"
