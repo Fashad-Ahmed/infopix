@@ -51,17 +51,17 @@ function resolveSlotColors(
       const bg = style.secondaryColor;
       return { bg, text: luminance(bg) > 0.45 ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.45)", accent: style.accentColor };
     }
-    case "surface-alt":
+    case "surface-alt": {
+      // Alt cards get a subtle brand-primary tint so they visually separate from plain surface.
+      const bg = canvasBgDark ? "rgba(255,255,255,0.18)" : "rgba(18,16,66,0.05)";
+      return { bg, text: style.primaryColor, accent: style.accentColor };
+    }
     case "surface":
     default: {
-      // Cards need visual weight to stand apart from canvas background.
-      // Light canvas → near-solid white card. Dark canvas → subtle white lift.
-      const subtleBg = canvasBgDark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.88)";
-      return {
-        bg: subtleBg,
-        text: canvasBgDark ? style.primaryColor : style.primaryColor,
-        accent: style.accentColor,
-      };
+      // Light canvas → solid white card for clean contrast against warm beige.
+      // Dark canvas → subtle white lift.
+      const bg = canvasBgDark ? "rgba(255,255,255,0.12)" : "#ffffff";
+      return { bg, text: style.primaryColor, accent: style.accentColor };
     }
   }
 }
@@ -108,7 +108,7 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
   const canvasBg    = style.secondaryColor;
   const canvasBgDark = luminance(canvasBg) < 0.45;
   // Hairline panel separation, like the paneled look of editorial infographics.
-  const dividerColor = canvasBgDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.08)";
+  const dividerColor = canvasBgDark ? "rgba(255,255,255,0.10)" : "rgba(18,16,66,0.14)";
 
   return (
     <div
@@ -143,7 +143,7 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
           const colors = resolveSlotColors(slotDef.colorRole, style, canvasBgDark);
 
           const isTextured = slotDef.colorRole === "surface" || slotDef.colorRole === "surface-alt";
-          const dotColor = canvasBgDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.045)";
+          const dotColor = canvasBgDark ? "rgba(255,255,255,0.06)" : "rgba(18,16,66,0.07)";
           const isFooter = slotDef.regionType === "footer";
           const slotStyle: React.CSSProperties = {
             gridArea: slotName,

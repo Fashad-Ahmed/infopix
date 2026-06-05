@@ -238,6 +238,7 @@ export const FinalPayloadSchema = z.object({
 // Studio schemas — color palettes & templates
 
 export const COLOR_SCHEME_PRESETS = {
+  brand:     { primary: "#121042", accent: "#fdbc2b", secondary: "#f8f7f3", fontMood: "modern-sans" as const },
   editorial: { primary: "#0f172a", accent: "#f59e0b", secondary: "#f8f5ef", fontMood: "modern-sans" as const },
   coral:     { primary: "#9f1239", accent: "#f43f5e", secondary: "#fff1f2", fontMood: "modern-sans" as const },
   coffee:    { primary: "#3b1a08", accent: "#f97316", secondary: "#fdf2e3", fontMood: "slab"        as const },
@@ -374,8 +375,8 @@ export const StudioInputSchema = InfographicInputSchema.extend({
     .default("flat"),
   showSourceFooter: z.boolean().default(true),
   colorScheme: z
-    .enum(["editorial", "coral", "coffee", "ocean", "forest", "midnight", "vivid", "custom"])
-    .default("editorial"),
+    .enum(["brand", "editorial", "coral", "coffee", "ocean", "forest", "midnight", "vivid", "custom"])
+    .default("brand"),
   userPrimary:    z.string().regex(/^#[A-Fa-f0-9]{6}$/).optional(),
   userAccent:     z.string().regex(/^#[A-Fa-f0-9]{6}$/).optional(),
   userBackground: z.string().regex(/^#[A-Fa-f0-9]{6}$/).optional(),

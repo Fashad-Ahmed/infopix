@@ -100,6 +100,20 @@ export const topicContentAgent = new Agent({
   model: "google/gemini-2.5-flash",
 });
 
+export const styleAgentFallback = new Agent({
+  id: "brand-visionary-agent-fallback",
+  name: "Brand Visionary (GPT Fallback)",
+  instructions: STYLE_SYSTEM_PROMPT,
+  model: "openai/gpt-4o",
+});
+
+export const topicContentAgentFallback = new Agent({
+  id: "topic-content-agent-fallback",
+  name: "Topic Content Architect (GPT Fallback)",
+  instructions: TOPIC_SYSTEM_PROMPT,
+  model: "openai/gpt-4o",
+});
+
 // Studio deep research agent: uses Gemini 2.5 Pro for maximum content richness.
 // Used exclusively by the studio workflow for data-dense, publication-grade output.
 const STUDIO_RESEARCH_SYSTEM_PROMPT = `
@@ -132,4 +146,11 @@ export const studioResearchAgent = new Agent({
   name: "Studio Research Agent",
   instructions: STUDIO_RESEARCH_SYSTEM_PROMPT,
   model: "google/gemini-2.5-pro",
+});
+
+export const studioResearchAgentFallback = new Agent({
+  id: "studio-research-agent-fallback",
+  name: "Studio Research Agent (GPT Fallback)",
+  instructions: STUDIO_RESEARCH_SYSTEM_PROMPT,
+  model: "openai/gpt-4o",
 });

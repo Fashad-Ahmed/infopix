@@ -12,9 +12,19 @@ const STYLE = {
 };
 
 describe("buildInfographicTheme — light mode", () => {
-  it("passes primary through unchanged", () => {
+  it("always locks primary to brand midnight indigo", () => {
     const t = buildInfographicTheme(STYLE, false);
-    expect(t.primary).toBe(STYLE.primaryColor);
+    expect(t.primary).toBe("#121042");
+  });
+
+  it("ignores AI primaryColor for primary slot", () => {
+    const t = buildInfographicTheme({ primaryColor: "#ff6600" }, false);
+    expect(t.primary).toBe("#121042");
+  });
+
+  it("maps AI primaryColor to accent slot", () => {
+    const t = buildInfographicTheme({ primaryColor: "#ff6600" }, false);
+    expect(t.accent).toBe("#ff6600");
   });
 
   it("passes secondary through unchanged", () => {
@@ -22,9 +32,9 @@ describe("buildInfographicTheme — light mode", () => {
     expect(t.secondary).toBe(STYLE.secondaryColor);
   });
 
-  it("passes accent through unchanged", () => {
-    const t = buildInfographicTheme(STYLE, false);
-    expect(t.accent).toBe(STYLE.accentColor);
+  it("uses accentColor as accent when no primaryColor provided", () => {
+    const t = buildInfographicTheme({ accentColor: "#fdbc2b" }, false);
+    expect(t.accent).toBe("#fdbc2b");
   });
 
   it("passes radius through unchanged", () => {
@@ -37,7 +47,7 @@ describe("buildInfographicTheme — light mode", () => {
     expect(t.metric).toBe(t.primary);
   });
 
-  it("falls back to midnight indigo when primaryColor missing", () => {
+  it("primary is midnight indigo even when style is empty", () => {
     const t = buildInfographicTheme({}, false);
     expect(t.primary).toBe("#121042");
   });

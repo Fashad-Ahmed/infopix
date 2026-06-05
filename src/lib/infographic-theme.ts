@@ -149,9 +149,13 @@ export function buildInfographicTheme(
   } | undefined,
   isDark: boolean,
 ): InfographicTheme {
-  const primary = style?.primaryColor || "#121042";
+  // Primary is always the brand token — never overridden by AI.
+  // The AI-supplied primaryColor becomes the accent so topic colour
+  // (orange for Kubernetes, green for Silicon Valley, etc.) appears
+  // only on highlights, bullets, and chart fills, not on headlines.
+  const primary = "#121042";
   const secondary = style?.secondaryColor || "#333333";
-  const accent = style?.accentColor || "#fdbc2b";
+  const accent = style?.primaryColor || style?.accentColor || "#fdbc2b";
   const radius = style?.borderRadius || "1.5rem";
 
   if (!isDark) {
