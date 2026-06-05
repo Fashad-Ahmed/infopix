@@ -42,8 +42,15 @@ export function HeroPanel({ loading, children }: HeroPanelProps) {
       </div>
 
       <h1
-        className="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-4"
-        style={{ color: "var(--foreground)" }}
+        className="mb-4"
+        style={{
+          fontFamily: 'var(--font-display), "Darker Grotesque", system-ui, sans-serif',
+          fontSize: "clamp(2.5rem, 6vw, 4rem)",
+          fontWeight: 700,
+          letterSpacing: "-0.03em",
+          lineHeight: 0.95,
+          color: "var(--foreground)",
+        }}
       >
         {t("title")}
       </h1>
