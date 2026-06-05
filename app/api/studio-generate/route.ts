@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { studioWorkflow } from "../../../src/mastra/workflows/studio-workflow";
 import { StudioInputSchema } from "../../../src/mastra/schemas/schema";
 import { parseLocaleCookie } from "../../../src/lib/locale-prompt";
+import { classifyError } from "../../../src/lib/api-error";
 
 export const maxDuration = 300;
 export const runtime = "nodejs";
@@ -68,13 +69,31 @@ export async function POST(req: Request) {
     }
 
     if (!finalData) {
+      const failedStep = Object.values(runResult.steps ?? {}).find(
+        (s: any) => s.status === "failed",
+      );
+      const stepError = failedStep ? (failedStep as any).error : undefined;
       console.error("[studio-generate] Workflow failed:", JSON.stringify(runResult, null, 2));
-      return NextResponse.json({ error: "Workflow failed to produce output" }, { status: 500 });
+      if (stepError) {
+        const classified = classifyError(stepError);
+        return NextResponse.json(
+          { error: classified.message, code: classified.code },
+          { status: classified.status },
+        );
+      }
+      return NextResponse.json(
+        { error: "Workflow failed to produce output. Please try again.", code: "GENERATION_FAILED" },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(finalData);
   } catch (error) {
     console.error("[studio-generate] Error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    const classified = classifyError(error);
+    return NextResponse.json(
+      { error: classified.message, code: classified.code },
+      { status: classified.status },
+    );
   }
 }
