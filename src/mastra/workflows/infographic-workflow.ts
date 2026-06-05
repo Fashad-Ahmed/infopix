@@ -5,11 +5,14 @@ import { getLanguageDirective } from "../../lib/locale-prompt";
 import {
   contentAgent,
   styleAgent,
+  styleAgentFallback,
   styleFromTextAgent,
   criticAgent,
   formatterAgent,
   topicContentAgent,
+  topicContentAgentFallback,
 } from "../agents/infographic-agent";
+import { withFallback } from "../utils/with-fallback";
 import {
   InfographicInputSchema,
   InfographicContentSchema,
@@ -29,8 +32,10 @@ function sanitizeContent(obj: any): any {
   if (typeof o.summary === "string") o.summary = o.summary.slice(0, 500);
   if (typeof o.heroImagePrompt === "string") o.heroImagePrompt = o.heroImagePrompt.slice(0, 400);
   if (Array.isArray(o.sections)) {
+    const CHART_SUBTYPES = new Set(["bar", "pie", "donut", "bubble", "radial", "area"]);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     o.sections = o.sections.map((s: any) => {
+      if (CHART_SUBTYPES.has(s.type)) s = { ...s, chartType: s.chartType ?? s.type, type: "chart" };
       const base = {
         ...s,
         heading: typeof s.heading === "string" ? s.heading.replace(/[_\s]+$/, "").trim().slice(0, 80) : s.heading,
@@ -92,12 +97,17 @@ Include a heroImagePrompt for the top of the infographic.
 Include metadata.confidenceScore (0-1) and metadata.reasoning.
 `.trim();
 
-      const topicRes = await topicContentAgent.generate(topicPrompt, {
-        structuredOutput: {
-          schema: InfographicContentSchema,
-          jsonPromptInjection: true,
+      const topicRes = await withFallback(
+        topicContentAgent,
+        topicContentAgentFallback,
+        topicPrompt,
+        {
+          structuredOutput: {
+            schema: InfographicContentSchema,
+            jsonPromptInjection: true,
+          },
         },
-      });
+      ) as { object?: z.infer<typeof InfographicContentSchema> | null; text?: string };
 
       let topicObject = topicRes.object;
       if (!topicObject && topicRes.text) {
@@ -286,7 +296,9 @@ export const extractStyleStep = createStep({
 
     // 1. Image-based style (existing behavior)
     if (inputData.referenceImageBase64) {
-      const res = await styleAgent.generate(
+      const res = await withFallback(
+        styleAgent,
+        styleAgentFallback,
         [
           { type: "text", text: "Extract the brand design system." },
           {
@@ -299,7 +311,7 @@ export const extractStyleStep = createStep({
         {
           structuredOutput: { schema: BrandStyleSchema },
         },
-      );
+      ) as { object?: z.infer<typeof BrandStyleSchema> | null };
       return res.object ?? DEFAULT_STYLE;
     }
 

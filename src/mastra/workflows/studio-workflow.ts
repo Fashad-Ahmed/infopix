@@ -14,7 +14,8 @@ import {
   reviewDraftStep,
   generateImagesStep,
 } from "./infographic-workflow";
-import { studioResearchAgent } from "../agents/infographic-agent";
+import { studioResearchAgent, studioResearchAgentFallback } from "../agents/infographic-agent";
+import { withFallback } from "../utils/with-fallback";
 import { getLanguageDirective } from "../../lib/locale-prompt";
 
 type SectionType = "metric" | "chart" | "comparison" | "takeaway" | "callout" | "pictograph";
@@ -139,12 +140,17 @@ REQUIREMENTS:
 Return valid JSON only. No markdown, no code fences.
 `.trim();
 
-    const res = await studioResearchAgent.generate(prompt, {
-      structuredOutput: {
-        schema: InfographicContentSchema,
-        jsonPromptInjection: true,
+    const res = await withFallback(
+      studioResearchAgent,
+      studioResearchAgentFallback,
+      prompt,
+      {
+        structuredOutput: {
+          schema: InfographicContentSchema,
+          jsonPromptInjection: true,
+        },
       },
-    });
+    ) as { object?: z.infer<typeof InfographicContentSchema> | null; text?: string };
 
     let obj = res.object;
     if (!obj && res.text) {
@@ -167,6 +173,13 @@ Return valid JSON only. No markdown, no code fences.
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function sanitizeSection(s: any): any {
+      // AI sometimes returns chartType values ("radial", "area", "bubble") as the
+      // section type discriminator instead of "chart". Normalise them back.
+      const CHART_SUBTYPES = new Set(["bar", "pie", "donut", "bubble", "radial", "area"]);
+      if (CHART_SUBTYPES.has(s.type)) {
+        s = { ...s, chartType: s.chartType ?? s.type, type: "chart" };
+      }
+
       const base = {
         ...s,
         heading:    trunc(s.heading, 80)    ?? s.heading,
