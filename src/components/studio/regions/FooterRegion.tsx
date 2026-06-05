@@ -16,7 +16,7 @@ export function FooterRegion({ primaryColor, accentColor, width, height, fill }:
   return (
     <div style={rootStyle}>
       <span style={{ color: primaryColor, fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.5 }}>
-        InfoPix Studio
+        MemorAIz
       </span>
       <span style={{ color: primaryColor, opacity: 0.2, fontSize: 10 }}>·</span>
       <span style={{ color: primaryColor, fontSize: 10, opacity: 0.4 }}>

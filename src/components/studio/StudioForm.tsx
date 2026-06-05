@@ -19,6 +19,7 @@ const INPUT_STYLE = {
 } as const;
 
 const SCHEME_META: Array<{ id: keyof typeof COLOR_SCHEME_PRESETS; label: string }> = [
+  { id: "brand",     label: "Brand" },
   { id: "editorial", label: "Editorial" },
   { id: "coral",     label: "Coral" },
   { id: "coffee",    label: "Coffee" },
@@ -39,7 +40,7 @@ export function StudioForm({ loading, onSubmit }: Props) {
   const [illustrationStyle, setIllustrationStyle] = useState<StudioFormValues["illustrationStyle"]>("flat");
   const [showSourceFooter, setShowSourceFooter] = useState(true);
   const [density, setDensity] = useState<StudioFormValues["density"]>("standard");
-  const [colorScheme, setColorScheme] = useState<StudioFormValues["colorScheme"]>("editorial");
+  const [colorScheme, setColorScheme] = useState<StudioFormValues["colorScheme"]>("brand");
   const [userPrimary, setUserPrimary]       = useState("#0f172a");
   const [userAccent, setUserAccent]         = useState("#f59e0b");
   const [userBackground, setUserBackground] = useState("#f8f5ef");
