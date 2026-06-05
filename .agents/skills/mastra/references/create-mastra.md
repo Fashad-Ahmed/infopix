@@ -109,7 +109,7 @@ Create `tsconfig.json`:
 Create `.env` with your API key:
 
 ```env
-GOOGLE_GENERATIVE_AI_API_KEY=<your-api-key>
+GEMINI_API_KEY=<your-api-key>
 ```
 
 Or use `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc.

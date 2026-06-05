@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { postStudioGenerate, type StudioGenerateRequest } from "../lib/api-client";
+import { postStudioGenerate, GenerateError, type StudioGenerateRequest } from "../lib/api-client";
 import { pickInfographicPayload, normalizeInfographicContent } from "../lib/infographic-payload";
 import type { InfographicViewModel, StudioFinalPayload, SlotAssignment } from "../types/infographic";
 
@@ -20,13 +20,15 @@ type State = {
   progress: number;
   data: StudioViewModel | null;
   error: string | null;
+  errorCode: string | null;
 };
 
-const INITIAL: State = { status: "idle", progress: 0, data: null, error: null };
+const INITIAL: State = { status: "idle", progress: 0, data: null, error: null, errorCode: null };
 
 export function useStudioGenerator() {
   const [state, setState] = useState<State>(INITIAL);
   const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const lastParamsRef = useRef<StudioGenerateRequest | null>(null);
 
   const clearProgress = useCallback(() => {
     if (intervalRef.current) {
@@ -37,7 +39,8 @@ export function useStudioGenerator() {
 
   const generate = useCallback(
     async (params: StudioGenerateRequest): Promise<StudioViewModel | null> => {
-      setState({ status: "loading", progress: 0, data: null, error: null });
+      lastParamsRef.current = params;
+      setState({ status: "loading", progress: 0, data: null, error: null, errorCode: null });
 
       intervalRef.current = setInterval(() => {
         setState((prev) =>
@@ -52,11 +55,12 @@ export function useStudioGenerator() {
         const view = toStudioViewModel(raw);
         if (!view) throw new Error("Studio response format unexpected.");
 
-        setState({ status: "success", progress: 100, data: view, error: null });
+        setState({ status: "success", progress: 100, data: view, error: null, errorCode: null });
         return view;
       } catch (err) {
         const message = err instanceof Error ? err.message : "Generation failed.";
-        setState({ status: "error", progress: 0, data: null, error: message });
+        const code = err instanceof GenerateError ? err.code : "INTERNAL";
+        setState({ status: "error", progress: 0, data: null, error: message, errorCode: code });
         return null;
       } finally {
         clearProgress();
@@ -70,7 +74,13 @@ export function useStudioGenerator() {
     setState(INITIAL);
   }, [clearProgress]);
 
-  return { ...state, isLoading: state.status === "loading", generate, reset };
+  const retry = useCallback((): Promise<StudioViewModel | null> => {
+    if (lastParamsRef.current) return generate(lastParamsRef.current);
+    reset();
+    return Promise.resolve(null);
+  }, [generate, reset]);
+
+  return { ...state, isLoading: state.status === "loading", generate, reset, retry };
 }
 
 function toStudioViewModel(raw: unknown): StudioViewModel | null {

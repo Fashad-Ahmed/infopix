@@ -27,6 +27,10 @@ export function LoadingProgress({ progress, mode }: LoadingProgressProps) {
 
   return (
     <div
+      role="status"
+      aria-live="polite"
+      aria-label={`Generating infographic, ${Math.round(progress)}% complete`}
+      aria-busy="true"
       className="max-w-2xl mx-auto rounded-[1.75rem] p-8 animate-slide-down"
       style={{
         backgroundColor: "var(--surface)",

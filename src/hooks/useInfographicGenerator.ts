@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { postGenerate } from "../lib/api-client";
+import { postGenerate, GenerateError } from "../lib/api-client";
 import {
   normalizeInfographicContent,
   pickInfographicPayload,
@@ -28,6 +28,7 @@ type GeneratorState = {
   progress: number;
   data: InfographicViewModel | null;
   error: string | null;
+  errorCode: string | null;
 };
 
 const INITIAL: GeneratorState = {
@@ -35,11 +36,13 @@ const INITIAL: GeneratorState = {
   progress: 0,
   data: null,
   error: null,
+  errorCode: null,
 };
 
 export function useInfographicGenerator() {
   const [state, setState] = useState<GeneratorState>(INITIAL);
   const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const lastParamsRef = useRef<GenerateParams | null>(null);
 
   const clearProgress = useCallback(() => {
     if (intervalRef.current) {
@@ -50,7 +53,8 @@ export function useInfographicGenerator() {
 
   const generate = useCallback(
     async (params: GenerateParams): Promise<InfographicViewModel | null> => {
-      setState({ status: "loading", progress: 0, data: null, error: null });
+      lastParamsRef.current = params;
+      setState({ status: "loading", progress: 0, data: null, error: null, errorCode: null });
 
       intervalRef.current = setInterval(() => {
         setState((prev) =>
@@ -80,22 +84,12 @@ export function useInfographicGenerator() {
           throw new Error("Generated data format unexpected.");
         }
 
-        setState({
-          status: "success",
-          progress: 100,
-          data: view,
-          error: null,
-        });
+        setState({ status: "success", progress: 100, data: view, error: null, errorCode: null });
         return view;
       } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Generation failed.";
-        setState({
-          status: "error",
-          progress: 0,
-          data: null,
-          error: message,
-        });
+        const message = err instanceof Error ? err.message : "Generation failed.";
+        const code = err instanceof GenerateError ? err.code : "INTERNAL";
+        setState({ status: "error", progress: 0, data: null, error: message, errorCode: code });
         return null;
       } finally {
         clearProgress();
@@ -109,11 +103,18 @@ export function useInfographicGenerator() {
     setState(INITIAL);
   }, [clearProgress]);
 
+  const retry = useCallback((): Promise<InfographicViewModel | null> => {
+    if (lastParamsRef.current) return generate(lastParamsRef.current);
+    reset();
+    return Promise.resolve(null);
+  }, [generate, reset]);
+
   return {
     ...state,
     isLoading: state.status === "loading",
     generate,
     reset,
+    retry,
   };
 }
 

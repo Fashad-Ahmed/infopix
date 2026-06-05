@@ -21,9 +21,9 @@ const darkerGrotesque = Darker_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "InfoPix — Nightingale Theme",
+  title: "MemorAIz Studio",
   description:
-    "A guided infographic generator with adaptive light/dark theming inspired by Nightingale.",
+    "Publication-grade infographics with template layouts and AI-generated content.",
 };
 
 export default async function RootLayout({

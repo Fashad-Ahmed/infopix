@@ -2,75 +2,76 @@
 
 :root {
   color-scheme: light;
-  --background: #f4f7fb;
-  --surface: #ffffff;
-  --surface-alt: #f8fafc;
-  --foreground: #0f172a;
-  --muted: #475569;
-  --border: #dbe4ef;
-  --border-strong: #c5d4e8;
-  --primary: #2952ff;
-  --primary-soft: #eff5ff;
-  --on-primary: #ffffff;
-  --accent: #7c3aed;
-  --accent-soft: #f3e8ff;
-  --card-shadow: 0 32px 80px rgba(15, 23, 42, 0.08);
-  --card-hover-shadow: 0 12px 28px rgba(41, 82, 255, 0.12);
-  --ring: rgba(41, 82, 255, 0.22);
-  --hover: rgba(41, 82, 255, 0.08);
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --pulse-glow: rgba(41, 82, 255, 0.42);
-  --pulse-glow-mid: rgba(41, 82, 255, 0);
-  --progress-glow: rgba(41, 82, 255, 0.38);
-  --card-hover-tint: rgba(41, 82, 255, 0.06);
-  --btn-loading-bg: rgba(41, 82, 255, 0.65);
-  --btn-shadow: 0 18px 40px rgba(41, 82, 255, 0.2);
-  --btn-loading-shadow: 0 8px 20px rgba(41, 82, 255, 0.28);
-  --toast-glass: rgba(255, 255, 255, 0.72);
+
+  /* MemorAIz brand — light mode */
+  --background:      #f8f7f3;   /* warm beige canvas */
+  --surface:         #ffffff;   /* elevated white card */
+  --surface-alt:     #f7f7f7;   /* neutral-50 */
+  --foreground:      #000000;
+  --muted:           #6b6b6b;   /* neutral-500 */
+  --border:          #dddddd;   /* neutral-200 */
+  --border-strong:   #d4d4dd;   /* neutral-300 */
+  --primary:         #121042;   /* midnight indigo */
+  --primary-soft:    rgba(18, 16, 66, 0.07);
+  --on-primary:      #f8f7f3;
+  --accent:          #fdbc2b;   /* amber — hero italic only */
+  --accent-soft:     rgba(253, 188, 43, 0.12);
+  --destructive:     #dc2626;
+  --success:         #10b981;
+  --warning:         #f59e0b;
+  --error:           #dc2626;
+
+  /* Shadows — tonal per brand spec (no persistent shadows on static cards) */
+  --card-shadow:       0 0 20px rgba(0, 0, 0, 0.07);
+  --card-hover-shadow: 0 8px 48px rgba(0, 0, 0, 0.15);
+
+  /* Interactive tokens */
+  --ring:             rgba(18, 16, 66, 0.22);
+  --hover:            rgba(18, 16, 66, 0.05);
+  --pulse-glow:       rgba(18, 16, 66, 0.28);
+  --pulse-glow-mid:   rgba(18, 16, 66, 0);
+  --progress-glow:    rgba(18, 16, 66, 0.22);
+  --card-hover-tint:  rgba(18, 16, 66, 0.04);
+  --btn-loading-bg:   rgba(18, 16, 66, 0.60);
+  --btn-shadow:       0 8px 32px rgba(18, 16, 66, 0.28);
+  --btn-loading-shadow: 0 4px 16px rgba(18, 16, 66, 0.18);
+  --toast-glass:      rgba(255, 255, 255, 0.88);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:    var(--font-geist-sans), "BDO Grotesk", "Inter", system-ui, sans-serif;
+  --font-mono:    var(--font-geist-mono);
+  --font-display: var(--font-display), "Darker Grotesque", system-ui, sans-serif;
 }
 
 html.dark {
   color-scheme: dark;
-  /* Cool slate base + clearer elevation than flat navy */
-  --background: #030712;
-  --surface: #0c1222;
-  --surface-alt: #121a2e;
-  --foreground: #f1f5f9;
-  --muted: #9ca8bc;
-  --border: rgba(148, 163, 184, 0.14);
-  --border-strong: rgba(186, 198, 218, 0.22);
-  /* Saturated enough for white label text; sky-300 was too pale on white */
-  --primary: #3b9eff;
-  --primary-soft: rgba(59, 158, 255, 0.14);
-  --on-primary: #030712;
-  --accent: #b794f6;
-  --accent-soft: rgba(183, 148, 246, 0.12);
-  --card-shadow: 0 24px 64px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-  --card-hover-shadow: 0 16px 40px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(59, 158, 255, 0.12);
-  --ring: rgba(59, 158, 255, 0.35);
-  --hover: rgba(59, 158, 255, 0.12);
-  --success: #4ade80;
-  --warning: #fcd34d;
-  --error: #fb7185;
-  --pulse-glow: rgba(59, 158, 255, 0.5);
-  --pulse-glow-mid: rgba(59, 158, 255, 0);
-  --progress-glow: rgba(59, 158, 255, 0.45);
-  --card-hover-tint: rgba(59, 158, 255, 0.1);
-  --btn-loading-bg: rgba(59, 158, 255, 0.55);
-  --btn-shadow: 0 16px 44px rgba(59, 158, 255, 0.22);
-  --btn-loading-shadow: 0 8px 24px rgba(59, 158, 255, 0.2);
-  --toast-glass: rgba(12, 18, 34, 0.82);
+  --background:    #0d0b1e;
+  --surface:       #17153a;
+  --surface-alt:   #1e1b44;
+  --foreground:    #f1f0ec;
+  --muted:         #9b99b8;
+  --border:        rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --primary:       #a5a3f5;
+  --primary-soft:  rgba(165, 163, 245, 0.12);
+  --on-primary:    #0d0b1e;
+  --accent:        #fdbc2b;
+  --accent-soft:   rgba(253, 188, 43, 0.12);
+  --ring:          rgba(165, 163, 245, 0.35);
+  --hover:         rgba(165, 163, 245, 0.08);
+  --card-shadow:   0 24px 64px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  --card-hover-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --pulse-glow:    rgba(165, 163, 245, 0.42);
+  --pulse-glow-mid: rgba(165, 163, 245, 0);
+  --progress-glow: rgba(165, 163, 245, 0.38);
+  --card-hover-tint: rgba(165, 163, 245, 0.06);
+  --btn-loading-bg: rgba(165, 163, 245, 0.55);
+  --btn-shadow:    0 8px 32px rgba(165, 163, 245, 0.25);
+  --btn-loading-shadow: 0 4px 16px rgba(165, 163, 245, 0.18);
+  --toast-glass:   rgba(23, 21, 58, 0.88);
 }
 
 * {
@@ -85,25 +86,15 @@ body {
 body {
   margin: 0;
   background-color: var(--background);
-  background-image: none;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html.dark body {
-  background-image: radial-gradient(
-      ellipse 110% 70% at 50% -15%,
-      rgba(59, 158, 255, 0.07),
-      transparent 52%
-    ),
-    radial-gradient(ellipse 80% 50% at 100% 60%, rgba(183, 148, 246, 0.05), transparent 45%);
-}
-
 ::selection {
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
 }
 
 button,
@@ -114,14 +105,15 @@ select {
 }
 
 input::placeholder {
-  opacity: 0.6;
+  opacity: 0.5;
   transition: opacity 0.2s ease;
 }
 
 input:focus::placeholder {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
+/* Panels */
 .surface-panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -133,150 +125,92 @@ input:focus::placeholder {
   border: 1px solid var(--border);
 }
 
-/* Animations */
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 var(--pulse-glow);
-  }
-  50% {
-    box-shadow: 0 0 0 10px var(--pulse-glow-mid);
-  }
-}
-
-@keyframes progress-shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-@keyframes slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes step-pulse {
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.animate-step-pulse {
-  animation: step-pulse 1.5s ease-in-out infinite;
-}
-
-.animate-slide-down {
-  animation: slide-down 0.3s ease-out;
-}
-
-/* Toasts: readable in light and dark */
-.toast-panel {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.toast-panel--success {
-  background: color-mix(in srgb, var(--success) 14%, var(--toast-glass));
-  border-color: color-mix(in srgb, var(--success) 42%, var(--border));
-  color: var(--success);
-}
-.toast-panel--error {
-  background: color-mix(in srgb, var(--error) 14%, var(--toast-glass));
-  border-color: color-mix(in srgb, var(--error) 42%, var(--border));
-  color: var(--error);
-}
-.toast-panel--info {
-  background: color-mix(in srgb, var(--primary) 8%, var(--toast-glass));
-  border-color: var(--border-strong);
-  color: var(--foreground);
-}
-
-/* Generated infographics: workflow brand colors are often too dark for dark UI */
-html.dark .infographic h1 {
-  color: var(--foreground);
-}
-
-/* Input focus styles */
+/* Focus */
 input:focus {
   outline: none;
   box-shadow: 0 0 0 3px var(--ring);
+  border-color: var(--primary) !important;
 }
 
-input:focus {
-  border-color: var(--primary);
-}
-
-html.dark input:focus {
-  box-shadow: 0 0 0 3px var(--ring);
-}
-
-html.dark input::placeholder {
-  color: var(--muted);
-  opacity: 0.85;
-}
-
-html.dark ::selection {
-  background: rgba(59, 158, 255, 0.35);
-  color: var(--foreground);
-}
-
-/* Button focus styles */
 button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--ring);
 }
 
-/* Infographic: apply design system typography.
- * Darker Grotesque for headlines (display family per brand spec).
- * BDO Grotesk is licensed; fall back to Inter / system-ui for body. */
-.infographic h1,
-.infographic h2,
-.infographic h3,
-.infographic h4,
-.infographic h5,
-.infographic h6 {
+/* Infographic canvas: always display-family headlines, body-family prose */
+.infographic h1, .infographic h2,
+.infographic h3, .infographic h4,
+.infographic h5, .infographic h6 {
   font-family: var(--font-display), "Darker Grotesque", system-ui, sans-serif;
 }
-.infographic p,
-.infographic span,
-.infographic li,
-.infographic caption {
+.infographic p, .infographic span,
+.infographic li, .infographic caption {
   font-family: "BDO Grotesk", "Inter", system-ui, sans-serif;
 }
+html.dark .infographic h1 { color: var(--foreground); }
 
+/* Animations */
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--pulse-glow); }
+  50%       { box-shadow: 0 0 0 10px var(--pulse-glow-mid); }
+}
+
+@keyframes progress-shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes step-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+@keyframes toast-shrink {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.animate-pulse-glow  { animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-step-pulse  { animation: step-pulse 1.5s ease-in-out infinite; }
+.animate-slide-down  { animation: slide-down 0.3s ease-out; }
+
+/* Toasts */
+.toast-panel {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.toast-panel--success {
+  background: color-mix(in srgb, var(--success) 12%, var(--toast-glass));
+  border-color: color-mix(in srgb, var(--success) 38%, var(--border));
+  color: color-mix(in srgb, var(--success) 80%, #000);
+}
+.toast-panel--error {
+  background: color-mix(in srgb, var(--error) 10%, var(--toast-glass));
+  border-color: color-mix(in srgb, var(--error) 38%, var(--border));
+  color: color-mix(in srgb, var(--error) 80%, #000);
+}
+.toast-panel--info {
+  background: color-mix(in srgb, var(--primary) 6%, var(--toast-glass));
+  border-color: var(--border-strong);
+  color: var(--foreground);
+}

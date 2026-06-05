@@ -16,11 +16,22 @@ export type GenerateRequest = {
 
 export class GenerateError extends Error {
   status: number;
+  code: string;
   details: string;
-  constructor(status: number, details: string) {
-    super(`API Error ${status}: ${details}`);
+  constructor(status: number, rawText: string) {
+    let message = rawText;
+    let code = "INTERNAL";
+    try {
+      const parsed = JSON.parse(rawText) as { error?: string; code?: string };
+      if (parsed.error) message = parsed.error;
+      if (parsed.code) code = parsed.code;
+    } catch {
+      // rawText isn't JSON, use as-is
+    }
+    super(message);
     this.status = status;
-    this.details = details;
+    this.code = code;
+    this.details = rawText;
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "InfoPix Engine",
+    "title": "Quick Infographic",
     "subtitle": "Paste a URL or name a topic. The workflow intelligently extracts, structures, and crafts a visually stunning infographic with optional AI imagery and custom styling."
   },
   "form": {
@@ -74,9 +74,9 @@
     "downloadFailed": "Download failed"
   },
   "studio": {
-    "back": "InfoPix",
-    "title": "InfoPix Studio",
-    "subtitle": "Publication-grade infographics with template layouts and AI-generated content. Choose your canvas, palette, and font.",
+    "back": "MemorAIz",
+    "title": "MemorAIz Studio",
+    "subtitle": "Publication grade infographics with template layouts and AI-generated content. Choose your canvas, palette, and font.",
     "badge": "Studio",
     "emptyTitle": "Your studio infographic will appear here.",
     "emptyHint": "Gemini plans the spatial layout. Canvas renderer coming next.",

@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "InfoPix Engine",
+    "title": "Infografica Rapida",
     "subtitle": "Incolla un URL o scrivi un argomento. Il sistema estrae, struttura e genera automaticamente un'infografica visivamente curata, con immagini AI opzionali e stile personalizzabile."
   },
   "form": {
@@ -74,8 +74,8 @@
     "downloadFailed": "Download fallito"
   },
   "studio": {
-    "back": "InfoPix",
-    "title": "InfoPix Studio",
+    "back": "MemorAIz",
+    "title": "MemorAIz Studio",
     "subtitle": "Infografiche di qualità editoriale con layout a template. Scegli il formato, la palette e il font.",
     "badge": "Studio",
     "emptyTitle": "La tua infografica studio apparirà qui.",

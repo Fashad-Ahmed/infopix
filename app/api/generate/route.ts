@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { infographicWorkflow } from "../../../src/mastra/workflows/infographic-workflow";
 import { InfographicInputSchema } from "../../../src/mastra/schemas/schema";
 import { parseLocaleCookie } from "../../../src/lib/locale-prompt";
+import { classifyError } from "../../../src/lib/api-error";
 
 // Mastra workflow + image gen can run 30-90s. Hobby caps at 60s; Pro extends to 300s.
 export const maxDuration = 300;
@@ -71,22 +72,32 @@ export async function POST(req: Request) {
     }
 
     if (!finalData) {
-      console.error(
-        "Workflow failed or no output. Run Result:",
-        JSON.stringify(runResult, null, 2),
+      // Extract the first failed step's error for a more useful message
+      const failedStep = Object.values(runResult.steps ?? {}).find(
+        (s: any) => s.status === "failed",
       );
+      const stepError = failedStep ? (failedStep as any).error : undefined;
+      console.error("[generate] Workflow failed:", JSON.stringify(runResult, null, 2));
+      if (stepError) {
+        const classified = classifyError(stepError);
+        return NextResponse.json(
+          { error: classified.message, code: classified.code },
+          { status: classified.status },
+        );
+      }
       return NextResponse.json(
-        { error: "Workflow failed to produce output" },
+        { error: "Workflow failed to produce output. Please try again.", code: "GENERATION_FAILED" },
         { status: 500 },
       );
     }
 
     return NextResponse.json(finalData);
   } catch (error) {
-    console.error("API Route Error:", error);
+    console.error("[generate] Error:", error);
+    const classified = classifyError(error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
+      { error: classified.message, code: classified.code },
+      { status: classified.status },
     );
   }
 }
