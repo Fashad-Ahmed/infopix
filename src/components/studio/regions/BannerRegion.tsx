@@ -10,6 +10,8 @@ type Props = {
   width: number;
   height: number;
   fill?: boolean;
+  logoDataUrl?: string | null;
+  logoAlign?: "left" | "right";
 };
 
 function luminance(hex: string): number {
@@ -20,7 +22,7 @@ function luminance(hex: string): number {
   return 0.299 * r + 0.587 * g + 0.114 * b;
 }
 
-export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primaryColor, accentColor, width, height, fill }: Props) {
+export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primaryColor, accentColor, width, height, fill, logoDataUrl, logoAlign = "right" }: Props) {
   const isLight = luminance(primaryColor) > 0.45;
   const textColor = isLight ? "#111111" : "#ffffff";
   const subColor  = isLight ? "rgba(0,0,0,0.60)" : "rgba(255,255,255,0.65)";
@@ -31,6 +33,24 @@ export function BannerRegion({ title, summary, heroImageUrl, accentStyle, primar
 
   return (
     <div style={rootStyle}>
+      {/* Brand logo */}
+      {logoDataUrl && (
+        <div
+          style={{
+            position: "absolute",
+            top: 12,
+            [logoAlign]: 16,
+            zIndex: 3,
+            maxWidth: "28%",
+            maxHeight: 36,
+            display: "flex",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoDataUrl} alt="" style={{ maxWidth: "100%", maxHeight: 36, objectFit: "contain", display: "block" }} />
+        </div>
+      )}
+
       {/* Hero image */}
       {heroImageUrl && (
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
