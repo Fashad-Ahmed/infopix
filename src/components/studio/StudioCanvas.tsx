@@ -2,6 +2,7 @@
 
 import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import type { StudioViewModel } from "../../hooks/useStudioGenerator";
+import type { LogoPlacement } from "../../lib/brand-kit";
 import type { SlotColorRole } from "../../mastra/schemas/schema";
 import { TEMPLATE_DEFINITIONS } from "../../mastra/schemas/schema";
 import { BannerRegion } from "./regions/BannerRegion";
@@ -69,12 +70,33 @@ function resolveSlotColors(
 type Props = {
   data: StudioViewModel;
   displayWidth?: number;
+  /** When set, content slots become clickable for the reorder/swap flow. */
+  editable?: boolean;
+  selectedSlot?: string | null;
+  onSlotClick?: (slotName: string) => void;
+  /** Brand-kit overrides layered on top of the generated design. */
+  logoDataUrl?: string | null;
+  logoPlacement?: LogoPlacement;
+  footerText?: string | null;
 };
 
 export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCanvas(
-  { data, displayWidth = 640 },
+  {
+    data,
+    displayWidth = 640,
+    editable = false,
+    selectedSlot = null,
+    onSlotClick,
+    logoDataUrl = null,
+    logoPlacement = "none",
+    footerText = null,
+  },
   ref,
 ) {
+  const bannerLogo = logoDataUrl && logoPlacement.startsWith("banner-") ? logoDataUrl : null;
+  const bannerLogoAlign: "left" | "right" = logoPlacement === "banner-left" ? "left" : "right";
+  const footerLogo = logoDataUrl && logoPlacement.startsWith("footer-") ? logoDataUrl : null;
+  const footerLogoAlign: "left" | "right" = logoPlacement === "footer-left" ? "left" : "right";
   const { title, summary, sections, heroImageUrl, studioConfig, slotAssignment } = data;
   const style = data.style ?? {
     primaryColor: "#0f172a", secondaryColor: "#f8f5ef", accentColor: "#f59e0b",
@@ -145,10 +167,18 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
           const isTextured = slotDef.colorRole === "surface" || slotDef.colorRole === "surface-alt";
           const dotColor = canvasBgDark ? "rgba(255,255,255,0.06)" : "rgba(18,16,66,0.07)";
           const isFooter = slotDef.regionType === "footer";
+          const isStructural = slotDef.regionType === "banner" || slotDef.regionType === "footer";
+          // A content slot left unassigned (e.g. after a layout switch that
+          // couldn't fit every section) — blend it into the canvas instead of
+          // showing a stray colored block with nothing in it.
+          const isEmpty = !isStructural && !section;
+          const isSelected = editable && selectedSlot === slotName;
+          const isClickable = editable && !isStructural && !!section;
+
           const slotStyle: React.CSSProperties = {
             gridArea: slotName,
-            backgroundColor: colors.bg,
-            ...(isTextured ? {
+            backgroundColor: isEmpty ? canvasBg : colors.bg,
+            ...(isTextured && !isEmpty ? {
               backgroundImage: `radial-gradient(circle, ${dotColor} 1px, transparent 1px)`,
               backgroundSize: "16px 16px",
             } : {}),
@@ -156,202 +186,107 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
             position: "relative",
             minWidth: 0,
             minHeight: 0,
-            boxShadow: isFooter ? undefined : `inset 0 0 0 1px ${dividerColor}`,
+            boxShadow: isSelected
+              ? `inset 0 0 0 2.5px var(--primary)`
+              : isFooter || isEmpty ? undefined : `inset 0 0 0 1px ${dividerColor}`,
+            cursor: isClickable ? "pointer" : undefined,
             animation: `studioSlotReveal 0.5s ease-out ${slotIndex * 0.06}s both`,
             containerType: "inline-size" as React.CSSProperties["containerType"],
           };
 
-          // Banner
+          const regionProps = {
+            primaryColor: colors.text,
+            accentColor: colors.accent,
+            bgColor: colors.bg,
+            width: 0, height: 0,
+            fill: true as const,
+          };
+
+          let regionNode: React.ReactNode = null;
+
           if (slotDef.regionType === "banner") {
-            return (
-              <div key={slotName} style={slotStyle}>
-                <BannerRegion
-                  title={title}
-                  summary={summary}
-                  heroImageUrl={heroImageUrl}
-                  accentStyle={studioConfig.accentStyle}
-                  primaryColor={style.primaryColor}
-                  accentColor={style.accentColor}
-                  width={0} height={0}
-                  fill
+            regionNode = (
+              <BannerRegion
+                title={title}
+                summary={summary}
+                heroImageUrl={heroImageUrl}
+                accentStyle={studioConfig.accentStyle}
+                primaryColor={style.primaryColor}
+                accentColor={style.accentColor}
+                width={0} height={0}
+                fill
+                logoDataUrl={bannerLogo}
+                logoAlign={bannerLogoAlign}
+              />
+            );
+          } else if (slotDef.regionType === "footer") {
+            regionNode = (
+              <FooterRegion
+                primaryColor={colors.text}
+                accentColor={style.accentColor}
+                width={0} height={0}
+                fill
+                logoDataUrl={footerLogo}
+                logoAlign={footerLogoAlign}
+                footerText={footerText}
+              />
+            );
+          } else if (section) {
+            const isStatLike = slotDef.regionType === "stat" || slotDef.regionType === "callout" || slotDef.regionType === "pictograph";
+            const isChartSlot = slotDef.regionType === "chart" && (section.type === "chart" || section.type === "comparison");
+            const isComparisonSlot = slotDef.regionType === "comparison" && (section.type === "comparison" || section.type === "chart");
+            const isTakeawaySlot = slotDef.regionType === "takeaway";
+
+            if ((isStatLike || isTakeawaySlot) && section.type === "callout") {
+              regionNode = <CalloutRegion section={section} {...regionProps} />;
+            } else if (isStatLike && section.type === "metric") {
+              regionNode = <StatRegion section={section} {...regionProps} />;
+            } else if ((isStatLike || isTakeawaySlot) && section.type === "pictograph") {
+              regionNode = <PictographRegion section={section} {...regionProps} />;
+            } else if ((isChartSlot || isComparisonSlot) && section.type === "chart") {
+              regionNode = <ChartRegion section={section} secondaryColor={style.secondaryColor} {...regionProps} />;
+            } else if ((isChartSlot || isComparisonSlot) && section.type === "comparison") {
+              regionNode = <ComparisonRegion section={section} {...regionProps} />;
+            } else if (isTakeawaySlot && section.type === "takeaway") {
+              regionNode = <TakeawayRegion section={section} {...regionProps} />;
+            }
+          }
+
+          return (
+            <div
+              key={slotName}
+              style={slotStyle}
+              onClick={isClickable ? () => onSlotClick?.(slotName) : undefined}
+              role={isClickable ? "button" : undefined}
+              tabIndex={isClickable ? 0 : undefined}
+              aria-pressed={isClickable ? isSelected : undefined}
+              aria-label={isClickable ? `${slotName.replace("-", " ")} — ${section?.type} section. Click to select for swap.` : undefined}
+              onKeyDown={
+                isClickable
+                  ? (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onSlotClick?.(slotName);
+                      }
+                    }
+                  : undefined
+              }
+            >
+              {regionNode}
+              {isClickable && (
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    backgroundColor: isSelected ? "rgba(18,16,66,0.08)" : "transparent",
+                    transition: "background-color 0.15s ease",
+                    pointerEvents: "none",
+                  }}
                 />
-              </div>
-            );
-          }
-
-          // Footer
-          if (slotDef.regionType === "footer") {
-            return (
-              <div key={slotName} style={slotStyle}>
-                <FooterRegion
-                  primaryColor={colors.text}
-                  accentColor={style.accentColor}
-                  width={0} height={0}
-                  fill
-                />
-              </div>
-            );
-          }
-
-          // Content regions require a matching section
-          if (!section) {
-            return (
-              <div key={slotName} style={{ ...slotStyle, backgroundColor: colors.bg }} />
-            );
-          }
-
-          if (slotDef.regionType === "stat" || slotDef.regionType === "callout" || slotDef.regionType === "pictograph") {
-            if (section.type === "callout") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <CalloutRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-            if (section.type === "metric") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <StatRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-            if (section.type === "pictograph") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <PictographRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-          }
-
-          if (slotDef.regionType === "chart" && (section.type === "chart" || section.type === "comparison")) {
-            if (section.type === "chart") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <ChartRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    secondaryColor={style.secondaryColor}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-            return (
-              <div key={slotName} style={slotStyle}>
-                <ComparisonRegion
-                  section={section}
-                  primaryColor={colors.text}
-                  accentColor={colors.accent}
-                  bgColor={colors.bg}
-                  width={0} height={0}
-                  fill
-                />
-              </div>
-            );
-          }
-
-          if (slotDef.regionType === "comparison" && (section.type === "comparison" || section.type === "chart")) {
-            if (section.type === "comparison") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <ComparisonRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-            return (
-              <div key={slotName} style={slotStyle}>
-                <ChartRegion
-                  section={section}
-                  primaryColor={colors.text}
-                  secondaryColor={style.secondaryColor}
-                  accentColor={colors.accent}
-                  bgColor={colors.bg}
-                  width={0} height={0}
-                  fill
-                />
-              </div>
-            );
-          }
-
-          if (slotDef.regionType === "takeaway") {
-            if (section.type === "takeaway") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <TakeawayRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-            if (section.type === "callout") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <CalloutRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-            if (section.type === "pictograph") {
-              return (
-                <div key={slotName} style={slotStyle}>
-                  <PictographRegion
-                    section={section}
-                    primaryColor={colors.text}
-                    accentColor={colors.accent}
-                    bgColor={colors.bg}
-                    width={0} height={0}
-                    fill
-                  />
-                </div>
-              );
-            }
-          }
-
-          // Type mismatch fallback
-          return <div key={slotName} style={slotStyle} />;
+              )}
+            </div>
+          );
         })}
       </div>
     </div>
