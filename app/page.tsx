@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { AppNav } from "../src/components/AppNav";
 import { StudioForm } from "../src/components/studio/StudioForm";
 import { StudioCanvas } from "../src/components/studio/StudioCanvas";
@@ -10,6 +10,15 @@ import { ToastStack } from "../src/components/generator/ToastStack";
 import { LoadingProgress } from "../src/components/generator/LoadingProgress";
 import { useTranslations } from "next-intl";
 import { useStudioGenerator } from "../src/hooks/useStudioGenerator";
+import { useStudioEditor } from "../src/hooks/useStudioEditor";
+import { StudioEditPanel } from "../src/components/studio/StudioEditPanel";
+import { useBrandKit } from "../src/hooks/useBrandKit";
+import { BrandKitPanel } from "../src/components/studio/BrandKitPanel";
+import { applyBrandStyle } from "../src/lib/brand-kit";
+import { useDesignKit } from "../src/hooks/useDesignKit";
+import { DesignKitPanel } from "../src/components/studio/DesignKitPanel";
+import { applyDesignOverrides } from "../src/lib/design-kit";
+import { Pencil } from "lucide-react";
 import { useInfographicDownload } from "../src/hooks/useInfographicDownload";
 import { useTheme } from "../src/hooks/useTheme";
 import { useToasts } from "../src/hooks/useToasts";
@@ -21,12 +30,28 @@ export default function StudioPage() {
   const { theme, toggle: toggleTheme } = useTheme();
   const { toasts, add: addToast, remove: removeToast } = useToasts();
   const generator = useStudioGenerator();
+  const editor = useStudioEditor(generator.data);
+  const brandKit = useBrandKit();
+  const designKit = useDesignKit();
+
+  const displayViewModel = useMemo(() => {
+    if (!editor.viewModel) return null;
+    if (!brandKit.isActive && !designKit.isActive) return editor.viewModel;
+    return {
+      ...editor.viewModel,
+      style: brandKit.isActive ? applyBrandStyle(editor.viewModel.style, brandKit.draft) : editor.viewModel.style,
+      studioConfig: designKit.isActive
+        ? applyDesignOverrides(editor.viewModel.studioConfig, designKit.draft)
+        : editor.viewModel.studioConfig,
+    };
+  }, [editor.viewModel, brandKit.isActive, brandKit.draft, designKit.isActive, designKit.draft]);
+
   const infographicRef = useRef<HTMLDivElement | null>(null);
   const downloader = useInfographicDownload({
     node: infographicRef.current,
-    title: generator.data?.title,
+    title: displayViewModel?.title,
     theme,
-    backgroundColor: generator.data?.style?.secondaryColor ?? "#f8f5ef",
+    backgroundColor: displayViewModel?.style?.secondaryColor ?? "#f8f5ef",
   });
 
   const handleGenerate = useCallback(
@@ -144,14 +169,43 @@ export default function StudioPage() {
               <EmptyCanvas />
             )}
 
-            {generator.data && !generator.isLoading && (
-              <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-4">
-                <DownloadToolbar onDownload={handleDownload} pending={downloader.pending} />
-                <StudioCanvas
-                  ref={infographicRef}
-                  data={generator.data}
-                  displayWidth={760}
-                />
+            {displayViewModel && !generator.isLoading && (
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 space-y-6">
+                <div className="space-y-4 pb-1">
+                  <div className="flex items-center justify-between gap-3">
+                    <DownloadToolbar onDownload={handleDownload} pending={downloader.pending} />
+                    <button
+                      type="button"
+                      onClick={editor.toggleEditing}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-4 py-2 transition-colors duration-150"
+                      style={{
+                        border: `1.5px solid ${editor.editing ? "var(--primary)" : "var(--border)"}`,
+                        color: editor.editing ? "var(--primary)" : "var(--muted)",
+                        backgroundColor: editor.editing ? "var(--primary-soft)" : "var(--surface)",
+                      }}
+                      aria-pressed={editor.editing}
+                    >
+                      <Pencil className="w-3.5 h-3.5" aria-hidden />
+                      {editor.editing ? "Done editing" : "Edit content"}
+                    </button>
+                  </div>
+
+                  <StudioCanvas
+                    ref={infographicRef}
+                    data={displayViewModel}
+                    displayWidth={620}
+                    editable={editor.editing}
+                    selectedSlot={editor.selectedSlot}
+                    onSlotClick={editor.handleSlotClick}
+                    logoDataUrl={brandKit.draft.logoDataUrl}
+                    logoPlacement={brandKit.draft.logoPlacement}
+                    footerText={brandKit.draft.footerText}
+                  />
+                </div>
+
+                <StudioEditPanel editor={editor} />
+                <DesignKitPanel designKit={designKit} />
+                <BrandKitPanel brandKit={brandKit} />
               </div>
             )}
           </div>
