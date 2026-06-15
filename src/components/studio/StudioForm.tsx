@@ -116,6 +116,10 @@ export function StudioForm({ loading, onSubmit }: Props) {
     { value: "social-square"       as const, label: t("templates.social-square"),        hint: t("templateHints.social-square") },
     { value: "social-wide"         as const, label: t("templates.social-wide"),          hint: t("templateHints.social-wide") },
     { value: "poster"              as const, label: t("templates.poster"),               hint: t("templateHints.poster") },
+    { value: "sidebar-portrait"     as const, label: t("templates.sidebar-portrait"),     hint: t("templateHints.sidebar-portrait") },
+    { value: "asymmetric-landscape" as const, label: t("templates.asymmetric-landscape"), hint: t("templateHints.asymmetric-landscape") },
+    { value: "banner-bottom-square" as const, label: t("templates.banner-bottom-square"), hint: t("templateHints.banner-bottom-square") },
+    { value: "magazine-grid"        as const, label: t("templates.magazine-grid"),        hint: t("templateHints.magazine-grid") },
   ];
   const FONTS = [
     { value: "condensed-sans" as const, label: t("fonts.condensed-sans") },

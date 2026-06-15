@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useLayoutEffect, useRef, useState } from "react";
+import { forwardRef, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { StudioViewModel } from "../../hooks/useStudioGenerator";
 import type { LogoPlacement } from "../../lib/brand-kit";
 import type { SlotColorRole } from "../../mastra/schemas/schema";
@@ -20,6 +20,36 @@ const FONT_STACKS: Record<string, string> = {
   "slab":           '"Rockwell", "Courier New", Georgia, serif',
   "display-serif":  'Georgia, "Garamond", "Times New Roman", serif',
 };
+
+// Parses a `gridTemplateAreas` string ("a a" "b c") into a 2D array of area names.
+function parseGridAreas(template: string): string[][] {
+  const rows = template.match(/"[^"]*"/g) ?? [];
+  return rows.map((r) => r.slice(1, -1).trim().split(/\s+/).filter(Boolean));
+}
+
+// Zeroes out the track size for any row/column whose cells are entirely
+// empty slots, letting neighboring `1fr` tracks absorb the freed space.
+// Falls back to the original tracks if the shape is unexpected or every
+// track would collapse (degenerate / fully-empty layout).
+function collapseEmptyTracks(
+  tracks: string,
+  areaGrid: string[][],
+  axis: "row" | "col",
+  emptyAreas: Set<string>,
+): string {
+  const sizes = tracks.trim().split(/\s+/);
+  const count = axis === "row" ? areaGrid.length : (areaGrid[0]?.length ?? 0);
+  if (sizes.length !== count || count === 0) return tracks;
+
+  const collapsible = Array.from({ length: count }, (_, i) => {
+    const cells = axis === "row" ? areaGrid[i] : areaGrid.map((row) => row[i]);
+    return cells.length > 0 && cells.every((area) => emptyAreas.has(area));
+  });
+
+  if (collapsible.every(Boolean) || !collapsible.some(Boolean)) return tracks;
+
+  return sizes.map((size, i) => (collapsible[i] ? "0px" : size)).join(" ");
+}
 
 export function luminance(hex: string): number {
   const h = (hex || "#ffffff").replace("#", "").padEnd(6, "f");
@@ -108,6 +138,30 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
   const { canvasWidth, canvasHeight, gridTemplateAreas, gridTemplateColumns, gridTemplateRows, slots } = def;
   const adaptive = def.adaptiveHeight === true;
 
+  // Slots with no assigned section (excluding always-present banner/footer)
+  // collapse their row/column track so the empty space doesn't show as a
+  // blank gap and neighboring `1fr` tracks expand into it instead.
+  const emptySlotAreas = useMemo(() => {
+    const set = new Set<string>();
+    for (const [slotName, slotDef] of Object.entries(slots)) {
+      if (slotDef.regionType === "banner" || slotDef.regionType === "footer") continue;
+      const sectionIndex = slotAssignment.slots[slotName] ?? null;
+      const section = sectionIndex !== null ? sections[sectionIndex] : null;
+      if (!section) set.add(slotName);
+    }
+    return set;
+  }, [slots, slotAssignment, sections]);
+
+  const areaGrid = useMemo(() => parseGridAreas(gridTemplateAreas), [gridTemplateAreas]);
+  const effectiveRows = useMemo(
+    () => collapseEmptyTracks(gridTemplateRows, areaGrid, "row", emptySlotAreas),
+    [gridTemplateRows, areaGrid, emptySlotAreas],
+  );
+  const effectiveColumns = useMemo(
+    () => collapseEmptyTracks(gridTemplateColumns, areaGrid, "col", emptySlotAreas),
+    [gridTemplateColumns, areaGrid, emptySlotAreas],
+  );
+
   const scale       = displayWidth / canvasWidth;
 
   // Adaptive templates (poster) size to content: measure the grid's natural
@@ -150,8 +204,8 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
           height: adaptive ? "auto" : canvasHeight,
           display: "grid",
           gridTemplateAreas,
-          gridTemplateColumns,
-          gridTemplateRows,
+          gridTemplateColumns: effectiveColumns,
+          gridTemplateRows: effectiveRows,
           transformOrigin: "top left",
           transform: `scale(${scale})`,
           fontFamily,

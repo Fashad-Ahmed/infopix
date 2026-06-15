@@ -11,6 +11,10 @@ const TEMPLATE_LABELS: Record<string, string> = {
   "social-square": "Social square",
   "social-wide": "Social wide",
   poster: "Poster",
+  "sidebar-portrait": "Sidebar portrait",
+  "asymmetric-landscape": "Asymmetric landscape",
+  "banner-bottom-square": "Banner bottom square",
+  "magazine-grid": "Magazine grid",
 };
 
 const CHART_TYPE_LABELS: Record<ChartType, string> = {

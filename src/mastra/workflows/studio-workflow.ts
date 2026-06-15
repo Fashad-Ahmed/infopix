@@ -264,8 +264,35 @@ function assignSections(
     slots[slotName] = assigned;
   }
 
+  // Second pass: backfill any empty content slot with a leftover section the
+  // renderer can still display there, even if its type wasn't first-choice
+  // for that slot. Mirrors StudioCanvas's region-compatibility rules.
+  for (const [slotName, slotDef] of Object.entries(def.slots)) {
+    if (slots[slotName] !== null) continue;
+    if (slotDef.regionType === "banner" || slotDef.regionType === "footer") continue;
+
+    for (const t of REGION_FALLBACK_TYPES[slotDef.regionType] ?? []) {
+      const q = queues[t];
+      if (q && q.length > 0) {
+        slots[slotName] = q.shift()!;
+        break;
+      }
+    }
+  }
+
   return { template, slots };
 }
+
+// Fallback section types a slot can still render if its preferred
+// acceptedTypes are exhausted — mirrors StudioCanvas's rendering branches.
+const REGION_FALLBACK_TYPES: Record<string, SectionType[]> = {
+  stat: ["metric", "callout", "pictograph"],
+  callout: ["callout", "metric"],
+  chart: ["chart", "comparison"],
+  comparison: ["comparison", "chart"],
+  takeaway: ["takeaway", "callout", "pictograph"],
+  pictograph: ["pictograph", "metric", "callout"],
+};
 
 const assignSlotsStep = createStep({
   id: "assign-slots",

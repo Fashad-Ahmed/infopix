@@ -89,8 +89,9 @@ const ComparisonSection = BaseSection.extend({
           ),
         valueLabel: z
           .string()
-          .transform(s => s.slice(0, 30))
+          .nullable()
           .optional()
+          .transform(s => s?.slice(0, 30) ?? undefined)
           .describe(
             "Human-readable value displayed beside the bar — e.g. '60%', '2.3M users', '4.5x faster', '$1.2B'. Falls back to the numeric value if omitted.",
           ),
@@ -130,8 +131,9 @@ const ChartSection = BaseSection.extend({
         value: z.number().describe("Numeric value"),
         valueLabel: z
           .string()
-          .transform(s => s.slice(0, 30))
+          .nullable()
           .optional()
+          .transform(s => s?.slice(0, 30) ?? undefined)
           .describe("Human-readable value (e.g. '42%', '$1.2B')"),
       }),
     )
@@ -174,7 +176,7 @@ export const PictographSection = BaseSection.extend({
         label: z.string().transform(s => s.slice(0, 40)).describe("Row label e.g. 'USA', 'Europe', 'Africa'"),
         count: z.number().describe("Number of icons to highlight (can be decimal e.g. 5.4 for 54%)"),
         total: z.number().int().min(2).max(20).describe("Total icons shown in the row"),
-        valueLabel: z.string().transform(s => s.slice(0, 20)).optional().describe("Human-readable value e.g. '24/week', '54%'"),
+        valueLabel: z.string().nullable().optional().transform(s => s?.slice(0, 20) ?? undefined).describe("Human-readable value e.g. '24/week', '54%'"),
       }),
     )
     .min(2)
@@ -201,7 +203,7 @@ export const InfographicContentSchema = z.object({
     .transform(s => s.slice(0, 400))
     .optional()
     .describe("Visual prompt for a hero image at top of infographic"),
-  heroImageUrl: z.string().optional(),
+  heroImageUrl: z.string().nullable().optional().transform(v => v ?? undefined),
   sections: z
     .array(
       z.discriminatedUnion("type", [
@@ -351,6 +353,64 @@ export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
       footer:     { regionType: "footer",     acceptedTypes: [],                                    colorRole: "footer" },
     },
   },
+  "sidebar-portrait": {
+    canvasWidth: 794, canvasHeight: 1123,
+    gridTemplateAreas: `"sidebar banner" "sidebar stat-a" "sidebar chart" "sidebar takeaway" "footer  footer"`,
+    gridTemplateColumns: "220px 1fr",
+    gridTemplateRows: "140px 200px 1fr 290px 50px",
+    slots: {
+      sidebar:  { regionType: "stat",       acceptedTypes: ["pictograph", "metric", "callout"],   colorRole: "accent" },
+      banner:   { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
+      "stat-a": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "primary" },
+      chart:    { regionType: "chart",      acceptedTypes: ["chart", "comparison"],               colorRole: "surface" },
+      takeaway: { regionType: "takeaway",   acceptedTypes: ["takeaway", "callout", "pictograph"], colorRole: "surface-alt" },
+      footer:   { regionType: "footer",     acceptedTypes: [],                                    colorRole: "footer" },
+    },
+  },
+  "asymmetric-landscape": {
+    canvasWidth: 1123, canvasHeight: 794,
+    gridTemplateAreas: `"banner   banner     banner" "feature  stat-a     stat-b" "feature  comparison comparison" "feature  takeaway   takeaway" "footer   footer     footer"`,
+    gridTemplateColumns: "1.4fr 1fr 1fr",
+    gridTemplateRows: "140px 1fr 1fr 200px 46px",
+    slots: {
+      banner:     { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
+      feature:    { regionType: "chart",      acceptedTypes: ["chart", "comparison"],               colorRole: "surface" },
+      "stat-a":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "accent" },
+      "stat-b":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "primary" },
+      comparison: { regionType: "comparison", acceptedTypes: ["comparison", "chart"],               colorRole: "surface-alt" },
+      takeaway:   { regionType: "takeaway",   acceptedTypes: ["takeaway", "callout", "pictograph"], colorRole: "surface" },
+      footer:     { regionType: "footer",     acceptedTypes: [],                                    colorRole: "footer" },
+    },
+  },
+  "banner-bottom-square": {
+    canvasWidth: 1080, canvasHeight: 1080,
+    gridTemplateAreas: `"stat-a   stat-b" "chart    chart" "takeaway takeaway" "banner   banner" "footer   footer"`,
+    gridTemplateColumns: "1fr 1fr",
+    gridTemplateRows: "200px 1fr 100px 200px 40px",
+    slots: {
+      "stat-a": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "accent" },
+      "stat-b": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "primary" },
+      chart:    { regionType: "chart",      acceptedTypes: ["chart", "comparison"],               colorRole: "surface" },
+      takeaway: { regionType: "takeaway",   acceptedTypes: ["takeaway", "callout", "pictograph"], colorRole: "surface-alt" },
+      banner:   { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
+      footer:   { regionType: "footer",     acceptedTypes: [],                                    colorRole: "footer" },
+    },
+  },
+  "magazine-grid": {
+    canvasWidth: 1123, canvasHeight: 794,
+    gridTemplateAreas: `"banner   banner  banner" "stat-a   chart   stat-b" "takeaway chart   comparison" "footer   footer  footer"`,
+    gridTemplateColumns: "1fr 1.3fr 1fr",
+    gridTemplateRows: "140px 1fr 1fr 46px",
+    slots: {
+      banner:     { regionType: "banner",     acceptedTypes: [],                                    colorRole: "primary" },
+      "stat-a":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "accent" },
+      chart:      { regionType: "chart",      acceptedTypes: ["chart", "comparison"],               colorRole: "surface" },
+      "stat-b":   { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "primary" },
+      takeaway:   { regionType: "takeaway",   acceptedTypes: ["takeaway", "callout", "pictograph"], colorRole: "surface-alt" },
+      comparison: { regionType: "comparison", acceptedTypes: ["comparison", "chart"],               colorRole: "surface" },
+      footer:     { regionType: "footer",     acceptedTypes: [],                                    colorRole: "footer" },
+    },
+  },
 };
 
 // Slot assignment: maps slot name → section index (null = no section, e.g. banner/footer)
@@ -362,7 +422,17 @@ export const SlotAssignmentSchema = z.object({
 export const StudioInputSchema = InfographicInputSchema.extend({
   generateImages: z.boolean().default(true),
   template: z
-    .enum(["editorial-portrait", "editorial-landscape", "social-square", "social-wide", "poster"])
+    .enum([
+      "editorial-portrait",
+      "editorial-landscape",
+      "social-square",
+      "social-wide",
+      "poster",
+      "sidebar-portrait",
+      "asymmetric-landscape",
+      "banner-bottom-square",
+      "magazine-grid",
+    ])
     .default("editorial-portrait"),
   primaryFont: z
     .enum(["condensed-sans", "slab", "modern-sans", "display-serif"])
