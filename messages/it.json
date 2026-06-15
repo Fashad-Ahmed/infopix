@@ -112,14 +112,22 @@
         "editorial-landscape": "A4 Orizzontale",
         "social-square": "Quadrato",
         "social-wide": "Panoramico",
-        "poster": "Poster"
+        "poster": "Poster",
+        "sidebar-portrait": "Verticale con barra laterale",
+        "asymmetric-landscape": "Orizzontale asimmetrico",
+        "banner-bottom-square": "Quadrato con titolo in basso",
+        "magazine-grid": "Griglia rivista"
       },
       "templateHints": {
         "editorial-portrait": "794 × 1123px — report, PDF",
         "editorial-landscape": "1123 × 794px — presentazioni",
         "social-square": "1080 × 1080px — Instagram, LinkedIn",
         "social-wide": "1200 × 628px — Twitter, anteprime link",
-        "poster": "800 × 2400px — verticale lungo"
+        "poster": "800 × 2400px — verticale lungo",
+        "sidebar-portrait": "794 × 1123px — barra laterale per statistiche",
+        "asymmetric-landscape": "1123 × 794px — grafico in evidenza, statistiche laterali",
+        "banner-bottom-square": "1080 × 1080px — titolo in fondo",
+        "magazine-grid": "1123 × 794px — griglia densa stile rivista"
       },
       "fonts": {
         "condensed-sans": "Sans Condensato",

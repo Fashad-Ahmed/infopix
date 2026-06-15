@@ -76,7 +76,7 @@
   "studio": {
     "back": "MemorAIz",
     "title": "MemorAIz Studio",
-    "subtitle": "Publication grade infographics with template layouts and AI-generated content. Choose your canvas, palette, and font.",
+    "subtitle": "Pubblication grade infographics with template layouts and AI-generated content. Choose your canvas, palette, and font.",
     "badge": "Studio",
     "emptyTitle": "Your studio infographic will appear here.",
     "emptyHint": "Gemini plans the spatial layout. Canvas renderer coming next.",
@@ -112,14 +112,22 @@
         "editorial-landscape": "A4 Landscape",
         "social-square": "Square",
         "social-wide": "Wide",
-        "poster": "Poster"
+        "poster": "Poster",
+        "sidebar-portrait": "Sidebar portrait",
+        "asymmetric-landscape": "Asymmetric landscape",
+        "banner-bottom-square": "Banner bottom square",
+        "magazine-grid": "Magazine grid"
       },
       "templateHints": {
         "editorial-portrait": "794 × 1123px — reports, PDFs",
         "editorial-landscape": "1123 × 794px — presentations",
         "social-square": "1080 × 1080px — Instagram, LinkedIn",
         "social-wide": "1200 × 628px — Twitter, link previews",
-        "poster": "800 × 2400px — long-form vertical"
+        "poster": "800 × 2400px — long-form vertical",
+        "sidebar-portrait": "794 × 1123px — sidebar stat column",
+        "asymmetric-landscape": "1123 × 794px — featured chart, side stats",
+        "banner-bottom-square": "1080 × 1080px — title at the bottom",
+        "magazine-grid": "1123 × 794px — dense magazine grid"
       },
       "fonts": {
         "condensed-sans": "Condensed Sans",
