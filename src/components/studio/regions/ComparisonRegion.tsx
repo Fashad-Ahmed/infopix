@@ -47,7 +47,7 @@ export function ComparisonRegion({ section, primaryColor, accentColor, bgColor, 
         )}
       </div>
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 7, minHeight: 0, overflow: "hidden" }}>
+      <div style={{ flex: "0 1 auto", display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 7, minHeight: 0, overflow: "hidden" }}>
         {items.map((item, i) => {
           const ItemIcon = resolveIcon(item.icon, item.label, item.description);
           const active = hover === i;

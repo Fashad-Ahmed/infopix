@@ -31,7 +31,7 @@ export function TakeawayRegion({ section, primaryColor, accentColor, bgColor, wi
       </p>
 
       <div style={{
-        flex: 1, minHeight: 0, overflow: "hidden",
+        flex: "0 1 auto", minHeight: 0, overflow: "hidden",
         display: "grid",
         gridTemplateColumns: section.points.length > 3 ? "1fr 1fr" : "1fr",
         gridAutoRows: "min-content",

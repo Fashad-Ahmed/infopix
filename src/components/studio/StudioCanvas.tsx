@@ -3,7 +3,6 @@
 import { forwardRef, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { StudioViewModel } from "../../hooks/useStudioGenerator";
 import type { LogoPlacement } from "../../lib/brand-kit";
-import type { SlotColorRole } from "../../mastra/schemas/schema";
 import { TEMPLATE_DEFINITIONS } from "../../mastra/schemas/schema";
 import { BannerRegion } from "./regions/BannerRegion";
 import { StatRegion } from "./regions/StatRegion";
@@ -13,89 +12,14 @@ import { TakeawayRegion } from "./regions/TakeawayRegion";
 import { CalloutRegion } from "./regions/CalloutRegion";
 import { PictographRegion } from "./regions/PictographRegion";
 import { FooterRegion } from "./regions/FooterRegion";
-
-const FONT_STACKS: Record<string, string> = {
-  "condensed-sans": '"Arial Narrow", "Franklin Gothic Medium", "Trebuchet MS", sans-serif',
-  "modern-sans":    'Inter, "Helvetica Neue", Arial, sans-serif',
-  "slab":           '"Rockwell", "Courier New", Georgia, serif',
-  "display-serif":  'Georgia, "Garamond", "Times New Roman", serif',
-};
-
-// Parses a `gridTemplateAreas` string ("a a" "b c") into a 2D array of area names.
-function parseGridAreas(template: string): string[][] {
-  const rows = template.match(/"[^"]*"/g) ?? [];
-  return rows.map((r) => r.slice(1, -1).trim().split(/\s+/).filter(Boolean));
-}
-
-// Zeroes out the track size for any row/column whose cells are entirely
-// empty slots, letting neighboring `1fr` tracks absorb the freed space.
-// Falls back to the original tracks if the shape is unexpected or every
-// track would collapse (degenerate / fully-empty layout).
-function collapseEmptyTracks(
-  tracks: string,
-  areaGrid: string[][],
-  axis: "row" | "col",
-  emptyAreas: Set<string>,
-): string {
-  const sizes = tracks.trim().split(/\s+/);
-  const count = axis === "row" ? areaGrid.length : (areaGrid[0]?.length ?? 0);
-  if (sizes.length !== count || count === 0) return tracks;
-
-  const collapsible = Array.from({ length: count }, (_, i) => {
-    const cells = axis === "row" ? areaGrid[i] : areaGrid.map((row) => row[i]);
-    return cells.length > 0 && cells.every((area) => emptyAreas.has(area));
-  });
-
-  if (collapsible.every(Boolean) || !collapsible.some(Boolean)) return tracks;
-
-  return sizes.map((size, i) => (collapsible[i] ? "0px" : size)).join(" ");
-}
-
-export function luminance(hex: string): number {
-  const h = (hex || "#ffffff").replace("#", "").padEnd(6, "f");
-  const r = parseInt(h.slice(0, 2), 16) / 255;
-  const g = parseInt(h.slice(2, 4), 16) / 255;
-  const b = parseInt(h.slice(4, 6), 16) / 255;
-  return 0.299 * r + 0.587 * g + 0.114 * b;
-}
-
-function resolveSlotColors(
-  role: SlotColorRole,
-  style: { primaryColor: string; secondaryColor: string; accentColor: string },
-  canvasBgDark: boolean,
-): { bg: string; text: string; accent: string } {
-  switch (role) {
-    case "primary": {
-      const bg = style.primaryColor;
-      return { bg, text: luminance(bg) > 0.45 ? "#111111" : "#ffffff", accent: style.accentColor };
-    }
-    case "accent": {
-      const bg = style.accentColor;
-      return { bg, text: luminance(bg) > 0.45 ? "#111111" : "#ffffff", accent: style.primaryColor };
-    }
-    case "accent-alt": {
-      // Slightly lighter/darker variant of accent
-      const bg = style.accentColor;
-      return { bg, text: luminance(bg) > 0.45 ? "#111111" : "#ffffff", accent: style.primaryColor };
-    }
-    case "footer": {
-      const bg = style.secondaryColor;
-      return { bg, text: luminance(bg) > 0.45 ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.45)", accent: style.accentColor };
-    }
-    case "surface-alt": {
-      // Alt cards get a subtle brand-primary tint so they visually separate from plain surface.
-      const bg = canvasBgDark ? "rgba(255,255,255,0.18)" : "rgba(18,16,66,0.05)";
-      return { bg, text: style.primaryColor, accent: style.accentColor };
-    }
-    case "surface":
-    default: {
-      // Light canvas → solid white card for clean contrast against warm beige.
-      // Dark canvas → subtle white lift.
-      const bg = canvasBgDark ? "rgba(255,255,255,0.12)" : "#ffffff";
-      return { bg, text: style.primaryColor, accent: style.accentColor };
-    }
-  }
-}
+import { FONT_STACKS } from "./studioCanvasConstants";
+import { luminance, resolveSlotColors } from "./canvasColors";
+import {
+  parseGridAreas,
+  collapseEmptyTracks,
+  computeAreaBounds,
+  growEmptyAreasIntoNeighbors,
+} from "../../lib/canvas-grid";
 
 type Props = {
   data: StudioViewModel;
@@ -153,13 +77,38 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
   }, [slots, slotAssignment, sections]);
 
   const areaGrid = useMemo(() => parseGridAreas(gridTemplateAreas), [gridTemplateAreas]);
+  const areaBounds = useMemo(() => computeAreaBounds(areaGrid), [areaGrid]);
+  const structuralAreas = useMemo(() => {
+    const set = new Set<string>();
+    for (const [slotName, slotDef] of Object.entries(slots)) {
+      if (slotDef.regionType === "banner" || slotDef.regionType === "footer") set.add(slotName);
+    }
+    return set;
+  }, [slots]);
+
+  // "Interior hole" empties (sharing a row/column with occupied content) get
+  // absorbed by a cleanly-aligned neighbor instead of leaving a blank cell —
+  // see growEmptyAreasIntoNeighbors for the rules.
+  const { overrides: growthOverrides, absorbed: absorbedAreas } = useMemo(
+    () => growEmptyAreasIntoNeighbors(areaGrid, areaBounds, emptySlotAreas, structuralAreas),
+    [areaGrid, areaBounds, emptySlotAreas, structuralAreas],
+  );
+
+  // Whole-row/column empties (not absorbed above) still collapse their track
+  // to 0 so the canvas doesn't reserve dead space for them.
+  const trackCollapseAreas = useMemo(() => {
+    const set = new Set<string>();
+    emptySlotAreas.forEach((a) => { if (!absorbedAreas.has(a)) set.add(a); });
+    return set;
+  }, [emptySlotAreas, absorbedAreas]);
+
   const effectiveRows = useMemo(
-    () => collapseEmptyTracks(gridTemplateRows, areaGrid, "row", emptySlotAreas),
-    [gridTemplateRows, areaGrid, emptySlotAreas],
+    () => collapseEmptyTracks(gridTemplateRows, areaGrid, "row", trackCollapseAreas),
+    [gridTemplateRows, areaGrid, trackCollapseAreas],
   );
   const effectiveColumns = useMemo(
-    () => collapseEmptyTracks(gridTemplateColumns, areaGrid, "col", emptySlotAreas),
-    [gridTemplateColumns, areaGrid, emptySlotAreas],
+    () => collapseEmptyTracks(gridTemplateColumns, areaGrid, "col", trackCollapseAreas),
+    [gridTemplateColumns, areaGrid, trackCollapseAreas],
   );
 
   const scale       = displayWidth / canvasWidth;
@@ -214,6 +163,9 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
         }}
       >
         {Object.entries(slots).map(([slotName, slotDef], slotIndex) => {
+          // Absorbed into a neighbor's grown area (see growEmptyAreasIntoNeighbors) — render nothing.
+          if (absorbedAreas.has(slotName)) return null;
+
           const sectionIndex = slotAssignment.slots[slotName] ?? null;
           const section = sectionIndex !== null ? (sections[sectionIndex] ?? null) : null;
           const colors = resolveSlotColors(slotDef.colorRole, style, canvasBgDark);
@@ -229,8 +181,16 @@ export const StudioCanvas = forwardRef<HTMLDivElement, Props>(function StudioCan
           const isSelected = editable && selectedSlot === slotName;
           const isClickable = editable && !isStructural && !!section;
 
+          const grown = growthOverrides.get(slotName);
+          const gridPlacement: React.CSSProperties = grown
+            ? {
+                gridRowStart: grown.r0 + 1, gridRowEnd: grown.r1 + 2,
+                gridColumnStart: grown.c0 + 1, gridColumnEnd: grown.c1 + 2,
+              }
+            : { gridArea: slotName };
+
           const slotStyle: React.CSSProperties = {
-            gridArea: slotName,
+            ...gridPlacement,
             backgroundColor: isEmpty ? canvasBg : colors.bg,
             ...(isTextured && !isEmpty ? {
               backgroundImage: `radial-gradient(circle, ${dotColor} 1px, transparent 1px)`,

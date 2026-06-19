@@ -2,12 +2,15 @@
 // Mirrors brand-kit.ts: a small draft object that, when active, overrides fields
 // on the generated studioConfig without mutating the source data.
 
-export type FontOption = "condensed-sans" | "slab" | "modern-sans" | "display-serif";
+export type FontOption = "condensed-sans" | "slab" | "modern-sans" | "display-serif" | "corporate" | "playful" | "monospaced";
 export const FONT_OPTIONS: ReadonlyArray<{ value: FontOption; label: string }> = [
   { value: "modern-sans", label: "Modern sans" },
   { value: "condensed-sans", label: "Condensed" },
   { value: "slab", label: "Slab serif" },
   { value: "display-serif", label: "Display serif" },
+  { value: "corporate", label: "Corporate" },
+  { value: "playful", label: "Playful" },
+  { value: "monospaced", label: "Monospaced" },
 ];
 
 export type AccentStyleOption = "rule" | "ribbon" | "stamp" | "none";

@@ -386,7 +386,7 @@ export const TEMPLATE_DEFINITIONS: Record<string, TemplateDef> = {
     canvasWidth: 1080, canvasHeight: 1080,
     gridTemplateAreas: `"stat-a   stat-b" "chart    chart" "takeaway takeaway" "banner   banner" "footer   footer"`,
     gridTemplateColumns: "1fr 1fr",
-    gridTemplateRows: "200px 1fr 100px 200px 40px",
+    gridTemplateRows: "200px 260px 1fr 180px 40px",
     slots: {
       "stat-a": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "accent" },
       "stat-b": { regionType: "stat",       acceptedTypes: ["metric", "callout", "pictograph"],   colorRole: "primary" },
@@ -435,7 +435,7 @@ export const StudioInputSchema = InfographicInputSchema.extend({
     ])
     .default("editorial-portrait"),
   primaryFont: z
-    .enum(["condensed-sans", "slab", "modern-sans", "display-serif"])
+    .enum(["condensed-sans", "slab", "modern-sans", "display-serif", "corporate", "playful", "monospaced"])
     .default("modern-sans"),
   accentStyle: z
     .enum(["ribbon", "stamp", "rule", "none"])

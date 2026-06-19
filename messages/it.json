@@ -133,7 +133,10 @@
         "condensed-sans": "Sans Condensato",
         "modern-sans": "Sans Moderno",
         "slab": "Graziato Slab",
-        "display-serif": "Graziato Display"
+        "display-serif": "Graziato Display",
+        "corporate": "Corporate",
+        "playful": "Giocoso",
+        "monospaced": "Monospaziato"
       },
       "accents": {
         "rule": "Linea",
