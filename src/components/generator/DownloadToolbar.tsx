@@ -1,4 +1,4 @@
-import { FileText, Image as ImageIcon } from "lucide-react";
+import { Code, FileText, Image as ImageIcon } from "lucide-react";
 import type { DownloadKind } from "../../lib/download";
 
 type DownloadToolbarProps = {
@@ -13,6 +13,7 @@ const BUTTONS: {
 }[] = [
   { kind: "png", label: "PNG", Icon: ImageIcon },
   { kind: "pdf", label: "PDF", Icon: FileText },
+  { kind: "html", label: "HTML", Icon: Code },
 ];
 
 export function DownloadToolbar({ onDownload, pending }: DownloadToolbarProps) {

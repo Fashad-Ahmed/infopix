@@ -60,7 +60,7 @@ export default function ClassicPage() {
   );
 
   const handleDownload = useCallback(
-    async (kind: "png" | "pdf") => {
+    async (kind: "png" | "pdf" | "html") => {
       const result = await downloader.download(kind);
       if (result.ok) {
         addToast(t("downloadSuccess", { format: kind.toUpperCase() }), "success");

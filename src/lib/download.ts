@@ -1,6 +1,6 @@
 import { slugify } from "./slug";
 
-export type DownloadKind = "png" | "pdf";
+export type DownloadKind = "png" | "pdf" | "html";
 
 type CaptureOptions = {
   node: HTMLElement;
@@ -41,6 +41,54 @@ function triggerDownload(dataUrl: string, fileName: string) {
   link.click();
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+}
+
+// Concatenates every same-origin stylesheet's rules (Tailwind output + the
+// @font-face rules next/font injects) so the exported document renders
+// correctly with no connection to the live app — only the inline styles the
+// region components already set plus these rules are needed.
+function collectStyleSheetText(): string {
+  let css = "";
+  for (const sheet of Array.from(document.styleSheets)) {
+    try {
+      for (const rule of Array.from(sheet.cssRules)) css += rule.cssText + "\n";
+    } catch {
+      // Cross-origin stylesheet — can't read its rules, skip.
+    }
+  }
+  return css;
+}
+
+function buildStandaloneHtml(node: HTMLElement, title: string, backgroundColor: string): string {
+  const htmlClass = document.documentElement.className;
+  const css = collectStyleSheetText();
+  return `<!doctype html>
+<html lang="en" class="${escapeHtml(htmlClass)}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>${escapeHtml(title)}</title>
+<style>
+html, body { margin: 0; padding: 0; background: ${backgroundColor}; }
+${css}
+</style>
+</head>
+<body>
+${node.outerHTML}
+</body>
+</html>`;
+}
+
+function downloadHtml(node: HTMLElement, title: string, backgroundColor: string) {
+  const html = buildStandaloneHtml(node, title, backgroundColor);
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  triggerDownload(url, `${slugify(title)}.html`);
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
 async function dataUrlToImage(dataUrl: string): Promise<HTMLImageElement> {
   const img = new Image();
   img.src = dataUrl;
@@ -57,6 +105,11 @@ export async function downloadInfographic({
   backgroundColor,
   kind,
 }: CaptureOptions): Promise<void> {
+  if (kind === "html") {
+    downloadHtml(node, title, backgroundColor);
+    return;
+  }
+
   const dataUrl = await captureNode(node, backgroundColor);
   const baseName = slugify(title);
 

@@ -74,7 +74,7 @@ export default function StudioPage() {
   );
 
   const handleDownload = useCallback(
-    async (kind: "png" | "pdf") => {
+    async (kind: "png" | "pdf" | "html") => {
       const result = await downloader.download(kind);
       if (result.ok) {
         addToast(tToast("downloadSuccess", { format: kind.toUpperCase() }), "success");
