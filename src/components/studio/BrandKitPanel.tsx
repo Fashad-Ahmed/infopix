@@ -165,7 +165,7 @@ export function BrandKitPanel({ brandKit }: Props) {
           </p>
           <p className="text-xs leading-relaxed mt-0.5" style={{ color: "var(--muted)" }}>
             {isActive
-              ? "Active — your logo and colors are layered on top of the generated design."
+              ? "Active your logo and colors are layered on top of the generated design."
               : "Add your logo and brand colors, then save it as a reusable profile."}
           </p>
         </div>
