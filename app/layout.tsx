@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Darker_Grotesque } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
+import { BackgroundDecor } from "../src/components/BackgroundDecor";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -40,9 +41,12 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${darkerGrotesque.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <BackgroundDecor />
+        <div className="relative z-10 flex flex-col min-h-full">
+          <NextIntlClientProvider messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </div>
       </body>
     </html>
   );
