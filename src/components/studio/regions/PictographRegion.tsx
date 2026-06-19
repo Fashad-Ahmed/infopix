@@ -42,7 +42,7 @@ export function PictographRegion({ section, primaryColor, accentColor, bgColor, 
           </p>
         )}
 
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 6, minHeight: 0, overflow: "hidden" }}>
+        <div style={{ flex: "0 1 auto", display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 6, minHeight: 0, overflow: "hidden" }}>
           {section.rows.map((row, i) => {
             const iconSize = 14;
             const icons = Array.from({ length: row.total }, (_, idx) => idx < Math.floor(row.count));
@@ -50,12 +50,14 @@ export function PictographRegion({ section, primaryColor, accentColor, bgColor, 
             const partialFill = row.count % 1;
 
             return (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, minHeight: 0 }}>
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, minHeight: 0, overflow: "hidden" }}>
                 <span style={{
-                  width: "22%", flexShrink: 0,
+                  flex: "0 1 30%", minWidth: 0,
                   fontSize: 10, fontWeight: 700,
                   color: primaryColor, opacity: 0.85,
-                  overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis",
+                  overflow: "hidden", display: "-webkit-box",
+                  WebkitBoxOrient: "vertical", WebkitLineClamp: 2,
+                  lineHeight: 1.2, wordBreak: "break-word",
                 }}>
                   {row.label}
                 </span>
