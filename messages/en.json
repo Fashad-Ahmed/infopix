@@ -133,7 +133,10 @@
         "condensed-sans": "Condensed Sans",
         "modern-sans": "Modern Sans",
         "slab": "Slab Serif",
-        "display-serif": "Display Serif"
+        "display-serif": "Display Serif",
+        "corporate": "Corporate",
+        "playful": "Playful",
+        "monospaced": "Monospaced"
       },
       "accents": {
         "rule": "Rule",
