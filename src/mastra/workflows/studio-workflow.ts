@@ -166,10 +166,34 @@ Return valid JSON only. No markdown, no code fences.
       throw new Error("Studio research agent returned no structured content.");
     }
 
-    // Sanitize: strip AI padding chars + truncate strings to schema limits
+    // Gemini frequently emits `null` for fields it considers "not applicable"
+    // instead of omitting them, even though our schemas only declare
+    // `.optional()` (not `.nullable()`). Rather than chasing every individual
+    // optional field across every section schema, strip `null` -> `undefined`
+    // recursively up front so any optional field tolerates either.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function stripNulls(value: any): any {
+      if (value === null) return undefined;
+      if (Array.isArray(value)) return value.map(stripNulls);
+      if (typeof value === "object") {
+        const out: Record<string, unknown> = {};
+        for (const [k, v] of Object.entries(value)) out[k] = stripNulls(v);
+        return out;
+      }
+      return value;
+    }
+    obj = stripNulls(obj);
+
+    // Sanitize: strip AI padding chars + truncate strings to schema limits.
+    // Cuts at the last word boundary and appends an ellipsis so truncated
+    // text never gets chopped mid-word with no visual indication.
     function trunc(v: unknown, max: number): string | undefined {
       if (typeof v !== "string") return undefined;
-      return v.replace(/[_\s]+$/, "").trim().slice(0, max);
+      const cleaned = v.replace(/[_\s]+$/, "").trim();
+      if (cleaned.length <= max) return cleaned;
+      const cut = cleaned.slice(0, max - 1);
+      const lastSpace = cut.lastIndexOf(" ");
+      return `${(lastSpace > max * 0.5 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function sanitizeSection(s: any): any {
@@ -198,7 +222,7 @@ Return valid JSON only. No markdown, no code fences.
         return { ...base, items: s.items.map((item: any) => ({ ...item, description: trunc(item.description, 140) ?? item.description, valueLabel: trunc(item.valueLabel, 20) ?? item.valueLabel })) };
       }
       if (s.type === "takeaway" && Array.isArray(s.points)) {
-        return { ...base, points: s.points.map((p: string) => typeof p === "string" ? p.slice(0, 120) : p) };
+        return { ...base, points: s.points.map((p: string) => trunc(p, 200) ?? p) };
       }
       if (s.type === "pictograph") {
         const rows = Array.isArray(s.rows) ? s.rows.map((r: any) => ({
