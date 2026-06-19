@@ -86,10 +86,7 @@ export default function StudioPage() {
   );
 
   return (
-    <main
-      className="min-h-screen transition-colors duration-300"
-      style={{ backgroundColor: "var(--background)" }}
-    >
+    <main className="min-h-screen transition-colors duration-300">
       <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       {/* Nav */}
