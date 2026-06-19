@@ -179,7 +179,7 @@ export const PictographSection = BaseSection.extend({
         valueLabel: z.string().nullable().optional().transform(s => s?.slice(0, 20) ?? undefined).describe("Human-readable value e.g. '24/week', '54%'"),
       }),
     )
-    .min(2)
+    .min(1)
     .max(6),
   iconLabel: z.string().transform(s => s.slice(0, 80)).optional().describe("What each icon represents e.g. 'cups per week', 'people out of 10'"),
   iconToken: z
