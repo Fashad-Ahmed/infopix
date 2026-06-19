@@ -1,172 +1,37 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import type { StudioGenerateRequest } from "../../lib/api-client";
 import { COLOR_SCHEME_PRESETS } from "../../mastra/schemas/schema";
-
-type StudioFormValues = Omit<StudioGenerateRequest, "generateImages">;
+import { SectionLabel } from "./SectionLabel";
+import { PillGroup } from "./PillGroup";
+import { SCHEME_META, INPUT_STYLE } from "./studioFormConstants";
+import { useStudioFormOptions } from "./useStudioFormOptions";
+import { useStudioFormState, type StudioFormValues } from "./useStudioFormState";
 
 type Props = {
   loading: boolean;
   onSubmit: (values: StudioFormValues) => void;
 };
 
-const SCHEME_META: Array<{ id: keyof typeof COLOR_SCHEME_PRESETS; label: string }> = [
-  { id: "brand",     label: "Brand" },
-  { id: "editorial", label: "Editorial" },
-  { id: "coral",     label: "Coral" },
-  { id: "coffee",    label: "Coffee" },
-  { id: "ocean",     label: "Ocean" },
-  { id: "forest",    label: "Forest" },
-  { id: "midnight",  label: "Midnight" },
-  { id: "vivid",     label: "Vivid" },
-];
-
-const INPUT_STYLE = {
-  backgroundColor: "var(--surface-alt)",
-  border: "1px solid var(--border)",
-  color: "var(--foreground)",
-  borderRadius: "0.875rem",
-  padding: "0.875rem 1.25rem",
-  fontSize: "0.9rem",
-  width: "100%",
-  outline: "none",
-  transition: "border-color 0.15s, box-shadow 0.15s",
-} as const;
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      className="flex items-center gap-2 mb-3"
-      style={{
-        fontSize: "0.65rem",
-        fontWeight: 700,
-        letterSpacing: "0.12em",
-        textTransform: "uppercase",
-        color: "var(--muted)",
-      }}
-    >
-      {children}
-    </p>
-  );
-}
-
-function PillGroup<T extends string>({
-  options,
-  value,
-  onChange,
-  small,
-}: {
-  options: readonly { value: T; label: string; hint?: string }[];
-  value: T;
-  onChange: (v: T) => void;
-  small?: boolean;
-}) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {options.map((o) => {
-        const active = value === o.value;
-        return (
-          <button
-            key={o.value}
-            type="button"
-            onClick={() => onChange(o.value)}
-            title={o.hint}
-            style={{
-              borderRadius: "9999px",
-              padding: small ? "0.35rem 0.85rem" : "0.45rem 1rem",
-              fontSize: small ? "0.75rem" : "0.8rem",
-              fontWeight: 600,
-              border: `1.5px solid ${active ? "var(--primary)" : "var(--border)"}`,
-              backgroundColor: active ? "var(--primary-soft)" : "transparent",
-              color: active ? "var(--primary)" : "var(--muted)",
-              cursor: "pointer",
-              transition: "all 0.15s ease",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {o.label}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
 export function StudioForm({ loading, onSubmit }: Props) {
   const t = useTranslations("studio.form");
-  const [mode, setMode] = useState<"url" | "topic">("topic");
-  const [rawText, setRawText] = useState("");
-  const [stylePrompt, setStylePrompt] = useState("");
-  const [template, setTemplate] = useState<StudioFormValues["template"]>("editorial-landscape");
-  const [primaryFont, setPrimaryFont] = useState<StudioFormValues["primaryFont"]>("modern-sans");
-  const [accentStyle, setAccentStyle] = useState<StudioFormValues["accentStyle"]>("rule");
-  const [illustrationStyle, setIllustrationStyle] = useState<StudioFormValues["illustrationStyle"]>("flat");
-  const [showSourceFooter, setShowSourceFooter] = useState(true);
-  const [density, setDensity] = useState<StudioFormValues["density"]>("standard");
-  const [colorScheme, setColorScheme] = useState<StudioFormValues["colorScheme"]>("brand");
-  const [userPrimary, setUserPrimary]       = useState("#0f172a");
-  const [userAccent, setUserAccent]         = useState("#f59e0b");
-  const [userBackground, setUserBackground] = useState("#f8f5ef");
-
-  const TEMPLATES = [
-    { value: "editorial-portrait"  as const, label: t("templates.editorial-portrait"),  hint: t("templateHints.editorial-portrait") },
-    { value: "editorial-landscape" as const, label: t("templates.editorial-landscape"), hint: t("templateHints.editorial-landscape") },
-    { value: "social-square"       as const, label: t("templates.social-square"),        hint: t("templateHints.social-square") },
-    { value: "social-wide"         as const, label: t("templates.social-wide"),          hint: t("templateHints.social-wide") },
-    { value: "poster"              as const, label: t("templates.poster"),               hint: t("templateHints.poster") },
-    { value: "sidebar-portrait"     as const, label: t("templates.sidebar-portrait"),     hint: t("templateHints.sidebar-portrait") },
-    { value: "asymmetric-landscape" as const, label: t("templates.asymmetric-landscape"), hint: t("templateHints.asymmetric-landscape") },
-    { value: "banner-bottom-square" as const, label: t("templates.banner-bottom-square"), hint: t("templateHints.banner-bottom-square") },
-    { value: "magazine-grid"        as const, label: t("templates.magazine-grid"),        hint: t("templateHints.magazine-grid") },
-  ];
-  const FONTS = [
-    { value: "condensed-sans" as const, label: t("fonts.condensed-sans") },
-    { value: "modern-sans"    as const, label: t("fonts.modern-sans") },
-    { value: "slab"           as const, label: t("fonts.slab") },
-    { value: "display-serif"  as const, label: t("fonts.display-serif") },
-  ];
-  const ACCENT_STYLES = [
-    { value: "rule"   as const, label: t("accents.rule") },
-    { value: "ribbon" as const, label: t("accents.ribbon") },
-    { value: "stamp"  as const, label: t("accents.stamp") },
-    { value: "none"   as const, label: t("accents.none") },
-  ];
-  const ILLUSTRATION_STYLES = [
-    { value: "flat"      as const, label: t("illustrations.flat") },
-    { value: "editorial" as const, label: t("illustrations.editorial") },
-    { value: "minimal"   as const, label: t("illustrations.minimal") },
-    { value: "none"      as const, label: t("illustrations.none") },
-  ];
-  const DEPTHS = [
-    { value: "executive-summary" as const, label: t("depths.executive-summary") },
-    { value: "standard"          as const, label: t("depths.standard") },
-    { value: "deep-dive"         as const, label: t("depths.deep-dive") },
-  ];
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const base: StudioFormValues = {
-      rawText,
-      mode,
-      stylePrompt: stylePrompt.trim() || undefined,
-      template,
-      primaryFont,
-      accentStyle,
-      illustrationStyle,
-      showSourceFooter,
-      density,
-      narrativeFocus: "data-heavy",
-      colorScheme: colorScheme ?? "editorial",
-    };
-    if (colorScheme === "custom") {
-      base.userPrimary    = userPrimary;
-      base.userAccent     = userAccent;
-      base.userBackground = userBackground;
-    }
-    onSubmit(base);
-  };
+  const { TEMPLATES, FONTS, ACCENT_STYLES, ILLUSTRATION_STYLES, DEPTHS } = useStudioFormOptions(t);
+  const {
+    mode, setMode,
+    rawText, setRawText,
+    stylePrompt, setStylePrompt,
+    template, setTemplate,
+    primaryFont, setPrimaryFont,
+    accentStyle, setAccentStyle,
+    illustrationStyle, setIllustrationStyle,
+    showSourceFooter, setShowSourceFooter,
+    density, setDensity,
+    colorScheme, setColorScheme,
+    userPrimary, setUserPrimary,
+    userAccent, setUserAccent,
+    userBackground, setUserBackground,
+    handleSubmit,
+  } = useStudioFormState(onSubmit);
 
   return (
     <form onSubmit={handleSubmit}>
